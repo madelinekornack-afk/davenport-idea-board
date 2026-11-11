@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audit your property manager</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: scoreboard first (every idea in one glance), then one dossier card per idea in rank order. */
+:root {
+  --bg: #f3f4f0;
+  --surface: #ffffff;
+  --ink: #1b2430;
+  --muted: #5d6673;
+  --line: #d6d9d2;
+  --accent: #d9641e;
+  --accent-soft: #fbe9dc;
+  --tier1: #2f7a4f; --tier1-soft: #e2f0e6;
+  --tier2: #b07a12; --tier2-soft: #f7edd2;
+  --tier3: #7a7f88; --tier3-soft: #e9ebe6;
+  --bar: #1b2430;
+  --bar-track: #e4e6e0;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+    --accent: #f0864a; --accent-soft: #3a2719;
+    --tier1: #6fc48f; --tier1-soft: #1f3327;
+    --tier2: #e0b454; --tier2-soft: #3a2f16;
+    --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+    --bar: #e8eaed; --bar-track: #2c3139;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+  --accent: #f0864a; --accent-soft: #3a2719;
+  --tier1: #6fc48f; --tier1-soft: #1f3327;
+  --tier2: #e0b454; --tier2-soft: #3a2f16;
+  --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+  --bar: #e8eaed; --bar-track: #2c3139;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; margin: 0; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 36px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; letter-spacing: -0.01em; }
+.eyebrow { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header p.lede { max-width: 66ch; color: var(--muted); margin: 14px 0 0; }
+.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 22px; }
+.method div { border-top: 2px solid var(--line); padding-top: 8px; font-size: 13px; color: var(--muted); }
+.method b { display: block; color: var(--ink); font-weight: 600; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+
+section { margin-top: 44px; }
+section > h2 { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+
+/* scoreboard */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.rank, td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td.rank { width: 44px; font-weight: 500; }
+td.num { text-align: right; width: 54px; }
+th.num { text-align: right; }
+td.total { font-weight: 600; }
+tbody tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.t1 { background: var(--tier1-soft); color: var(--tier1); }
+.t2 { background: var(--tier2-soft); color: var(--tier2); }
+.t3 { background: var(--tier3-soft); color: var(--tier3); }
+.who { color: var(--muted); font-size: 13px; }
+
+/* dossier cards */
+.tier { margin-top: 36px; }
+.tier-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 16px; }
+.tier-head h2 { font-size: 24px; }
+.tier-head span { color: var(--muted); font-size: 14px; }
+.cards { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 64px 1fr; }
+.card .n { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; padding: 18px 0 0 16px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card .b { padding: 18px 18px 18px 8px; min-width: 0; }
+.card h3 { font-size: 21px; font-weight: 700; }
+.card .pitch { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.chip.src { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+.scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; max-width: 520px; }
+.score label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.score .track { height: 6px; background: var(--bar-track); margin-top: 4px; position: relative; }
+.score .track i { position: absolute; inset: 0 auto 0 0; background: var(--bar); }
+.score .v { font-family: var(--mono); font-size: 12px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 20px; margin-top: 16px; }
+.facts div { min-width: 0; font-size: 14px; }
+.facts b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.facts .risk { border-left: 3px solid var(--accent); padding-left: 10px; }
+.foot { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: 13px; max-width: 72ch; }
+.foot ul { padding-left: 18px; margin: 6px 0 0; }
+@media (max-width: 560px) {
+  .card { grid-template-columns: 1fr; }
+  .card .n { padding: 14px 16px 0; font-size: 30px; }
+  .card .b { padding: 8px 16px 16px; }
+  .scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+<style>
+.tabs { display: flex; gap: 4px; margin: 0 0 18px; border-bottom: 1px solid var(--line); }
+.tabs a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--muted); padding: 8px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs a.on { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs a:hover { color: var(--ink); }
+.chart { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 12px; margin-top: 14px; }
+.chart h3 { font-size: 19px; }
+.chart .sub { color: var(--muted); font-size: 13px; margin: 2px 0 10px; }
+.rows { display: grid; gap: 7px; }
+.row { display: grid; grid-template-columns: minmax(120px, 210px) 1fr 86px; gap: 10px; align-items: center; font-size: 13.5px; }
+.row .lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .lbl small { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-left: 4px; }
+.row .track { height: 12px; background: var(--bar-track); position: relative; }
+.row .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--chart); border-radius: 0 4px 4px 0; min-width: 2px; }
+.row.ref .track i { background: var(--tier3); }
+.row .val { font-family: var(--mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.row:hover .track i { filter: brightness(0.85); }
+.none { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.none b { color: var(--ink); font-weight: 600; }
+.read { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 22px; margin-top: 16px; }
+.read div { font-size: 14px; min-width: 0; }
+.read b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.read .hot { border-left: 3px solid var(--accent); padding-left: 10px; }
+.quote { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; color: var(--muted); font-size: 14px; margin: 10px 0 0; max-width: 70ch; }
+.quote b { color: var(--ink); font-weight: 600; }
+.diagram { background: var(--surface); border: 1px solid var(--line); padding: 12px; margin-top: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--body); }
+.diagram .box { fill: var(--bg); stroke: var(--line); }
+.diagram .core { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram .t { fill: var(--ink); font-size: 13px; }
+.diagram .h { fill: var(--ink); font-size: 12px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.diagram .m { fill: var(--muted); font-size: 11.5px; }
+.diagram .arrow { stroke: var(--muted); stroke-width: 1.5; fill: none; marker-end: url(#ah); }
+.diagram .later { stroke-dasharray: 4 3; }
+.caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 14px; }
+.cap { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; font-size: 14px; }
+.cap b { display: block; font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.cap .st { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+.cap .st.live { color: var(--tier1); }
+.cap .st.next { color: var(--tier2); }
+a { color: var(--accent); }
+:root { --chart: #2a78d6; }
+:root[data-theme="dark"] { --chart: #6aa6ea; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --chart: #6aa6ea; } }
+</style>
+
+
+</head>
+<body>
+<div class="wrap">
+<nav class="tabs"><a href="./">Board</a><a href="clark.html">Clark</a><a class="on" href="audit.html">Audit</a><a href="formcheck.html">Form check</a></nav>
+<header>
+  <div class="eyebrow">Idea 2 on the board · Steve's idea, Nov 3 · Orca is the edge · design concept exists</div>
+  <h1>Audit your property manager</h1>
+  <p class="lede">Owners upload the monthly property-manager statement. The app checks every charge against the management contract, tracks all-time spend per property, and builds the evidence pack for a dispute. The general form, in Steve's words, is auditing any variable monthly vendor bill: "confidently and effortlessly dispute unfair charges."</p>
+  <p class="quote"><b>Steve, Nov 3:</b> "The more abstract idea there is automatically auditing contract/agreement terms when you're paying some vendor for a service each month, especially when that cost can vary month to month. I'm sure some version of this problem exists in many industries but I've just been seeing it recently in the property management world."</p>
+</header>
+
+<section>
+  <h2>How it fits together</h2>
+  <div class="diagram"><svg viewBox="0 0 1040 400" role="img" aria-label="Audit your property manager: statement, contract and maintenance record flow into monthly checks, then into what the owner gets">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+<text class="h" x="20" y="24" text-anchor="start">1 · What comes in</text>
+<rect class="box" x="20" y="40" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="59" text-anchor="start">PM statement</text>
+<text class="m" x="32" y="76" text-anchor="start">monthly PDF or email, every line item</text>
+<rect class="box" x="20" y="100" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="119" text-anchor="start">Management contract</text>
+<text class="m" x="32" y="136" text-anchor="start">fee schedule, markup rules, approval limits</text>
+<rect class="box" x="20" y="160" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="179" text-anchor="start">Maintenance record</text>
+<text class="m" x="32" y="196" text-anchor="start">Orca: verified work orders and vendor invoices</text>
+<rect class="box" x="20" y="220" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="239" text-anchor="start">Bank transactions</text>
+<text class="m" x="32" y="256" text-anchor="start">what actually left the account (Clark)</text>
+<rect class="box" x="20" y="280" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="299" text-anchor="start">Other vendor bills</text>
+<text class="m" x="32" y="316" text-anchor="start">HOA, lawn, cleaning: any variable monthly bill</text>
+<text class="h" x="275" y="24" text-anchor="start">2 · The checks</text>
+<rect class="box" x="275" y="40" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="59" text-anchor="start">Line item vs contract</text>
+<text class="m" x="287" y="76" text-anchor="start">is each fee allowed, at the agreed rate</text>
+<rect class="box" x="275" y="100" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="119" text-anchor="start">Markup and duplicates</text>
+<text class="m" x="287" y="136" text-anchor="start">vendor invoice vs what the owner was charged</text>
+<rect class="box" x="275" y="160" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="179" text-anchor="start">Paying twice</text>
+<text class="m" x="287" y="196" text-anchor="start">same repair, same unit, six months apart</text>
+<rect class="box" x="275" y="220" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="239" text-anchor="start">Anomalies vs history</text>
+<text class="m" x="287" y="256" text-anchor="start">this month against every prior statement</text>
+<rect class="box" x="275" y="280" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="299" text-anchor="start">Contract terms, generalized</text>
+<text class="m" x="287" y="316" text-anchor="start">the same engine on any agreement</text>
+<text class="h" x="560" y="24" text-anchor="start">3 · The audit</text><text class="h" x="760" y="24" text-anchor="start">4 · What the owner gets</text>
+<rect class="box" x="760" y="40" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="59" text-anchor="start">Per-property spend</text>
+<text class="m" x="772" y="76" text-anchor="start">all-time, by category, by vendor</text>
+<rect class="box" x="760" y="100" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="119" text-anchor="start">PM report card</text>
+<text class="m" x="772" y="136" text-anchor="start">how this manager compares</text>
+<rect class="box" x="760" y="160" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="179" text-anchor="start">Dispute pack</text>
+<text class="m" x="772" y="196" text-anchor="start">the evidence, the clause, the letter</text>
+<rect class="box" x="760" y="220" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="239" text-anchor="start">Maintenance history</text>
+<text class="m" x="772" y="256" text-anchor="start">that does not vanish when you switch PMs</text>
+<rect class="box" x="760" y="280" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="299" text-anchor="start">Trust portal</text>
+<text class="m" x="772" y="316" text-anchor="start">PM-branded, so the PM is the channel</text>
+<rect class="core" x="560" y="96" width="170" height="150" rx="6"/>
+<text class="t" x="645.0" y="143.0" text-anchor="middle">Owner-side</text>
+<text class="t" x="645.0" y="161.0" text-anchor="middle">audit</text>
+<text class="m" x="645.0" y="179.0" text-anchor="middle">runs every month,</text>
+<text class="m" x="645.0" y="197.0" text-anchor="middle">reads any PM's format</text>
+<text class="h" x="645.0" y="24" text-anchor="start"></text>
+<path class="arrow" d="M235 63 C 275 63, 235 63, 275 63"/>
+<path class="arrow" d="M235 123 C 275 123, 235 63, 275 63"/>
+<path class="arrow" d="M235 123 C 275 123, 235 123, 275 123"/>
+<path class="arrow" d="M235 183 C 275 183, 235 123, 275 123"/>
+<path class="arrow" d="M235 183 C 275 183, 235 183, 275 183"/>
+<path class="arrow" d="M235 63 C 275 63, 235 243, 275 243"/>
+<path class="arrow later" d="M235 243 C 275 243, 235 243, 275 243"/>
+<path class="arrow later" d="M235 303 C 275 303, 235 303, 275 303"/>
+<path class="arrow" d="M537 63 C 577 63, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M537 123 C 577 123, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M537 183 C 577 183, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M537 243 C 577 243, 520 171.0, 560 171.0"/>
+<path class="arrow later" d="M537 303 C 577 303, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M730 171.0 C 770 171.0, 720 63, 760 63"/>
+<path class="arrow" d="M730 171.0 C 770 171.0, 720 123, 760 123"/>
+<path class="arrow" d="M730 171.0 C 770 171.0, 720 183, 760 183"/>
+<path class="arrow" d="M730 171.0 C 770 171.0, 720 243, 760 243"/>
+<path class="arrow later" d="M730 171.0 C 770 171.0, 720 303, 760 303"/>
+<text class="m" x="20" y="372" text-anchor="start">Solid: in the design concept. Dashed: Steve's generalization (any vendor bill) and the PM-branded portal the landlord forums point at.</text></svg></div>
+</section>
+
+<section>
+  <h2>Everything it does</h2>
+  <div class="caps"><div class="cap"><span class="st live">Built, in use</span><b>Reads any statement</b>Owners forward the monthly PM statement by email or upload the PDF. Every line item is extracted, whatever software the PM uses.</div><div class="cap"><span class="st live">Built, in use</span><b>Knows the contract</b>The management agreement is read once: management fee, maintenance markup, leasing fee, approval threshold, pass-through rules.</div><div class="cap"><span class="st live">Built, in use</span><b>Checks every charge</b>Each line is tested against the contract. A 10% markup billed at 15%, a "coordination fee" that does not exist in the agreement, an unapproved repair above the limit.</div><div class="cap"><span class="st live">Built, in use</span><b>Catches paying twice</b>The same repair on the same unit a few months apart, or a vendor invoice that was already reimbursed. The landlord forums call this "paying for the same problem twice."</div><div class="cap"><span class="st live">Built, in use</span><b>Per-property spend, all time</b>Every dollar by property, category and vendor across every statement, so the owner finally has a number to compare against.</div><div class="cap"><span class="st live">Built, in use</span><b>Builds the dispute pack</b>The charge, the clause it violates, the prior statements that show the pattern, and a letter. Fireworks' read: the recovery workflow is the product, the audit is the hook.</div><div class="cap"><span class="st live">Built, in use</span><b>Grades the manager</b>A report card per PM, so an owner with three managers knows which one to drop.</div><div class="cap"><span class="st idea">Proposed</span><b>Any variable vendor bill</b>Steve, Nov 3: "automatically auditing contract terms when you're paying some vendor for a service each month, especially when that cost can vary." HOA, lawn, cleaning, SaaS.</div><div class="cap"><span class="st idea">Proposed</span><b>Maintenance history that follows the owner</b>What landlords actually asked for on BiggerPockets: the record of what was fixed, by whom, for how much, that survives switching PMs. Orca already holds the verified version.</div><div class="cap"><span class="st idea">Proposed</span><b>PM-branded trust portal</b>Flip the channel: the PM offers the audit to its owners as proof of honesty. Avoids the conflict of selling against Orca's own customers.</div></div>
+</section>
+
+<section>
+  <h2>Where the group is on it</h2>
+  <div class="read">
+    <div><b>Why it is rank 2</b>It sits on Orca, which Phil calls one of the two real edges: Steve sees the sloppy invoicing daily, and Orca's verified maintenance data is the moat nobody else has. Neither Phil nor Steve has a packaging doubt about it the way they do about Clark.</div>
+    <div class="hot"><b>Why market is a 3, not a 4</b>The 5M owner-to-PM relationships in the Fireworks analysis is funnel size, not buyers. Only owners who use a PM and suspect them are in play, and most of those switch PMs rather than buy software. Havyn, cited at $19 to 99/mo, could not be found. DoorVault gives the audit away free.</div>
+    <div><b>Channel conflict</b>An owner-side auditor is aimed at Orca's own PM customers. The PM-branded trust portal is the way around it, and it is also what the landlord forums describe wanting.</div>
+    <div><b>What landlords asked for</b>Across three BiggerPockets threads, nobody asked to audit a statement. They asked for every tenant and vendor message in one thread, maintenance tracked from report to payment, a maintenance history that does not vanish, and hidden or creeping fees. The audit is the hook; the record is the product.</div>
+    <div><b>Phil's one-month rule</b>This is a self-serve web product for owners, so a beta is a one-month build. Selling it through PMs instead turns it into a sales cycle, which breaks the rule.</div>
+    <div><b>Where it stands</b>Steve is considering an MVP as an owner-facing surface on Orca. Design concept exists, not iterated. Whiteboard question for tonight: owner-direct, or PM-branded?</div>
+  </div>
+</section>
+
+<section>
+  <h2>What each piece earns today</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">Appfigures estimates, US, iPhone, last 30 days (Oct 12 to Nov 10, 2026). The short version: owner-side landlord software does not monetize on the App Store at all, so these charts mostly show downloads, and the main finding is the absence.</p>
+  <div class="read">
+    <div class="hot"><b>Nobody sells this on the App Store</b>Every real landlord tool here is free on iPhone and bills on the web: TurboTenant, RentRedi, Baselane, Innago, Stessa. The App Store cannot size this market, which is itself the finding. The buyer is a web user with a few properties, not a consumer browsing an app store.</div>
+    <div class="hot"><b>The audit itself has no app</b>DoorVault and Kestrel, the two products that do the statement audit, are web-only. The keyword "doorvault" returns agent and PM tools. There is no incumbent on the phone to displace, and no proof on the phone that owners pay.</div>
+    <div><b>The money is on the PM side</b>Buildium, AppFolio, DoorLoop and Yardi sell to property managers, and their resident portals do 50K to 135K downloads a month. That is the side Orca already sells to, which argues for the PM-branded portal over the owner-direct app.</div>
+    <div><b>The App Store's "landlord" is a game</b>Rent Please Landlord Sim makes $158K a month. Real landlord apps combined make about $2K. Consumer intent for "landlord" on the phone is entertainment.</div>
+  </div>
+  <div class="chart"><h3>Audit checks the statement against the contract <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $2K</span></h3><p class="sub">Apps that audit what a property manager charged. Only one is on the App Store at all.</p><div class="rows"><div class="row" title="Stessa: $2K net revenue, US iPhone, 30 days. owner accounting; statement import, not a contract audit"><div class="lbl">Stessa</div><div class="track"><i style="width:100.0%"></i></div><div class="val">$2K</div></div></div><p class="none"><b>Not modeled.</b> DoorVault, the one product that does the line-by-line audit, is web-only and not on the App Store. Kestrel, its smaller rival, likewise. Stessa's $2.1K is owner accounting, not an audit.</p></div><div class="chart"><h3>Audit tracks per-property spend and rent <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total 26K downloads</span></h3><p class="sub">Owner-side landlord tools. Downloads, not revenue: every one of them is free on iPhone and bills on the web, so the App Store cannot size this market.</p><div class="rows"><div class="row" title="Zillow Rental Manager: 17K downloads, US iPhone, 30 days. free listings, applications, rent collection"><div class="lbl">Zillow Rental Manager</div><div class="track"><i style="width:100.0%"></i></div><div class="val">17K</div></div><div class="row" title="TurboTenant for Landlords: 4K downloads, US iPhone, 30 days. free tier, paid on web"><div class="lbl">TurboTenant for Landlords</div><div class="track"><i style="width:24.3%"></i></div><div class="val">4K</div></div><div class="row" title="DoorLoop: 2K downloads, US iPhone, 30 days. PM software, web SaaS"><div class="lbl">DoorLoop</div><div class="track"><i style="width:11.5%"></i></div><div class="val">2K</div></div><div class="row" title="RentRedi: 2K downloads, US iPhone, 30 days. $12 to 30/mo, billed on web"><div class="lbl">RentRedi</div><div class="track"><i style="width:9.6%"></i></div><div class="val">2K</div></div><div class="row" title="AppFolio Property Manager: 506 downloads, US iPhone, 30 days. PM software, web SaaS"><div class="lbl">AppFolio Property Manager</div><div class="track"><i style="width:2.9%"></i></div><div class="val">506</div></div></div><p class="none"><b>Not modeled.</b> In results but not modeled: Baselane, Innago, Landlord Studio, TenantCloud, Landlordy, Buildium. All are web-first with a thin companion app.</p></div><div class="chart"><h3>The other side: the property manager's own software</h3><p class="sub">Where the money in this category actually goes. Web SaaS sold to PMs, with resident and owner portals as the app.</p><div class="rows"><div class="row ref" title="RentCafe Resident: 135K downloads, US iPhone, 30 days. Yardi resident portal"><div class="lbl">RentCafe Resident</div><div class="track"><i style="width:100.0%"></i></div><div class="val">135K</div></div><div class="row ref" title="FolioSpace Online Portal: 117K downloads, US iPhone, 30 days. AppFolio resident portal"><div class="lbl">FolioSpace Online Portal</div><div class="track"><i style="width:86.6%"></i></div><div class="val">117K</div></div><div class="row ref" title="Resident Portal Mobile: 49K downloads, US iPhone, 30 days. RealPage resident portal"><div class="lbl">Resident Portal Mobile</div><div class="track"><i style="width:36.0%"></i></div><div class="val">49K</div></div></div><p class="none"><b>Not modeled.</b> Shown in gray because they are the PM's software, not the owner's. The biggest "landlord" results on the App Store are games: Rent Please Landlord Sim makes $158K a month, more than every real landlord app combined.</p></div>
+  <div class="read">
+    <div><b>Scope</b>US, iPhone, App Store only. Every tool in this category bills on the web, so revenue is structurally zero here; downloads are the only usable signal, and they understate web signups.</div>
+    <div><b>Method</b>Keyword Inspector searches on landlord, rental property manager, rent collection, property management, property owner portal and each brand name, Nov 11. Top 10 results per search carry estimates. No tracking slots or API credits used. Raw data in <code>~/Projects/appfigures-clark/pages</code>.</div>
+  </div>
+</section>
+
+<div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
+</div>
+</body>
+</html>

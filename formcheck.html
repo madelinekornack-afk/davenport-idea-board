@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form-check video coach</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: scoreboard first (every idea in one glance), then one dossier card per idea in rank order. */
+:root {
+  --bg: #f3f4f0;
+  --surface: #ffffff;
+  --ink: #1b2430;
+  --muted: #5d6673;
+  --line: #d6d9d2;
+  --accent: #d9641e;
+  --accent-soft: #fbe9dc;
+  --tier1: #2f7a4f; --tier1-soft: #e2f0e6;
+  --tier2: #b07a12; --tier2-soft: #f7edd2;
+  --tier3: #7a7f88; --tier3-soft: #e9ebe6;
+  --bar: #1b2430;
+  --bar-track: #e4e6e0;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+    --accent: #f0864a; --accent-soft: #3a2719;
+    --tier1: #6fc48f; --tier1-soft: #1f3327;
+    --tier2: #e0b454; --tier2-soft: #3a2f16;
+    --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+    --bar: #e8eaed; --bar-track: #2c3139;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+  --accent: #f0864a; --accent-soft: #3a2719;
+  --tier1: #6fc48f; --tier1-soft: #1f3327;
+  --tier2: #e0b454; --tier2-soft: #3a2f16;
+  --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+  --bar: #e8eaed; --bar-track: #2c3139;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; margin: 0; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 36px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; letter-spacing: -0.01em; }
+.eyebrow { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header p.lede { max-width: 66ch; color: var(--muted); margin: 14px 0 0; }
+.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 22px; }
+.method div { border-top: 2px solid var(--line); padding-top: 8px; font-size: 13px; color: var(--muted); }
+.method b { display: block; color: var(--ink); font-weight: 600; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+
+section { margin-top: 44px; }
+section > h2 { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+
+/* scoreboard */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.rank, td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td.rank { width: 44px; font-weight: 500; }
+td.num { text-align: right; width: 54px; }
+th.num { text-align: right; }
+td.total { font-weight: 600; }
+tbody tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.t1 { background: var(--tier1-soft); color: var(--tier1); }
+.t2 { background: var(--tier2-soft); color: var(--tier2); }
+.t3 { background: var(--tier3-soft); color: var(--tier3); }
+.who { color: var(--muted); font-size: 13px; }
+
+/* dossier cards */
+.tier { margin-top: 36px; }
+.tier-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 16px; }
+.tier-head h2 { font-size: 24px; }
+.tier-head span { color: var(--muted); font-size: 14px; }
+.cards { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 64px 1fr; }
+.card .n { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; padding: 18px 0 0 16px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card .b { padding: 18px 18px 18px 8px; min-width: 0; }
+.card h3 { font-size: 21px; font-weight: 700; }
+.card .pitch { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.chip.src { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+.scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; max-width: 520px; }
+.score label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.score .track { height: 6px; background: var(--bar-track); margin-top: 4px; position: relative; }
+.score .track i { position: absolute; inset: 0 auto 0 0; background: var(--bar); }
+.score .v { font-family: var(--mono); font-size: 12px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 20px; margin-top: 16px; }
+.facts div { min-width: 0; font-size: 14px; }
+.facts b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.facts .risk { border-left: 3px solid var(--accent); padding-left: 10px; }
+.foot { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: 13px; max-width: 72ch; }
+.foot ul { padding-left: 18px; margin: 6px 0 0; }
+@media (max-width: 560px) {
+  .card { grid-template-columns: 1fr; }
+  .card .n { padding: 14px 16px 0; font-size: 30px; }
+  .card .b { padding: 8px 16px 16px; }
+  .scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+<style>
+.tabs { display: flex; gap: 4px; margin: 0 0 18px; border-bottom: 1px solid var(--line); }
+.tabs a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--muted); padding: 8px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs a.on { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs a:hover { color: var(--ink); }
+.chart { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 12px; margin-top: 14px; }
+.chart h3 { font-size: 19px; }
+.chart .sub { color: var(--muted); font-size: 13px; margin: 2px 0 10px; }
+.rows { display: grid; gap: 7px; }
+.row { display: grid; grid-template-columns: minmax(120px, 210px) 1fr 86px; gap: 10px; align-items: center; font-size: 13.5px; }
+.row .lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .lbl small { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-left: 4px; }
+.row .track { height: 12px; background: var(--bar-track); position: relative; }
+.row .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--chart); border-radius: 0 4px 4px 0; min-width: 2px; }
+.row.ref .track i { background: var(--tier3); }
+.row .val { font-family: var(--mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.row:hover .track i { filter: brightness(0.85); }
+.none { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.none b { color: var(--ink); font-weight: 600; }
+.read { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 22px; margin-top: 16px; }
+.read div { font-size: 14px; min-width: 0; }
+.read b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.read .hot { border-left: 3px solid var(--accent); padding-left: 10px; }
+.quote { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; color: var(--muted); font-size: 14px; margin: 10px 0 0; max-width: 70ch; }
+.quote b { color: var(--ink); font-weight: 600; }
+.diagram { background: var(--surface); border: 1px solid var(--line); padding: 12px; margin-top: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--body); }
+.diagram .box { fill: var(--bg); stroke: var(--line); }
+.diagram .core { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram .t { fill: var(--ink); font-size: 13px; }
+.diagram .h { fill: var(--ink); font-size: 12px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.diagram .m { fill: var(--muted); font-size: 11.5px; }
+.diagram .arrow { stroke: var(--muted); stroke-width: 1.5; fill: none; marker-end: url(#ah); }
+.diagram .later { stroke-dasharray: 4 3; }
+.caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 14px; }
+.cap { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; font-size: 14px; }
+.cap b { display: block; font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.cap .st { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+.cap .st.live { color: var(--tier1); }
+.cap .st.next { color: var(--tier2); }
+a { color: var(--accent); }
+:root { --chart: #2a78d6; }
+:root[data-theme="dark"] { --chart: #6aa6ea; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --chart: #6aa6ea; } }
+</style>
+
+
+</head>
+<body>
+<div class="wrap">
+<nav class="tabs"><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a class="on" href="formcheck.html">Form check</a></nav>
+<header>
+  <div class="eyebrow">Idea 8 on the board · Maddy's idea, Nov 8 · Whiteboard tier · nobody has weighed in yet</div>
+  <h1>Form-check video coach</h1>
+  <p class="lede">Film a set, a run or a swing on your phone and get told what you are doing wrong, how to fix it, and whether you are getting better. The model watches the video the way a coach would. The proven version of this is golf swing analysis; the open version is everything else.</p>
+  <p class="quote"><b>Maddy, Nov 8:</b> "I would 1000% use this as an app. Like taking a video and showing how I'm fucking it up, how I could improve, track improvement over time."</p>
+</header>
+
+<section>
+  <h2>How it fits together</h2>
+  <div class="diagram"><svg viewBox="0 0 1040 400" role="img" aria-label="Form-check video coach: a phone video and a reference flow into pose and critique, then into cues and progress">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+<text class="h" x="20" y="24" text-anchor="start">1 · What comes in</text>
+<rect class="box" x="20" y="40" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="59" text-anchor="start">Phone video</text>
+<text class="m" x="32" y="76" text-anchor="start">a set, a run, a swing, from the rack or a friend</text>
+<rect class="box" x="20" y="100" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="119" text-anchor="start">Reference form</text>
+<text class="m" x="32" y="136" text-anchor="start">what good looks like for that movement</text>
+<rect class="box" x="20" y="160" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="179" text-anchor="start">Your history</text>
+<text class="m" x="32" y="196" text-anchor="start">the same lift three weeks ago</text>
+<rect class="box" x="20" y="220" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="239" text-anchor="start">Wearable context</text>
+<text class="m" x="32" y="256" text-anchor="start">heart rate, load, fatigue</text>
+<rect class="box" x="20" y="280" width="215" height="46" rx="6"/>
+<text class="t" x="32" y="299" text-anchor="start">Coach notes</text>
+<text class="m" x="32" y="316" text-anchor="start">a human in the loop when wanted</text>
+<text class="h" x="275" y="24" text-anchor="start">2 · What the model does</text>
+<rect class="box" x="275" y="40" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="59" text-anchor="start">Pose and timing</text>
+<text class="m" x="287" y="76" text-anchor="start">joints, angles, bar path, tempo</text>
+<rect class="box" x="275" y="100" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="119" text-anchor="start">Critique in plain words</text>
+<text class="m" x="287" y="136" text-anchor="start">"hips rise first, chest drops: brace, then push"</text>
+<rect class="box" x="275" y="160" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="179" text-anchor="start">One cue, not ten</text>
+<text class="m" x="287" y="196" text-anchor="start">the single fix that matters most this session</text>
+<rect class="box" x="275" y="220" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="239" text-anchor="start">Compare to last time</text>
+<text class="m" x="287" y="256" text-anchor="start">same movement, side by side</text>
+<rect class="box" x="275" y="280" width="262" height="46" rx="6"/>
+<text class="t" x="287" y="299" text-anchor="start">Injury flags</text>
+<text class="m" x="287" y="316" text-anchor="start">the patterns that precede a tweak</text>
+<text class="h" x="560" y="24" text-anchor="start">3 · The coach</text><text class="h" x="760" y="24" text-anchor="start">4 · What you get</text>
+<rect class="box" x="760" y="40" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="59" text-anchor="start">What you are doing wrong</text>
+<text class="m" x="772" y="76" text-anchor="start">in your own footage, within a minute</text>
+<rect class="box" x="760" y="100" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="119" text-anchor="start">How to fix it</text>
+<text class="m" x="772" y="136" text-anchor="start">the cue, a drill, a reference clip</text>
+<rect class="box" x="760" y="160" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="179" text-anchor="start">Progress over time</text>
+<text class="m" x="772" y="196" text-anchor="start">a score per movement that moves</text>
+<rect class="box" x="760" y="220" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="239" text-anchor="start">Share with a coach</text>
+<text class="m" x="772" y="256" text-anchor="start">or a group chat</text>
+<rect class="box" x="760" y="280" width="270" height="46" rx="6"/>
+<text class="t" x="772" y="299" text-anchor="start">Feeds the health picture</text>
+<text class="m" x="772" y="316" text-anchor="start">into Clark or the health copilot</text>
+<rect class="core" x="560" y="96" width="170" height="150" rx="6"/>
+<text class="t" x="645.0" y="143.0" text-anchor="middle">Form-check</text>
+<text class="t" x="645.0" y="161.0" text-anchor="middle">coach</text>
+<text class="m" x="645.0" y="179.0" text-anchor="middle">every session,</text>
+<text class="m" x="645.0" y="197.0" text-anchor="middle">no sensor, no wearable</text>
+<text class="h" x="645.0" y="24" text-anchor="start"></text>
+<path class="arrow" d="M235 63 C 275 63, 235 63, 275 63"/>
+<path class="arrow" d="M235 123 C 275 123, 235 123, 275 123"/>
+<path class="arrow" d="M235 63 C 275 63, 235 123, 275 123"/>
+<path class="arrow" d="M235 183 C 275 183, 235 243, 275 243"/>
+<path class="arrow later" d="M235 243 C 275 243, 235 303, 275 303"/>
+<path class="arrow later" d="M235 303 C 275 303, 235 183, 275 183"/>
+<path class="arrow" d="M537 63 C 577 63, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M537 123 C 577 123, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M537 183 C 577 183, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M537 243 C 577 243, 520 171.0, 560 171.0"/>
+<path class="arrow later" d="M537 303 C 577 303, 520 171.0, 560 171.0"/>
+<path class="arrow" d="M730 171.0 C 770 171.0, 720 63, 760 63"/>
+<path class="arrow" d="M730 171.0 C 770 171.0, 720 123, 760 123"/>
+<path class="arrow" d="M730 171.0 C 770 171.0, 720 183, 760 183"/>
+<path class="arrow later" d="M730 171.0 C 770 171.0, 720 243, 760 243"/>
+<path class="arrow later" d="M730 171.0 C 770 171.0, 720 303, 760 303"/>
+<text class="m" x="20" y="372" text-anchor="start">Solid: the core loop Maddy described on Nov 8. Dashed: later additions.</text></svg></div>
+</section>
+
+<section>
+  <h2>Everything it would do</h2>
+  <div class="caps"><div class="cap"><span class="st idea">Proposed</span><b>Record or upload a set</b>A phone propped on a bench or a friend filming. No sensor, no wearable, no special angle.</div><div class="cap"><span class="st idea">Proposed</span><b>Pose estimation</b>Joint angles, bar path, depth, tempo, from a single camera. Commodity now; every golf app does it.</div><div class="cap"><span class="st idea">Proposed</span><b>Critique in plain language</b>A video model watches the clip and says what went wrong the way a coach would, not as a skeleton overlay.</div><div class="cap"><span class="st idea">Proposed</span><b>One cue per session</b>Maddy's ask: "showing how I'm fucking it up, how I could improve." One fix, not a dashboard.</div><div class="cap"><span class="st idea">Proposed</span><b>Compare to last time</b>The same lift three weeks ago, side by side, so improvement is visible rather than claimed.</div><div class="cap"><span class="st idea">Proposed</span><b>Progress over time</b>A score per movement that moves. "Track improvement over time" was the third thing Maddy named.</div><div class="cap"><span class="st idea">Proposed</span><b>Any movement, not one sport</b>Golf has a dozen swing analyzers. Lifting, running and everyday movement have none that make money. That is the gap and the risk.</div><div class="cap"><span class="st next">Next</span><b>Share with a coach</b>A human reviews the flagged clips. The golf and coaching apps (Onform, CoachNow) monetize exactly this.</div><div class="cap"><span class="st next">Next</span><b>Feeds the health picture</b>Form scores next to sleep, weight and labs. Could be a feature of the health copilot rather than its own app.</div></div>
+</section>
+
+<section>
+  <h2>Where the group is on it</h2>
+  <div class="read">
+    <div><b>Why it is rank 8</b>Strong pull from the target user, and it sits in the same health vein as the copilot. Video models can now critique movement well enough to be useful. Market 3, Edge 3, Evidence 3, Build 3.</div>
+    <div class="hot"><b>The honest read from the numbers</b>General gym form-check is a graveyard: seven AI form apps launched since 2023 and none has a hundred ratings. The only form analysis that makes money is golf, where there is one movement, a paying audience and a filming culture. The wedge is one movement with a community, not "AI form check."</div>
+    <div><b>Edge</b>Could be a feature of the health copilot rather than its own app. Max's audience skews toward people who track things. No inside expertise here the way Orca and Media Studio have it.</div>
+    <div><b>Build</b>Pure software, self-serve, no sales cycle: squarely inside Phil's one-month rule. The hard part is design and product thinking about which movement and which cue, not the model.</div>
+    <div><b>Where it stands</b>One text from Maddy with a tweet. Steve and Phil have not replied. Whiteboard question for tonight: which single movement first, and does it live inside the health copilot?</div>
+  </div>
+</section>
+
+<section>
+  <h2>What each piece earns today</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">Appfigures estimates, US, iPhone, last 30 days (Oct 12 to Nov 10, 2026), net revenue. Each chart is one thing the coach would do and the apps that sell that one thing today.</p>
+  <div class="read">
+    <div class="hot"><b>Golf proves the model and warns about the rest</b>About $340K a month across nine golf swing apps, with the biggest, Swing Coach, launched only in March 2025. Same technology pointed at the gym: zero.</div>
+    <div><b>Lifters pay for tracking, not for form</b>Fitbod $666K and Strong $216K a month. The money in the gym is the log. A form coach that is also the log has a business; a form coach alone has seven dead competitors.</div>
+    <div><b>Human coaches are the monetizing layer</b>Onform and CoachNow make $44K and $13K selling video review to coaches. Outside golf, people pay a person to look at the clip, not a model.</div>
+  </div>
+  <div class="chart"><h3>Form check analyzes your lifting form from video</h3><p class="sub">The apps that do exactly this for the gym. Every one of them is below Appfigures' modeling threshold.</p><p class="none" style="margin-top:0"><b>Nothing to chart.</b></p><p class="none"><b>Not modeled.</b> In results, not modeled: TrainReady (Jan 2026), Form Fix (May 2025), Deadlift AI (May 2025, 3 ratings), FormCheck AI (Jul 2026), CueForm (2023), Formlit (Jun 2026, 27 ratings), Spottr (Apr 2026, 12 ratings). Seven launches in two years, none with a hundred ratings. The category exists and nobody has made it work.</p></div><div class="chart"><h3>Form check analyzes your swing from video <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $338K</span></h3><p class="sub">The same idea in golf and tennis, where it already sells. Gray is a GPS app with a swing analyzer inside, shown for scale.</p><div class="rows"><div class="row ref" title="18Birdies (reference): $1.2M net revenue, US iPhone, 30 days. golf GPS app with a swing analyzer inside"><div class="lbl">18Birdies (reference)<small>55K dl</small></div><div class="track"><i style="width:100.0%"></i></div><div class="val">$1.2M</div></div><div class="row" title="Swing Coach - Golf: $120K net revenue, US iPhone, 30 days. AI golf swing critique, launched Mar 2025"><div class="lbl">Swing Coach - Golf</div><div class="track"><i style="width:10.3%"></i></div><div class="val">$120K</div></div><div class="row" title="SwingVision: $59K net revenue, US iPhone, 30 days. tennis and pickleball video AI"><div class="lbl">SwingVision</div><div class="track"><i style="width:5.0%"></i></div><div class="val">$59K</div></div><div class="row" title="Sportsbox 3D Golf: $47K net revenue, US iPhone, 30 days. 3D swing from phone video"><div class="lbl">Sportsbox 3D Golf</div><div class="track"><i style="width:4.0%"></i></div><div class="val">$47K</div></div><div class="row" title="GolfFix AI: $37K net revenue, US iPhone, 30 days. AI golf swing analyzer"><div class="lbl">GolfFix AI<small>10K dl</small></div><div class="track"><i style="width:3.2%"></i></div><div class="val">$37K</div></div><div class="row" title="V1 Golf: $36K net revenue, US iPhone, 30 days. swing analyzer since 2010"><div class="lbl">V1 Golf</div><div class="track"><i style="width:3.1%"></i></div><div class="val">$36K</div></div><div class="row" title="Sparrow - Golf: $21K net revenue, US iPhone, 30 days. AI golf swing"><div class="lbl">Sparrow - Golf</div><div class="track"><i style="width:1.8%"></i></div><div class="val">$21K</div></div><div class="row" title="Performance Golf AI Swing Fix: $17K net revenue, US iPhone, 30 days"><div class="lbl">Performance Golf AI Swing Fix</div><div class="track"><i style="width:1.5%"></i></div><div class="val">$17K</div></div><div class="row" title="Swing Profile Golf: $529 net revenue, US iPhone, 30 days"><div class="lbl">Swing Profile Golf</div><div class="track"><i style="width:0.6%"></i></div><div class="val">$529</div></div></div><p class="none"><b>Not modeled.</b> Golf swing apps combined make about $340K a month on US iPhone, before 18Birdies. Golf is one repeatable movement, a paying audience, and a culture of filming yourself.</p></div><div class="chart"><h3>Form check analyzes your running form <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $902</span></h3><p class="sub">Gait analysis from phone video.</p><div class="rows"><div class="row" title="Ochy running gait: $902 net revenue, US iPhone, 30 days. running form AI since 2021"><div class="lbl">Ochy running gait</div><div class="track"><i style="width:100.0%"></i></div><div class="val">$902</div></div></div><p class="none"><b>Not modeled.</b> Prowess (Jun 2026) and RunForm AI (Oct 2025) are in results with no estimate and under ten ratings. Runners buy watches, not form apps.</p></div><div class="chart"><h3>Form check shares the clip with a coach <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $57K</span></h3><p class="sub">Human-in-the-loop video review, the part that monetizes outside golf.</p><div class="rows"><div class="row" title="Onform: $44K net revenue, US iPhone, 30 days. video analysis for coaches and athletes"><div class="lbl">Onform<small>4K dl</small></div><div class="track"><i style="width:100.0%"></i></div><div class="val">$44K</div></div><div class="row" title="CoachNow: $13K net revenue, US iPhone, 30 days. coaching video platform"><div class="lbl">CoachNow<small>223 dl</small></div><div class="track"><i style="width:30.9%"></i></div><div class="val">$13K</div></div></div><p class="none"><b>Not modeled.</b> Both sell to coaches and teams, not to the person lifting.</p></div><div class="chart"><h3>Form check tracks progress over time</h3><p class="sub">Workout loggers, shown in gray: they track the numbers but not the form. This is where lifters already pay.</p><div class="rows"><div class="row ref" title="Fitbod: $666K net revenue, US iPhone, 30 days. workout planner"><div class="lbl">Fitbod<small>88K dl</small></div><div class="track"><i style="width:100.0%"></i></div><div class="val">$666K</div></div><div class="row ref" title="Strong: $216K net revenue, US iPhone, 30 days. workout logger"><div class="lbl">Strong<small>21K dl</small></div><div class="track"><i style="width:32.5%"></i></div><div class="val">$216K</div></div><div class="row ref" title="FORM Strength Pilates: $201K net revenue, US iPhone, 30 days. classes"><div class="lbl">FORM Strength Pilates</div><div class="track"><i style="width:30.3%"></i></div><div class="val">$201K</div></div><div class="row ref" title="Lyfta: $164K net revenue, US iPhone, 30 days. workout tracker"><div class="lbl">Lyfta<small>73K dl</small></div><div class="track"><i style="width:24.6%"></i></div><div class="val">$164K</div></div></div><p class="none"><b>Not modeled.</b> Fitbod and Strong are the proof that lifters pay $50 to 100 a year for tracking. None of them look at the video.</p></div>
+  <div class="read">
+    <div><b>Scope</b>US, iPhone, App Store only. Android and web are not in these numbers.</div>
+    <div><b>Method</b>Keyword Inspector searches on form check, golf swing analyzer, running form, workout form, ai personal trainer, lifting form, exercise form, video coach, posture, tennis swing analyzer and brand names, Nov 11. Top 10 results per search carry estimates. No tracking slots or API credits used. Raw data in <code>~/Projects/appfigures-clark/pages</code>.</div>
+  </div>
+</section>
+
+<div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
+</div>
+</body>
+</html>
