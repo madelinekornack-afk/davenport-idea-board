@@ -1,0 +1,275 @@
+<title>Clark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: scoreboard first (every idea in one glance), then one dossier card per idea in rank order. */
+:root {
+  --bg: #f3f4f0;
+  --surface: #ffffff;
+  --ink: #1b2430;
+  --muted: #5d6673;
+  --line: #d6d9d2;
+  --accent: #d9641e;
+  --accent-soft: #fbe9dc;
+  --tier1: #2f7a4f; --tier1-soft: #e2f0e6;
+  --tier2: #b07a12; --tier2-soft: #f7edd2;
+  --tier3: #7a7f88; --tier3-soft: #e9ebe6;
+  --bar: #1b2430;
+  --bar-track: #e4e6e0;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+    --accent: #f0864a; --accent-soft: #3a2719;
+    --tier1: #6fc48f; --tier1-soft: #1f3327;
+    --tier2: #e0b454; --tier2-soft: #3a2f16;
+    --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+    --bar: #e8eaed; --bar-track: #2c3139;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+  --accent: #f0864a; --accent-soft: #3a2719;
+  --tier1: #6fc48f; --tier1-soft: #1f3327;
+  --tier2: #e0b454; --tier2-soft: #3a2f16;
+  --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+  --bar: #e8eaed; --bar-track: #2c3139;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; margin: 0; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 36px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; letter-spacing: -0.01em; }
+.eyebrow { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header p.lede { max-width: 66ch; color: var(--muted); margin: 14px 0 0; }
+.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 22px; }
+.method div { border-top: 2px solid var(--line); padding-top: 8px; font-size: 13px; color: var(--muted); }
+.method b { display: block; color: var(--ink); font-weight: 600; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+
+section { margin-top: 44px; }
+section > h2 { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+
+/* scoreboard */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.rank, td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td.rank { width: 44px; font-weight: 500; }
+td.num { text-align: right; width: 54px; }
+th.num { text-align: right; }
+td.total { font-weight: 600; }
+tbody tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.t1 { background: var(--tier1-soft); color: var(--tier1); }
+.t2 { background: var(--tier2-soft); color: var(--tier2); }
+.t3 { background: var(--tier3-soft); color: var(--tier3); }
+.who { color: var(--muted); font-size: 13px; }
+
+/* dossier cards */
+.tier { margin-top: 36px; }
+.tier-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 16px; }
+.tier-head h2 { font-size: 24px; }
+.tier-head span { color: var(--muted); font-size: 14px; }
+.cards { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 64px 1fr; }
+.card .n { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; padding: 18px 0 0 16px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card .b { padding: 18px 18px 18px 8px; min-width: 0; }
+.card h3 { font-size: 21px; font-weight: 700; }
+.card .pitch { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.chip.src { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+.scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; max-width: 520px; }
+.score label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.score .track { height: 6px; background: var(--bar-track); margin-top: 4px; position: relative; }
+.score .track i { position: absolute; inset: 0 auto 0 0; background: var(--bar); }
+.score .v { font-family: var(--mono); font-size: 12px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 20px; margin-top: 16px; }
+.facts div { min-width: 0; font-size: 14px; }
+.facts b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.facts .risk { border-left: 3px solid var(--accent); padding-left: 10px; }
+.foot { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: 13px; max-width: 72ch; }
+.foot ul { padding-left: 18px; margin: 6px 0 0; }
+@media (max-width: 560px) {
+  .card { grid-template-columns: 1fr; }
+  .card .n { padding: 14px 16px 0; font-size: 30px; }
+  .card .b { padding: 8px 16px 16px; }
+  .scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+<style>
+.tabs { display: flex; gap: 4px; margin: 0 0 18px; border-bottom: 1px solid var(--line); }
+.tabs a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--muted); padding: 8px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs a.on { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs a:hover { color: var(--ink); }
+.chart { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 12px; margin-top: 14px; }
+.chart h3 { font-size: 19px; }
+.chart .sub { color: var(--muted); font-size: 13px; margin: 2px 0 10px; }
+.rows { display: grid; gap: 7px; }
+.row { display: grid; grid-template-columns: minmax(120px, 210px) 1fr 86px; gap: 10px; align-items: center; font-size: 13.5px; }
+.row .lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .lbl small { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-left: 4px; }
+.row .track { height: 12px; background: var(--bar-track); position: relative; }
+.row .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--chart); border-radius: 0 4px 4px 0; min-width: 2px; }
+.row.ref .track i { background: var(--tier3); }
+.row .val { font-family: var(--mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.row:hover .track i { filter: brightness(0.85); }
+.none { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.none b { color: var(--ink); font-weight: 600; }
+.read { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 22px; margin-top: 16px; }
+.read div { font-size: 14px; min-width: 0; }
+.read b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.read .hot { border-left: 3px solid var(--accent); padding-left: 10px; }
+.quote { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; color: var(--muted); font-size: 14px; margin: 10px 0 0; max-width: 70ch; }
+.quote b { color: var(--ink); font-weight: 600; }
+.diagram { background: var(--surface); border: 1px solid var(--line); padding: 12px; margin-top: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--body); }
+.diagram .box { fill: var(--bg); stroke: var(--line); }
+.diagram .core { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram .t { fill: var(--ink); font-size: 13px; }
+.diagram .h { fill: var(--ink); font-size: 12px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.diagram .m { fill: var(--muted); font-size: 11.5px; }
+.diagram .arrow { stroke: var(--muted); stroke-width: 1.5; fill: none; marker-end: url(#ah); }
+.diagram .later { stroke-dasharray: 4 3; }
+.caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 14px; }
+.cap { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; font-size: 14px; }
+.cap b { display: block; font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.cap .st { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+.cap .st.live { color: var(--tier1); }
+.cap .st.next { color: var(--tier2); }
+a { color: var(--accent); }
+:root { --chart: #2a78d6; }
+:root[data-theme="dark"] { --chart: #6aa6ea; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --chart: #6aa6ea; } }
+</style>
+
+
+<div class="wrap">
+<nav class="tabs"><a href="./">Board</a><a class="on" href="clark.html">Clark</a></nav>
+<header>
+  <div class="eyebrow">Idea 1 on the board · Phil's build · Oct 22 call, Phil &amp; Steve iMessage, six voice notes on Nov 11</div>
+  <h1>Clark</h1>
+  <p class="lede">Phil's personal data pipeline. Connect your email, your bank and card accounts, and your files once, and get one fast, searchable index of all of it that any agent, or you from the terminal, can use. Phil's name for it on Nov 11: a personal system of record. Every business queries one all day. No individual has ever had one.</p>
+  <p class="quote"><b>Phil, Oct 22:</b> "Here's all this data that has been all over the place that you've never really had access to all the time. Here's all of it. You can just take it in CLI. You can do whatever the fuck you want with it."</p>
+</header>
+
+<section>
+  <h2>How it fits together</h2>
+  <div class="diagram"><svg viewBox="0 0 980 400" role="img" aria-label="Clark: sources flow into an ingest layer, then one personal index, then the surfaces people and agents use">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+<text class="h" x="20" y="24" text-anchor="start">1 · Sources</text>
+<text class="h" x="275" y="24" text-anchor="start">2 · Ingest and normalize</text>
+<text class="h" x="560" y="24" text-anchor="start">3 · One index</text>
+<text class="h" x="760" y="24" text-anchor="start">4 · Surfaces</text>
+<rect class="box" x="20" y="40" width="210" height="46" rx="6"/>
+<text class="t" x="32" y="59" text-anchor="start">Email</text>
+<text class="m" x="32" y="76" text-anchor="start">Gmail, once</text>
+<rect class="box" x="20" y="100" width="210" height="46" rx="6"/>
+<text class="t" x="32" y="119" text-anchor="start">Transactions</text>
+<text class="m" x="32" y="136" text-anchor="start">Plaid: banks and cards</text>
+<rect class="box" x="20" y="160" width="210" height="46" rx="6"/>
+<text class="t" x="32" y="179" text-anchor="start">Files</text>
+<text class="m" x="32" y="196" text-anchor="start">folders, statements, PDFs</text>
+<rect class="box" x="20" y="220" width="210" height="46" rx="6"/>
+<text class="t" x="32" y="239" text-anchor="start">Slack, browser history</text>
+<text class="m" x="32" y="256" text-anchor="start">next</text>
+<rect class="box" x="20" y="280" width="210" height="46" rx="6"/>
+<text class="t" x="32" y="299" text-anchor="start">Health, wearables</text>
+<text class="m" x="32" y="316" text-anchor="start">later, the health copilot</text>
+<rect class="box" x="275" y="40" width="250" height="46" rx="6"/>
+<text class="t" x="287" y="59" text-anchor="start">Vectorized email search</text>
+<text class="m" x="287" y="76" text-anchor="start">semantic, fast, with context</text>
+<rect class="box" x="275" y="100" width="250" height="46" rx="6"/>
+<text class="t" x="287" y="119" text-anchor="start">Transaction classifier</text>
+<text class="m" x="287" y="136" text-anchor="start">small model first, web search when unsure, 94% merchant match</text>
+<rect class="box" x="275" y="160" width="250" height="46" rx="6"/>
+<text class="t" x="287" y="179" text-anchor="start">Email as evidence</text>
+<text class="m" x="287" y="196" text-anchor="start">receipts and itemizations matched to charges</text>
+<rect class="box" x="275" y="220" width="250" height="46" rx="6"/>
+<text class="t" x="287" y="239" text-anchor="start">File classification</text>
+<text class="m" x="287" y="256" text-anchor="start">what each document is and belongs to</text>
+<rect class="box" x="275" y="280" width="250" height="46" rx="6"/>
+<text class="t" x="287" y="299" text-anchor="start">Event graph</text>
+<text class="m" x="287" y="316" text-anchor="start">people, decisions, what superseded what (Phil, Nov 11)</text>
+<path class="arrow" d="M230 63 C 270 63, 235 63, 275 63"/>
+<path class="arrow" d="M230 63 C 270 63, 235 183, 275 183"/>
+<path class="arrow" d="M230 123 C 270 123, 235 123, 275 123"/>
+<path class="arrow" d="M230 123 C 270 123, 235 183, 275 183"/>
+<path class="arrow" d="M230 183 C 270 183, 235 243, 275 243"/>
+<path class="arrow later" d="M230 243 C 270 243, 235 303, 275 303"/>
+<path class="arrow later" d="M230 303 C 270 303, 235 303, 275 303"/>
+<rect class="core" x="560" y="96" width="170" height="150" rx="6"/>
+<text class="t" x="645" y="160" text-anchor="middle">Personal</text>
+<text class="t" x="645" y="180" text-anchor="middle">system of record</text>
+<text class="m" x="645" y="204" text-anchor="middle">runs in the background,</text>
+<text class="m" x="645" y="220" text-anchor="middle">open to any agent you choose</text>
+<path class="arrow" d="M525 63 C 565 63, 520 171, 560 171"/>
+<path class="arrow" d="M525 123 C 565 123, 520 171, 560 171"/>
+<path class="arrow" d="M525 183 C 565 183, 520 171, 560 171"/>
+<path class="arrow" d="M525 243 C 565 243, 520 171, 560 171"/>
+<path class="arrow later" d="M525 303 C 565 303, 520 171, 560 171"/>
+<rect class="box" x="760" y="40" width="210" height="46" rx="6"/>
+<text class="t" x="772" y="59" text-anchor="start">CLI</text>
+<text class="m" x="772" y="76" text-anchor="start">authenticate once, then ask anything from the terminal</text>
+<path class="arrow" d="M730 171 C 770 171, 720 63, 760 63"/>
+<rect class="box" x="760" y="100" width="210" height="46" rx="6"/>
+<text class="t" x="772" y="119" text-anchor="start">Any agent, via MCP</text>
+<text class="m" x="772" y="136" text-anchor="start">Claude, Buzz, whatever comes next: bring your own</text>
+<path class="arrow" d="M730 171 C 770 171, 720 123, 760 123"/>
+<rect class="box" x="760" y="160" width="210" height="46" rx="6"/>
+<text class="t" x="772" y="179" text-anchor="start">Mac + iOS app</text>
+<text class="m" x="772" y="196" text-anchor="start">email and transactions in one GUI (Phil building now)</text>
+<path class="arrow later" d="M730 171 C 770 171, 720 183, 760 183"/>
+<rect class="box" x="760" y="220" width="210" height="46" rx="6"/>
+<text class="t" x="772" y="239" text-anchor="start">Catch-all desktop icon</text>
+<text class="m" x="772" y="256" text-anchor="start">screen reading: "send this over to X"</text>
+<path class="arrow later" d="M730 171 C 770 171, 720 243, 760 243"/>
+<rect class="box" x="760" y="280" width="210" height="46" rx="6"/>
+<text class="t" x="772" y="299" text-anchor="start">Workflows</text>
+<text class="m" x="772" y="316" text-anchor="start">taxes, FSA claims, revenue-share audit</text>
+<path class="arrow" d="M730 171 C 770 171, 720 303, 760 303"/>
+<text class="m" x="20" y="372" text-anchor="start">Solid arrows: built and in daily use at Phil's. Dashed: being built or proposed on Nov 11.</text></svg></div>
+</section>
+
+<section>
+  <h2>Everything it does</h2>
+  <div class="caps"><div class="cap"><span class="st live">Built, in use</span><b>Email, searchable</b>Vectorized search over the whole inbox that understands context and semantics, not keywords. "Find the other emails where they talk about the same thing."</div><div class="cap"><span class="st live">Built, in use</span><b>Transactions, normalized</b>Every charge resolved to the real merchant: a small classifier first, a bigger model with web search when it is unsure. About 94% accurate at Phil's.</div><div class="cap"><span class="st live">Built, in use</span><b>Receipts matched to charges</b>Emails feed the transaction pipeline as evidence, which is how Amazon and PayPal line items get itemized. Monarch users ask for exactly this and do not get it.</div><div class="cap"><span class="st live">Built, in use</span><b>Files, classified</b>Statements, K-1s, brokerage PDFs sorted and linked to the transactions and emails they belong to.</div><div class="cap"><span class="st live">Built, in use</span><b>One authentication</b>Email, Plaid and files connected once. Phil: "that is wildly sticky for everybody that does it."</div><div class="cap"><span class="st live">Built, in use</span><b>CLI first</b>Everything reachable from the terminal, no five plugins. Steve, by the end of the call: a trending "install this and your email is searchable" post would get him to try it.</div><div class="cap"><span class="st live">Built, in use</span><b>Open to any agent</b>The index is the product, not a wrapper. Phil: "I don't want an assistant laid over top of it, I want pure unfettered access to my data, available to any system or agent I choose."</div><div class="cap"><span class="st live">Built, in use</span><b>Proof: taxes in 90 minutes</b>Phil filed with a K-1, wash sales and a closed Fidelity rollover. The system found the IRA distribution and then the account it came from, in email, from an account closed the year before.</div><div class="cap"><span class="st live">Built, in use</span><b>Proof: FSA claims</b>Maddy's own version searched transactions plus email for every FSA-eligible expense and submitted them to HealthEquity.</div><div class="cap"><span class="st next">Next</span><b>Mac and iOS app</b>Email and transactions in one GUI on top of the index, because people still want to see transactions, not just balances. Phil is building it now.</div><div class="cap"><span class="st next">Next</span><b>Catch-all desktop icon</b>A box with screen-reading rights: "send this over to X and find the other emails where they talk about the same thing."</div><div class="cap"><span class="st next">Next</span><b>Event graph</b>Who said what, when, which decision replaced which. Phil's Nov 11 example: a revenue-share statement that is lighter than expected, checked across Slack, email, transactions and a spreadsheet, running in the background so it is ready when needed.</div><div class="cap"><span class="st next">Next</span><b>Browser history</b>Maddy's ask: "I was trying to find Sarah and Dan's wedding website and couldn't." Same index, one more source.</div><div class="cap"><span class="st next">Next</span><b>Privacy as the masthead</b>"We're not mining your shit." In the terms of service. Phil named it as the thing to lead with, and it is why Maddy does not use Claude in the browser for email today.</div></div>
+</section>
+
+<section>
+  <h2>Where the group is on it</h2>
+  <div class="read">
+    <div><b>Phil's edge claim</b>Clark is one of the three places the group has an edge, "because I've already built a lot of it." The real edges, Orca and Media Studio, come from niche expertise; Clark's comes from being built.</div>
+    <div class="hot"><b>Steve's pushback, Nov 11</b>"Feels like infrastructure," drifting toward the personal-assistant space (Muse, Instinct) that is "mega crowded." The technical already have their own setups; the non-technical use Muse. And Anthropic keeps shipping the feature that makes this kind of startup obsolete.</div>
+    <div><b>Where Steve landed</b>"Headless agentic apps: bring your own agent, we give you the backend," aimed at specific use cases. Every vertical AI startup has an ingestion pipeline underneath and a UI that locks you in; Clark is that backend without the lock-in.</div>
+    <div><b>Open questions for tonight</b>Who pays first: the person who wants raw data access, or the one who wants the GUI on top? Which single problem area goes first (personal finance is the obvious one)? What does the version look like where Anthropic ships it next quarter? Is "headless, bring your own agent" the pitch or just the architecture?</div>
+  </div>
+</section>
+
+<section>
+  <h2>What each piece earns today</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">Nothing on the App Store is Clark, so this is what the pieces earn separately. Appfigures estimates, US, iPhone, last 30 days (Oct 12 to Nov 10, 2026), net revenue. Download counts sit next to the name where modeled. Each chart scales to its own leader, so compare within a group.</p>
+  <div class="read">
+    <div class="hot"><b>Transactions is the only piece with real consumer money</b>Five budgeting apps clear $350K a month on US iPhone alone, led by Rocket Money at $1.2M and YNAB, Copilot and Monarch at $580K to $870K. All at $100 to 200 a year. Roughly $45M a year of US iPhone revenue for the top five, before web and Android. Phil's Mac and iOS app would compete here, with receipt matching as the differentiator.</div>
+    <div class="hot"><b>Nobody pays for the data layer by itself</b>The lifelog and own-your-data group is empty: Limitless, Exist, Gyroscope and Saner have no US estimate at all. Steve's "it's infrastructure" point, in numbers. Money shows up only with a GUI on top (budgeting) or an assistant on top.</div>
+    <div><b>A narrow, expensive assistant can sell</b>Pocket, a paid "AI personal assistant," made $924K on 33K downloads, about $28 a download. Muse had 2.7M downloads for $0.8M, so Meta is giving it away for now.</div>
+    <div><b>Receipts and subscription audit are features, not products</b>Consumer receipt apps make $20K to $85K each; subscription-cancel apps $110K to $150K on weekly pricing. Rocket Money built cancel into a budgeting app and leads the category. Both belong inside the transactions product.</div>
+  </div>
+  <div class="chart"><h3>Transactions and budgeting <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $3.9M</span></h3><p class="sub">The Plaid-connected GUI over your spending. The one Clark piece with real consumer money.</p><div class="rows"><div class="row" title="Rocket Money: $1.2M net revenue, US iPhone, 30 days, 392,708 downloads"><div class="lbl">Rocket Money<small>393K dl</small></div><div class="track"><i style="width:100.0%"></i></div><div class="val">$1.2M</div></div><div class="row" title="YNAB: $868K net revenue, US iPhone, 30 days"><div class="lbl">YNAB</div><div class="track"><i style="width:73.0%"></i></div><div class="val">$868K</div></div><div class="row" title="Copilot Money: $798K net revenue, US iPhone, 30 days, 4,531 downloads"><div class="lbl">Copilot Money<small>5K dl</small></div><div class="track"><i style="width:67.1%"></i></div><div class="val">$798K</div></div><div class="row" title="Monarch: $580K net revenue, US iPhone, 30 days, 136,417 downloads"><div class="lbl">Monarch<small>136K dl</small></div><div class="track"><i style="width:48.8%"></i></div><div class="val">$580K</div></div><div class="row" title="EveryDollar: $351K net revenue, US iPhone, 30 days, 89,088 downloads"><div class="lbl">EveryDollar<small>89K dl</small></div><div class="track"><i style="width:29.5%"></i></div><div class="val">$351K</div></div><div class="row" title="Budget Bestie: $32K net revenue, US iPhone, 30 days"><div class="lbl">Budget Bestie</div><div class="track"><i style="width:2.7%"></i></div><div class="val">$32K</div></div><div class="row" title="Fleur: $23K net revenue, US iPhone, 30 days, 12,182 downloads"><div class="lbl">Fleur<small>12K dl</small></div><div class="track"><i style="width:2.0%"></i></div><div class="val">$23K</div></div><div class="row" title="PocketGuard: $23K net revenue, US iPhone, 30 days"><div class="lbl">PocketGuard</div><div class="track"><i style="width:1.9%"></i></div><div class="val">$23K</div></div><div class="row" title="Buddy: $19K net revenue, US iPhone, 30 days"><div class="lbl">Buddy</div><div class="track"><i style="width:1.6%"></i></div><div class="val">$19K</div></div><div class="row" title="Goodbudget: $14K net revenue, US iPhone, 30 days"><div class="lbl">Goodbudget</div><div class="track"><i style="width:1.2%"></i></div><div class="val">$14K</div></div><div class="row" title="Monefy: $5K net revenue, US iPhone, 30 days"><div class="lbl">Monefy</div><div class="track"><i style="width:0.6%"></i></div><div class="val">$5K</div></div><div class="row" title="Lunch Money: $320 net revenue, US iPhone, 30 days"><div class="lbl">Lunch Money</div><div class="track"><i style="width:0.6%"></i></div><div class="val">$320</div></div></div><p class="none"><b>Not modeled.</b> No US estimate: Cleo, Empower, Origin, Piere (free or too small to model).</p></div><div class="chart"><h3>AI email clients <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $150K</span></h3><p class="sub">Third-party inboxes with search and AI on top. Not the providers; Clark is not an email service.</p><div class="rows"><div class="row" title="Spark Mail: $127K net revenue, US iPhone, 30 days"><div class="lbl">Spark Mail</div><div class="track"><i style="width:100.0%"></i></div><div class="val">$127K</div></div><div class="row" title="Edison Mail: $23K net revenue, US iPhone, 30 days, 14,406 downloads"><div class="lbl">Edison Mail<small>14K dl</small></div><div class="track"><i style="width:17.8%"></i></div><div class="val">$23K</div></div></div><p class="none"><b>Not modeled.</b> No US estimate: Superhuman, Shortwave, Canary Mail. Superhuman and Shortwave bill on the web, so iPhone understates them. Either way, nobody is buying an inbox on the App Store.</p></div><div class="chart"><h3>Consumer receipt and expense apps <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $201K</span></h3><p class="sub">Matching a receipt to a charge, sold on its own.</p><div class="rows"><div class="row" title="SimplyWise Receipts: $85K net revenue, US iPhone, 30 days"><div class="lbl">SimplyWise Receipts</div><div class="track"><i style="width:100.0%"></i></div><div class="val">$85K</div></div><div class="row" title="Smart Receipts: $38K net revenue, US iPhone, 30 days"><div class="lbl">Smart Receipts</div><div class="track"><i style="width:44.5%"></i></div><div class="val">$38K</div></div><div class="row" title="Receipt Scanner: Track Expenses: $24K net revenue, US iPhone, 30 days"><div class="lbl">Receipt Scanner: Track Expenses</div><div class="track"><i style="width:28.7%"></i></div><div class="val">$24K</div></div><div class="row" title="Expensify: $22K net revenue, US iPhone, 30 days"><div class="lbl">Expensify</div><div class="track"><i style="width:26.1%"></i></div><div class="val">$22K</div></div><div class="row" title="Receipt Scanner: Easy Expense: $21K net revenue, US iPhone, 30 days"><div class="lbl">Receipt Scanner: Easy Expense</div><div class="track"><i style="width:24.5%"></i></div><div class="val">$21K</div></div><div class="row" title="Dext: $10K net revenue, US iPhone, 30 days"><div class="lbl">Dext</div><div class="track"><i style="width:11.2%"></i></div><div class="val">$10K</div></div><div class="row" title="Foreceipt: $358 net revenue, US iPhone, 30 days"><div class="lbl">Foreceipt</div><div class="track"><i style="width:0.6%"></i></div><div class="val">$358</div></div></div><p class="none"><b>Not modeled.</b> No US estimate: Keeper Tax. Business bookkeeping (QuickBooks, $2.1M) is a different buyer and is left out.</p></div><div class="chart"><h3>Personal AI assistants with data access <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $2.2M</span></h3><p class="sub">The assistant-on-top model Phil rejects. ChatGPT and Claude are shown in gray as the "just use Claude" alternative Steve raised, not as competitors.</p><div class="rows"><div class="row ref" title="ChatGPT (reference): $68.3M net revenue, US iPhone, 30 days, 1,862,529 downloads"><div class="lbl">ChatGPT (reference)<small>1.9M dl</small></div><div class="track"><i style="width:100.0%"></i></div><div class="val">$68.3M</div></div><div class="row ref" title="Claude (reference): $28.2M net revenue, US iPhone, 30 days, 1,305,960 downloads"><div class="lbl">Claude (reference)<small>1.3M dl</small></div><div class="track"><i style="width:41.4%"></i></div><div class="val">$28.2M</div></div><div class="row" title="Pocket: AI Personal Assistant: $924K net revenue, US iPhone, 30 days, 32,949 downloads"><div class="lbl">Pocket: AI Personal Assistant<small>33K dl</small></div><div class="track"><i style="width:1.4%"></i></div><div class="val">$924K</div></div><div class="row" title="Muse from Meta: $802K net revenue, US iPhone, 30 days, 2,740,796 downloads"><div class="lbl">Muse from Meta<small>2.7M dl</small></div><div class="track"><i style="width:1.2%"></i></div><div class="val">$802K</div></div><div class="row" title="Manus: $429K net revenue, US iPhone, 30 days, 35,726 downloads"><div class="lbl">Manus<small>36K dl</small></div><div class="track"><i style="width:0.6%"></i></div><div class="val">$429K</div></div></div><p class="none"><b>Not modeled.</b> No US estimate: Martin, Monica AI, Ohai.ai. Instinct is not on the App Store.</p></div><div class="chart"><h3>Subscription cancel and audit <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $263K</span></h3><p class="sub">The one Clark feature that already sells as a standalone app, on weekly pricing.</p><div class="rows"><div class="row" title="MonoBoost: $150K net revenue, US iPhone, 30 days"><div class="lbl">MonoBoost</div><div class="track"><i style="width:100.0%"></i></div><div class="val">$150K</div></div><div class="row" title="Subpilot: $112K net revenue, US iPhone, 30 days, 8,854 downloads"><div class="lbl">Subpilot<small>9K dl</small></div><div class="track"><i style="width:74.4%"></i></div><div class="val">$112K</div></div><div class="row" title="Orbit: $436 net revenue, US iPhone, 30 days"><div class="lbl">Orbit</div><div class="track"><i style="width:0.6%"></i></div><div class="val">$436</div></div><div class="row" title="Gravity: $393 net revenue, US iPhone, 30 days"><div class="lbl">Gravity</div><div class="track"><i style="width:0.6%"></i></div><div class="val">$393</div></div><div class="row" title="Cancely: $141 net revenue, US iPhone, 30 days"><div class="lbl">Cancely</div><div class="track"><i style="width:0.6%"></i></div><div class="val">$141</div></div></div><p class="none"><b>Not modeled.</b> No US estimate: Bobby, SubSeek. Rocket Money's cancel feature is counted in the first chart.</p></div><div class="chart"><h3>Lifelog and own-your-data <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· group total $513</span></h3><p class="sub">The closest thing to a headless personal data layer sold as an app.</p><div class="rows"><div class="row" title="Places by Gyroscope: $513 net revenue, US iPhone, 30 days"><div class="lbl">Places by Gyroscope</div><div class="track"><i style="width:100.0%"></i></div><div class="val">$513</div></div></div><p class="none"><b>Not modeled.</b> No US estimate: Limitless, Exist, Gyroscope (main app), Saner.AI. Nothing in this group registers.</p></div>
+  <div class="read">
+    <div><b>Scope</b>US, iPhone, App Store only. Android, web billing and desktop are not in these numbers, so power-user tools are understated.</div>
+    <div><b>Estimates</b>Appfigures models from ranks and ratings. Small apps fall below its threshold and show as "not modeled," which means small, not zero. A missing download count means that model did not resolve.</div>
+    <div><b>Method</b>Keyword Inspector searches on each app's name plus category terms, Nov 11. Only the top 10 results per search carry estimates. No tracking slots or API credits were used. Raw data in <code>~/Projects/appfigures-clark</code>.</div>
+  </div>
+</section>
+
+<div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
+</div>
+</body>
+</html>
