@@ -123,8 +123,8 @@ tbody tr:last-child td { border-bottom: 0; }
   <table>
     <thead><tr><th>#</th><th>Idea</th><th>Raised by</th><th>Tier</th><th class="num">Market</th><th class="num">Edge</th><th class="num">Evid.</th><th class="num">Build</th><th class="num">Total</th></tr></thead>
     <tbody>
-      <tr><td class="rank">1</td><td>Audit your property manager</td><td class="who">Steve</td><td><span class="pill t1">Build</span></td><td class="num">4</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num total">17</td></tr>
-      <tr><td class="rank">2</td><td>Clark: personal data pipeline (email + transactions + files, CLI first)</td><td class="who">Phil (Maddy built one too)</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td></tr>
+      <tr><td class="rank">1</td><td>Clark: personal data pipeline (email + transactions + files, CLI first)</td><td class="who">Phil (Maddy built one too)</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td></tr>
+      <tr><td class="rank">2</td><td>Audit your property manager</td><td class="who">Steve</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td></tr>
       <tr><td class="rank">3</td><td>Health copilot with an "Out of Lab" switch</td><td class="who">All three</td><td><span class="pill t2">Whiteboard</span></td><td class="num">5</td><td class="num">2</td><td class="num">5</td><td class="num">3</td><td class="num total">15</td></tr>
       <tr><td class="rank">4</td><td>Media Studio: script-anchored production + packaging attribution</td><td class="who">Phil (built it)</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num total">15</td></tr>
       <tr><td class="rank">5</td><td>"Is what I pay for working?" ops monitoring (Orca, generalized)</td><td class="who">Steve</td><td><span class="pill t2">Whiteboard</span></td><td class="num">4</td><td class="num">5</td><td class="num">3</td><td class="num">3</td><td class="num total">15</td></tr>
@@ -150,25 +150,6 @@ tbody tr:last-child td { border-bottom: 0; }
 
 
   <article class="card"><div class="n">1</div><div class="b">
-    <h3>Audit your property manager</h3>
-    <p class="pitch">Owners upload the monthly PM statement; the app checks every charge against the management contract, tracks all-time spend per property, and builds the evidence pack for a dispute. The general form is auditing any variable monthly vendor bill.</p>
-    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip src">BiggerPockets</span><span class="chip">Nov 3</span><span class="chip">Fireworks analysis · Claude design file</span></div>
-    <div class="scores">
-      <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-      <div class="score"><label>Edge</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-      <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-    </div>
-    <div class="facts">
-      <div><b>Why it ranks here</b>Rank 1 since Nov 11: it sits on Orca, which Phil calls one of the two real edges, and neither he nor Steve has a packaging doubt about it the way they do about Clark. About 5M owner-to-PM relationships in the US. At $30/mo, 1% of them is roughly $18M ARR. Havyn already charges $19 to 99/mo for the same promise, so people pay. Today's screenshot listed "disputes the bill" as the wedge for its number two pick.</div>
-      <div><b>Edge</b>Orca is one of the three edges Phil named on Nov 11, and this is Orca pointed at owners. Steve sees the sloppy invoicing daily, and Orca's verified maintenance data is the moat nobody else has. Upload-and-check alone is a commodity.</div>
-      <div class="risk"><b>Risk</b>Channel conflict: an owner-side auditor is aimed at Orca's own PM customers. DoorVault gives the statement audit away free. Fireworks' read is that the recovery workflow is the product, the audit is only the hook.</div>
-      <div><b>Landlord forums</b>Across three BiggerPockets threads on what landlords want from software, nobody asked to audit their PM's statement. What they asked for, in order: every tenant and vendor message in one auditable thread, maintenance tracked from report through vendor to payment, maintenance history that does not vanish so they stop "paying for the same problem twice," and hidden or creeping fees. That points at the PM-branded trust portal with a verified maintenance record, which Orca's data already is, rather than the owner-side auditor.</div>
-      <div><b>Where it stands</b>Steve is considering an MVP as an owner-facing surface on Orca. Design concept exists, not iterated. Phil and Maddy have not weighed in yet.</div>
-    </div>
-  </div></article>
-
-  <article class="card"><div class="n">2</div><div class="b">
     <h3>Clark: personal data pipeline for email, transactions, files</h3>
     <p class="pitch">A personal system of record. Authenticate once and get vectorized email search, normalized transactions (classifier first, web search when unsure, email as evidence), and classified files, indexed together and open to any agent you choose. Phil's framing on Nov 11: every business queries a system of record all day; no individual has ever had one. A Mac and iOS app for email and transactions sits on top, because "it will not only be agents."</p>
     <div class="meta"><span class="chip src">Oct 22 call</span><span class="chip src">iMessage</span><span class="chip src">Reddit (archived)</span><span class="chip src">Two voice notes, Nov 11</span><span class="chip">Working prototype at Phil's</span><span class="chip">Maddy runs her own version</span></div>
@@ -186,6 +167,25 @@ tbody tr:last-child td { border-bottom: 0; }
       <div class="risk"><b>Nov 11 debate</b>Steve: "still not super clear to me how to package as a product, feels like infrastructure," and it drifts toward the personal AI assistant space (Muse, Instinct), which is "mega crowded, with lots of VC dollars." The non-technical use Muse; the technical already have their own setups and would "just ask Claude to go through Plaid." Phil's answer: he does not want an assistant on top, he wants "pure unfettered access to my data across all those data verticals, available to any system or agent I choose," for the cohort that will not lock their data into one provider. Steve, probing rather than arguing: that cohort is the hardest to sell structure to, and he would "just ask Claude to go through Plaid." Maddy's data point: she could not find Sarah and Dan's wedding website and wanted exactly the browser-history search.</div>
       <div><b>Phil's answer (voice notes, Nov 11)</b>"That's really useful to hear," and yes, Plaid alone is easy. The case that is not: he gets a revenue-share lump sum Friday, the statement is lighter than expected, and checking it means Slack, email, transactions and a spreadsheet, plus who signed which deal for how much and when a decision was later reversed. Hooking Claude Code to each source is bespoke, the question would run for an hour or two on a top model, and Slack does not work that way anyway. What it needs is a graph of events, people and decisions that validates and invalidates them over time, "running in the background all the time" so you can rely on it when you need it. "How to market exactly, still not entirely sure."</div>
       <div><b>Where it stands</b>The Oct 22 call ended mid-sentence on packaging: CLI utility for tech-savvy users first, GUI route second, Plaid optional at signup. Maddy asked Phil on Oct 27 to onboard her; no sign that happened. Steve asked Phil for the repo on Nov 11; no answer yet. Phil is building the next layer now: email and transactions in one Mac app and one iOS app on top of the index, since people still want to see transactions, not just balances. Whiteboard question for Nov 12: Phil has now described the product (a personal system of record with a GUI on top). Who pays for it first, and is the revenue-share audit the demo?</div>
+    </div>
+  </div></article>
+
+  <article class="card"><div class="n">2</div><div class="b">
+    <h3>Audit your property manager</h3>
+    <p class="pitch">Owners upload the monthly PM statement; the app checks every charge against the management contract, tracks all-time spend per property, and builds the evidence pack for a dispute. The general form is auditing any variable monthly vendor bill.</p>
+    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip src">BiggerPockets</span><span class="chip">Nov 3</span><span class="chip">Fireworks analysis · Claude design file</span></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+    </div>
+    <div class="facts">
+      <div><b>Why it ranks here</b>It sits on Orca, which Phil calls one of the two real edges, and neither he nor Steve has a packaging doubt about it the way they do about Clark. Market is a 3, not a 4: the 5M owner-to-PM relationships in the Fireworks analysis is funnel size, not buyers. Only owners who use a PM and suspect them are in play, and most of those switch PMs rather than buy software. Havyn charges $19 to 99/mo for the same promise, so some people pay. Steve's generalization, auditing any variable monthly vendor bill, is what keeps it at 3. Briefly rank 1 on Nov 11 before Maddy questioned the market score.</div>
+      <div><b>Edge</b>Orca is one of the three edges Phil named on Nov 11, and this is Orca pointed at owners. Steve sees the sloppy invoicing daily, and Orca's verified maintenance data is the moat nobody else has. Upload-and-check alone is a commodity.</div>
+      <div class="risk"><b>Risk</b>Channel conflict: an owner-side auditor is aimed at Orca's own PM customers. DoorVault gives the statement audit away free. Fireworks' read is that the recovery workflow is the product, the audit is only the hook.</div>
+      <div><b>Landlord forums</b>Across three BiggerPockets threads on what landlords want from software, nobody asked to audit their PM's statement. What they asked for, in order: every tenant and vendor message in one auditable thread, maintenance tracked from report through vendor to payment, maintenance history that does not vanish so they stop "paying for the same problem twice," and hidden or creeping fees. That points at the PM-branded trust portal with a verified maintenance record, which Orca's data already is, rather than the owner-side auditor.</div>
+      <div><b>Where it stands</b>Steve is considering an MVP as an owner-facing surface on Orca. Design concept exists, not iterated. Phil and Maddy have not weighed in yet.</div>
     </div>
   </div></article>
 
@@ -229,7 +229,7 @@ tbody tr:last-child td { border-bottom: 0; }
       <div><b>Why it ranks here</b>Biggest market on the board: nutrition apps are a $4.8B category growing about 9% a year, and Cal AI went from zero to $30M+ in under two years. It was ranked first until Nov 11, when Steve and Phil both pushed back on the edge, and that pushback moved it out of the Build tier.</div>
       <div><b>Edge</b>Thin. Max's audience is a launch channel and Maddy is the target user, but Phil's read on Nov 11: "we don't have any edge in that space, and it's going to get crowded quickly, already kind of is." Steve: if he were Oura or Whoop he would "already be looking to expand the platform to be more wholistic and integrate with other data," and Apple Health could do the same.</div>
       <div class="risk"><b>Risk</b>Funded incumbents on every side: MFP owns Cal AI, and the wearable companies own the data and the subscription. Steve expects "other venture backed startups launching versions of that" and says it "would have to put out something really good," with no engineering time on his side right now. Maddy said on Nov 8 a competitor "would be mostly a copy."</div>
-      <div><b>Where it stands</b>MVP sketched in Buzz on Oct 24. The biomarker angle from Nov 7 feeds this; the data pipeline (Clark, idea 2) is the backbone it would run on. Phil, later on Nov 11: "we'd need to get our hands on all integrations that would make sense, which I feel like there's a bunch, unsure what MVP would look like but we could decide on something." Whiteboard question for Nov 12: is there a version of this that is a feature of Clark rather than a product against Oura, Whoop and Apple?</div>
+      <div><b>Where it stands</b>MVP sketched in Buzz on Oct 24. The biomarker angle from Nov 7 feeds this; the data pipeline (Clark, idea 1) is the backbone it would run on. Phil, later on Nov 11: "we'd need to get our hands on all integrations that would make sense, which I feel like there's a bunch, unsure what MVP would look like but we could decide on something." Whiteboard question for Nov 12: is there a version of this that is a feature of Clark rather than a product against Oura, Whoop and Apple?</div>
     </div>
   </div></article>
   <article class="card"><div class="n">5</div><div class="b">
@@ -316,7 +316,7 @@ tbody tr:last-child td { border-bottom: 0; }
     </div>
     <div class="facts">
       <div><b>Why it ranks here</b>The product exists and sells; Phil knows people who use it. His math: at $10 a book, a million books is $10M of near-pure profit "minus token spend and our time." It could reach cash flow faster than anything else on this board because nothing needs to be built.</div>
-      <div><b>Edge</b>Phil's inside position and equity, plus Max's audience as a sales channel, plus the data pipeline in idea 2 as the marketing and support backbone.</div>
+      <div><b>Edge</b>Phil's inside position and equity, plus Max's audience as a sales channel, plus the data pipeline in idea 1 as the marketing and support backbone.</div>
       <div class="risk"><b>Risk</b>Phil's own words: "the people running the company just are not good and I don't really wanna work with them." A revenue-share with a family company that has no marketing muscle is a people problem first. Nobody in the group has sold books, and the million-book figure is a hypothetical, not a forecast.</div>
       <div><b>Where it stands</b>Steve asked whether you would need to buy the business and whether a platform could spin off the material. Phil's answer in the voice note: no, do it for cash flow, not control.</div>
     </div>
@@ -453,6 +453,6 @@ tbody tr:last-child td { border-bottom: 0; }
     <li>Biomarkers as a topic: "the ppl just wana kno about biomarkers" (Maddy, Nov 7).</li>
     <li>Phil's a16z "State of Longevity" link and "taking off globally" chart (Buzz, Oct 31 and Nov 3) were dropped without discussion.</li>
   </ul>
-  <p>Scores are a judgment call from the Oct 22 call, the group chat (voice notes included), the Buzz channel, and a Nov 10 pass over archived Reddit threads and BiggerPockets forums (live Reddit is blocked from this machine, so that sample runs Jan to Jun 2026). Nov 11 updates: health copilot rescored, Phil's edge map added, the audit moved above Clark after the group chat debate on how Clark gets packaged. Not a vote. Next Davenport session is Wednesday, Nov 12.</p>
+  <p>Scores are a judgment call from the Oct 22 call, the group chat (voice notes included), the Buzz channel, and a Nov 10 pass over archived Reddit threads and BiggerPockets forums (live Reddit is blocked from this machine, so that sample runs Jan to Jun 2026). Nov 11 updates: health copilot rescored, Phil's edge map added, the audit briefly moved above Clark, then its market score came down to 3 and Clark holds rank 1 on the tie (two working builds beat a design concept). Not a vote. Next Davenport session is Wednesday, Nov 12.</p>
 </div>
 </div>
