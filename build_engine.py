@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+"""The engine tab: the explainer for the project the group ended up on at the Nov 11 Davenport session.
+Source: the Minutes AI notes and the full transcript of the session. Writes engine.html.
+Reuses the Clark tab's page shell (styles, diagram, caps, read grid) so it matches the rest of the board."""
+import re
+clark=open('clark.html').read()
+head=clark.split('<div class="wrap">')[0].replace('<title>Clark</title>','<title>The engine</title>')
+head=head.replace('</style>','''</style>
+<style>
+.big { font-size: 17px; max-width: 72ch; margin: 14px 0 0; }
+.big b { font-weight: 600; }
+.steps { counter-reset: s; display: grid; gap: 10px; margin-top: 14px; }
+.step { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px 14px 58px; position: relative; font-size: 14px; }
+.step::before { counter-increment: s; content: counter(s); position: absolute; left: 16px; top: 10px; font-family: var(--display); font-size: 30px; font-weight: 700; color: var(--accent); }
+.step b { display: block; font-family: var(--display); font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+.step .when { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-left: 8px; }
+table.plan { min-width: 0; }
+table.plan td { font-size: 14px; }
+table.plan td:first-child { font-weight: 600; }
+table.plan td.who, table.plan td.when { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; color: var(--muted); }
+.q { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 12px 14px; font-size: 14px; }
+.q b { display: block; font-weight: 600; margin-bottom: 2px; }
+.links a { margin-right: 14px; }
+.caps.two { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+@media (max-width: 560px) { .caps.two { grid-template-columns: 1fr; } }
+</style>''',1)
+TABS=[('engine.html','The engine'),('./','Board'),('clark.html','Clark'),('audit.html','Audit'),('formcheck.html','Form check'),('buzz.html','Buzz'),('calories.html','Calorie apps'),('bloodwork.html','Bloodwork'),('glp1.html','GLP-1'),('learnai.html','Learn AI')]
+NAV='<nav class="tabs">'+''.join(f'<a{" class=on" if h=="engine.html" else ""} href="{h}">{t}</a>' for h,t in TABS)+'</nav>'
+
+def box(x,y,w,h,t,m,cls='box'):
+    return f'<rect class="{cls}" x="{x}" y="{y}" width="{w}" height="{h}" rx="6"/><text class="t" x="{x+12}" y="{y+19}" text-anchor="start">{t}</text><text class="m" x="{x+12}" y="{y+36}" text-anchor="start">{m}</text>'
+def arrow(x1,y1,x2,y2,later=False):
+    return f'<path class="arrow{" later" if later else ""}" d="M{x1} {y1} L{x2} {y2}"/>'
+
+d=['<svg viewBox="0 0 1040 470" role="img" aria-label="The engine: sources flow into Clark and Tally, which clean and link everything at write time into one stack per customer; products sit on top">',
+'<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>',
+'<text class="h" x="20" y="24" text-anchor="start">1 · What comes in</text>',
+'<text class="h" x="300" y="24" text-anchor="start">2 · The engine, at write time</text>',
+'<text class="h" x="760" y="24" text-anchor="start">3 · Products on top</text>',
+box(20,40,230,46,'Email','Gmail, by Google sign-in'),
+box(20,100,230,46,'Transactions','Plaid webhooks, every bank and card'),
+box(20,160,230,46,'Files','local embedding model on the Mac; next'),
+box(20,220,230,46,'Property data','Orca: work orders, vendors, tenants'),
+box(20,280,230,46,'Statements and K-1s','brokerages, 401(k), the tax pile; later'),
+'<rect class="core" x="300" y="40" width="420" height="370" rx="8"/>',
+box(316,56,388,46,'Clark: email','vectorized plus keyword search; spots receipts','box'),
+box(316,116,388,46,'Tally: money','stage 1 names the merchant, stage 2 types the money','box'),
+box(316,176,388,46,'Link','receipt to transaction, person to thread, invoice to job','box'),
+box(316,236,388,46,'Normalize and classify once','47 economic types, cleaned aliases, confidence scores','box'),
+box(316,296,388,46,'One index per customer','its own AWS stack; nobody shares a table','box'),
+'<text class="m" x="316" y="372" text-anchor="start">Node and Python on AWS. Cleaned on arrival, so every later question is fast and cheap.</text>',
+'<text class="m" x="316" y="390" text-anchor="start">Open by API, CLI and MCP. No lock-in to one chat app.</text>',
+box(760,40,260,54,'Orca statement reconciliation','first; Jason at WSPM is the guinea pig','box'),
+box(760,108,260,54,'The executive record','$1,000 a month; 100 customers is $1.2M','box'),
+box(760,176,260,54,'Tax season, pre-assembled','the pain that started it; a December question','box'),
+box(760,244,260,54,'Your own agent','Claude Code, Cowork, a terminal','box'),
+arrow(250,63,300,63),arrow(250,123,300,123),arrow(250,183,300,183,True),arrow(250,243,300,243),arrow(250,303,300,303,True),
+arrow(720,110,760,67),arrow(720,160,760,135),arrow(720,210,760,203,True),arrow(720,260,760,271),
+'<text class="m" x="20" y="445" text-anchor="start">Dashed: not built yet. Solid: running for Phil today, multi-tenant in progress.</text>',
+'</svg>']
+DIAGRAM=''.join(d)
+
+body=f'''<div class="wrap">
+{NAV}
+<header>
+  <div class="eyebrow">The project the group ended up on · Nov 11 Davenport session, transcribed · ideas 1, 2 and 7 on the board</div>
+  <h1>The engine</h1>
+  <p class="lede">Clark and Tally together: one place where your email, your money and your files are cleaned, classified and linked the moment they arrive, so anything asked later is instant. It is not sold on its own. Products sit on top of it, and the first one is for Orca.</p>
+  <p class="quote"><b>Phil, Nov 11:</b> "That is what every single business is. It is trying to make someone's high entropy environment that's a pain in the ass to work in into lower entropy. And then you sell that order to the customer."</p>
+</header>
+
+<section>
+  <h2>In plain words</h2>
+  <p class="big">Every business you have ever paid sells order. A car is 30,000 parts sold as one thing. A property manager sells a calm month to an owner who would otherwise be chasing invoices. <b>The engine is the machine that makes order out of a person's or a company's mess</b>, and the mess today is email, bank transactions and files. Phil has been building it for himself under two names: <b>Clark</b> for email and <b>Tally</b> for money. On Nov 11 the three of you agreed that the engine is the thing worth building, that it is never the product, and that the products stack on top of it in a set order.</p>
+  <div class="read">
+    <div><b>Why it feels different from Claude on its own</b>Most agents work at read time. You ask, and the model searches, scrapes and reads raw text for minutes. The engine works at write time. Every email and transaction is cleaned, named, typed and linked when it lands, so a question is a lookup, not an expedition. Steve's own version: "You have to solve the data layer before you can do the harness really well."</div>
+    <div><b>Why it is not a feature Google or Anthropic ships tomorrow</b>Phil looked: Google does not vector-index free Gmail because the compute costs more than the account earns. A chat app would have to pull in all of your mail, money and files and store them. The engine does exactly that, for a price, on infrastructure that belongs to one customer.</div>
+    <div class="hot"><b>Why not the health app</b>Phil: "We all agree that a health app is out." Steve has Mercury for salary and Orca for the long game; a third context is impossible. Anything new must feed Orca, "two birds, one stone." The engine does: the first product is for Steve's customers.</div>
+  </div>
+</section>
+
+<section>
+  <h2>How it fits together</h2>
+  <div class="diagram">{DIAGRAM}</div>
+</section>
+
+<section>
+  <h2>The two halves, as Phil described them</h2>
+  <div class="caps two">
+    <div class="cap"><span class="st live">Running</span><b>Tally: money</b>Plaid pushes each bank and card transaction into a pipeline the moment it posts. <b>Stage 1</b> cleans the name. A fast model reasons over the cryptic descriptor and gives a confidence score. Low confidence sends a second model to the web, with account numbers and names stripped first, to find out that "paddle viewstax" is a software vendor. The result is saved as a machine-cleaned alias, and nobody is asked to confirm it. Amazon direct and Amazon Marketplace come out as different vendors. <b>Stage 2</b> says what kind of money it is: a merchant purchase, Maddy sending Phil money, a card payoff, a transfer between accounts, a brokerage deposit or withdrawal. 47 economic types, none of which Plaid supplies. Phil hand-labelled 450 of his own transactions to tune it. Accuracy is 94 to 95 percent.</div>
+    <div class="cap"><span class="st live">Running</span><b>Clark: email</b>Every message is ingested, vectorized and stored next to a keyword index, so search is meaning plus exact terms, not Gmail's Boolean operators. "Morning Brew contract" finds the 2023 thread with Devin Emery about pay, before any contract existed, even though the word contract is not in it. Clark also watches for receipts and passes candidates to Tally, which attaches the receipt to the exact transaction.</div>
+    <div class="cap"><span class="st next">Next</span><b>Files, then the rest</b>A lightweight embedding model runs on the Mac or PC and indexes the local disk, which Spotlight cannot do inside PDFs and decks. After that, Slack and browser history. Health and wearables are a later layer, not a product.</div>
+    <div class="cap"><span class="st live">Running</span><b>One stack per customer</b>Email and transactions are the most private data a person has, so no customer shares a database. A CloudFormation template spins up a full isolated stack for each one; a prompt injection against SQL cannot reach anyone else's table. The team can still sign in through SSO to run it. Phil's own stack costs about $350 a month unoptimized, which is the number the $1,000 price has to clear.</div>
+  </div>
+</section>
+
+<section>
+  <h2>The products, in the order you agreed</h2>
+  <div class="steps">
+    <div class="step"><b>Statement reconciliation for property managers, on Orca <span class="when">first</span></b>The scenario Phil walked through: an owner's bill is $10,000 above a normal month and the manager has to explain why. Today that is a scramble across vendor threads, invoices and tenant tickets. With work orders in Orca and email and payments in the engine, the explanation assembles itself: the furnace was serviced four times before it was fixed, here are the four invoices, here is the thread. Same machine for 50-owner month ends. Jason at WSPM is the guinea pig; Kyle at Green Street already queries Orca from Claude Code. ProFlow, the "AI property manager" Jason pays $1,200 a month, turned out to be a voice harness that had to build on Orca's webhooks to do anything about maintenance. This is board idea 2 and the <a href="audit.html">Audit</a> tab.</div>
+    <div class="step"><b>The executive system of record <span class="when">second</span></b>White glove, $1,000 a month, for the operators Maxinomics already reaches: people with several entities, real estate, deal flow, eight financial institutions and no order in any of it. Phil's number: 100 customers is $1.2M a year, with no funding. Steve's reaction to the price was the customer's: "Shut up and take my money." The pitch is privacy and portability. It is on your own infrastructure, we cannot see it, and you can take the data anywhere. This is board idea 1 and the <a href="clark.html">Clark</a> tab.</div>
+    <div class="step"><b>Tax season, pre-assembled <span class="when">third</span></b>The pain that started all of it. Phil spent an evening finding a five-year-old Fidelity 401(k) withdrawal to offset an IRS letter. Steve spent two and a half hours with Claude driving a browser through Schwab and old returns, stuck on login screens. A $1,500 CPA still makes you collect the documents. With a year of transactions and statements already typed and linked, the return is itemized before filing season opens. Board idea 7. Open question for December: a feature of the record, or the hook that sells it.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Who else is building it</h2>
+  <div class="read">
+    <div class="hot"><b>Supermemory</b>Steve found it on the night: "That's basically what's on our chalkboard." Sold to developers, billed by the token. Same architecture, different buyer.</div>
+    <div><b>Glean</b>Enterprise search over a company's tools. The corporate version of the idea, sold to IT.</div>
+    <div><b>Instinct</b>Venture-backed personal context. Nobody in the room has used it. Steve's point stands that he does not want a second app; he wants Claude to be the app, with better data under it.</div>
+    <div><b>Microsoft and Google</b>Have the data, not the economics. Indexing every free account is too expensive, which is why Gmail search is what it is.</div>
+    <div><b>The platform risk, still open</b>Steve's standing worry is that Anthropic ships the feature. The answer on the night was the architecture: write-time processing on one isolated stack per customer is not what a chat app ships, and the first customers are property managers who will never sign up for Instinct.</div>
+    <div><b>A second opinion, from Claude itself</b>Steve asked Fable whether the design was sound. It said the warehouse is "buildable with standard parts" and that no product gives it ready made, that it mostly helps questions about clients, operations and money rather than code, and it pulled four recent failures from its own lessons file that an index would have prevented: a misidentified site visitor, a wrong client price, a missed Green Street purchase, a question already answered in an unread email.</div>
+  </div>
+</section>
+
+<section>
+  <h2>What happens next</h2>
+  <div class="tablewrap"><table class="plan">
+    <thead><tr><th>Step</th><th>Who</th><th>When</th><th>What it unlocks</th></tr></thead>
+    <tbody>
+      <tr><td>Multi-tenant on AWS</td><td class="who">Phil</td><td class="when">builds running Nov 11</td><td>More than one email address and one person on the pipeline. Everything below waits on it.</td></tr>
+      <tr><td>Multi-lane email ingestion</td><td class="who">Phil</td><td class="when">inside two weeks</td><td>Thousands of messages a day in parallel. Two to three days of agent builds plus QA.</td></tr>
+      <tr><td>Web onboarding page</td><td class="who">Phil</td><td class="when">after the two above</td><td>Google sign-in and Plaid on one screen, so Maddy and Steve connect in 15 to 20 minutes without the CLI.</td></tr>
+      <tr><td>Repos to Steve</td><td class="who">Phil</td><td class="when">once multi-tenant passes</td><td>Steve reads the code, not just the product.</td></tr>
+      <tr><td>Jason's WSPM data as the first test</td><td class="who">Steve</td><td class="when">after access</td><td>Leases, tenant inquiries and vendor work orders through the engine. Steve is still deciding how finished it must be before Jason touches it.</td></tr>
+      <tr><td>Keep the SEO loop running</td><td class="who">Steve</td><td class="when">ongoing</td><td>Organic search is the only thing bringing Orca demos today, Green Street and the Canadians included.</td></tr>
+      <tr><td>Test the engine in person</td><td class="who">all three</td><td class="when">first two weeks of December</td><td>Each of you on your own stack, with real mail and real money, before Phil and Maddy leave around Dec 20.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Carried to December</h2>
+  <div class="caps">
+    <div class="q"><b>Margin per customer</b>$350 a month to run Phil's stack against a $1,000 price, before optimization. Digital Ocean or a leaner template could change the number.</div>
+    <div class="q"><b>Accounting depth</b>Tally types the economics, not the ledger. Mercury spent six months and an acquisition on categorization against 300-ledger charts of accounts. Owner statements may need the ledger.</div>
+    <div class="q"><b>How finished before Jason</b>Steve's call. A guinea pig who hits a rough edge is still a customer who hit a rough edge.</div>
+    <div class="q"><b>Tax: feature or hook</b>Phil's instinct is that tax is the pain everyone recognizes. Whether it is the first thing a customer hears about or the third is undecided.</div>
+    <div class="q"><b>Things mentioned, not scored</b>Per-project token tracking (Phil burned a weekly ChatGPT allocation in two days), the Sentry to Buzz auto-fix loop, PostHog session replays feeding a morning review, and sensors as the system of record for physical things. See the <a href="./">board</a> footer.</div>
+  </div>
+</section>
+
+<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
+</div>
+</body>
+</html>
+'''
+open('engine.html','w').write(head+body)
+print('engine.html', len(head+body))

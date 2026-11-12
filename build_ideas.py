@@ -2,7 +2,7 @@ import json, csv, re
 from bands import bands_html
 K='/Users/madelinekornack/Projects/appfigures-ideas'
 prefix=open('build_buzz.py').read().split("repo=json.load")[0]
-TABS=[('./','Board'),('clark.html','Clark'),('audit.html','Audit'),('formcheck.html','Form check'),('buzz.html','Buzz'),('calories.html','Calorie apps'),('bloodwork.html','Bloodwork'),('glp1.html','GLP-1'),('learnai.html','Learn AI')]
+TABS=[('engine.html','The engine'),('./','Board'),('clark.html','Clark'),('audit.html','Audit'),('formcheck.html','Form check'),('buzz.html','Buzz'),('calories.html','Calorie apps'),('bloodwork.html','Bloodwork'),('glp1.html','GLP-1'),('learnai.html','Learn AI')]
 def nav(active): return '<nav class="tabs">'+''.join(f'<a{" class=on" if h==active else ""} href="{h}">{t}</a>' for h,t in TABS)+'</nav>'
 rows=list(csv.DictReader(open(f'{K}/keywords_us30d.psv'),delimiter='|'))
 byid={}

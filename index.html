@@ -112,14 +112,14 @@ tbody tr:last-child td { border-bottom: 0; }
   .card .b { padding: 8px 16px 16px; }
   .scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-.tabs { display: flex; gap: 4px; margin: 0 0 18px; border-bottom: 1px solid var(--line); }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 18px; border-bottom: 1px solid var(--line); }
 .tabs a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--muted); padding: 8px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .tabs a.on { color: var(--ink); border-bottom-color: var(--accent); }
 .tabs a:hover { color: var(--ink); }
 </style>
 
 <div class="wrap">
-<nav class="tabs"><a class="on" href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a href="learnai.html">Learn AI</a></nav>
+<nav class="tabs"><a href="engine.html">The engine</a><a class="on" href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a href="learnai.html">Learn AI</a></nav>
 <header>
   <div class="eyebrow">Oct 22 call + Phil &amp; Steve iMessage (voice notes included) + Buzz #product-ideas + the Nov 11 Davenport session, transcribed · Oct 22 to Nov 11, 2026</div>
   <h1>Davenport Idea Board</h1>
@@ -134,7 +134,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 <section>
   <h2>Nov 11 Davenport session: what was decided</h2>
-  <p class="lede">Phil, Steve and Maddy in person on Wednesday night, about two hours at the chalkboard, transcribed. Three things changed on the board.</p>
+  <p class="lede">Phil, Steve and Maddy in person on Wednesday night, about two hours at the chalkboard, transcribed. Three things changed on the board. The project the group ended up on has its own explainer on <a href="engine.html">The engine</a> tab.</p>
   <div class="facts">
     <div class="risk"><b>1. A health app is out</b>Phil: "We all agree that a health app is out." Steve: the only way he could focus on one is if he quit Mercury, and between Mercury and Orca there is no room for a third context, so anything new has to make Orca and the engine feed each other, "two birds, one stone." Phil: an unrelated product would mean dropping the engine. Ideas 15 to 20 keep their scores and move below every live idea.</div>
     <div><b>2. The engine is the thing, not the product</b>Phil's framing: every business sells order, taking a customer's high-entropy mess and handing back low entropy (a car is 30,000 parts sold as one thing, and the one that lasts longest charges the most). Clark plus Tally is that engine: email, transactions and files cleaned, classified and linked at write time, so anything asked later is fast and cheap. Products sit on top and nobody is told about the engine. Steve, who had read it as "a harness," came round on the night: "you have to solve the data layer before you can do the harness well," and a harness alone "is just not that valuable."</div>

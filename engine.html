@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The engine</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: scoreboard first (every idea in one glance), then one dossier card per idea in rank order. */
+:root {
+  --bg: #f3f4f0;
+  --surface: #ffffff;
+  --ink: #1b2430;
+  --muted: #5d6673;
+  --line: #d6d9d2;
+  --accent: #d9641e;
+  --accent-soft: #fbe9dc;
+  --tier1: #2f7a4f; --tier1-soft: #e2f0e6;
+  --tier2: #b07a12; --tier2-soft: #f7edd2;
+  --tier3: #7a7f88; --tier3-soft: #e9ebe6;
+  --bar: #1b2430;
+  --bar-track: #e4e6e0;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+    --accent: #f0864a; --accent-soft: #3a2719;
+    --tier1: #6fc48f; --tier1-soft: #1f3327;
+    --tier2: #e0b454; --tier2-soft: #3a2f16;
+    --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+    --bar: #e8eaed; --bar-track: #2c3139;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+  --accent: #f0864a; --accent-soft: #3a2719;
+  --tier1: #6fc48f; --tier1-soft: #1f3327;
+  --tier2: #e0b454; --tier2-soft: #3a2f16;
+  --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+  --bar: #e8eaed; --bar-track: #2c3139;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; margin: 0; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 36px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; letter-spacing: -0.01em; }
+.eyebrow { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header p.lede { max-width: 66ch; color: var(--muted); margin: 14px 0 0; }
+.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 22px; }
+.method div { border-top: 2px solid var(--line); padding-top: 8px; font-size: 13px; color: var(--muted); }
+.method b { display: block; color: var(--ink); font-weight: 600; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+
+section { margin-top: 44px; }
+section > h2 { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+
+/* scoreboard */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.rank, td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td.rank { width: 44px; font-weight: 500; }
+td.num { text-align: right; width: 54px; }
+th.num { text-align: right; }
+td.total { font-weight: 600; }
+tbody tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.t1 { background: var(--tier1-soft); color: var(--tier1); }
+.t2 { background: var(--tier2-soft); color: var(--tier2); }
+.t3 { background: var(--tier3-soft); color: var(--tier3); }
+.who { color: var(--muted); font-size: 13px; }
+
+/* dossier cards */
+.tier { margin-top: 36px; }
+.tier-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 16px; }
+.tier-head h2 { font-size: 24px; }
+.tier-head span { color: var(--muted); font-size: 14px; }
+.cards { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 64px 1fr; }
+.card .n { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; padding: 18px 0 0 16px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card .b { padding: 18px 18px 18px 8px; min-width: 0; }
+.card h3 { font-size: 21px; font-weight: 700; }
+.card .pitch { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.chip.src { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+.scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; max-width: 520px; }
+.score label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.score .track { height: 6px; background: var(--bar-track); margin-top: 4px; position: relative; }
+.score .track i { position: absolute; inset: 0 auto 0 0; background: var(--bar); }
+.score .v { font-family: var(--mono); font-size: 12px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 20px; margin-top: 16px; }
+.facts div { min-width: 0; font-size: 14px; }
+.facts b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.facts .risk { border-left: 3px solid var(--accent); padding-left: 10px; }
+.foot { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: 13px; max-width: 72ch; }
+.foot ul { padding-left: 18px; margin: 6px 0 0; }
+@media (max-width: 560px) {
+  .card { grid-template-columns: 1fr; }
+  .card .n { padding: 14px 16px 0; font-size: 30px; }
+  .card .b { padding: 8px 16px 16px; }
+  .scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
+.line h3 { font-size: 19px; }
+.line .sub { color: var(--muted); font-size: 13px; margin: 2px 0 8px; }
+.line svg { display: block; width: 100%; height: auto; font-family: var(--body); }
+.line .ax { stroke: var(--line); stroke-width: 1; }
+.line .tk { fill: var(--muted); font-size: 11px; font-family: var(--mono); }
+.line .lg { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.line .lg i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+.line .pt { fill: var(--surface); stroke-width: 2; }
+.line .pt:hover { r: 5; }
+.s1 { color: #2a78d6 } .s2 { color: #d9641e } .s3 { color: #2f7a4f } .s4 { color: #7a4fb0 }
+.stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 14px; }
+.stat div { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; }
+.stat b { display: block; font-family: var(--display); font-size: 26px; font-weight: 700; line-height: 1.1; }
+.stat span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+</style>
+<style>
+.big { font-size: 17px; max-width: 72ch; margin: 14px 0 0; }
+.big b { font-weight: 600; }
+.steps { counter-reset: s; display: grid; gap: 10px; margin-top: 14px; }
+.step { background: var(--surface); border: 1px solid var(--line); padding: 14px 16px 14px 58px; position: relative; font-size: 14px; }
+.step::before { counter-increment: s; content: counter(s); position: absolute; left: 16px; top: 10px; font-family: var(--display); font-size: 30px; font-weight: 700; color: var(--accent); }
+.step b { display: block; font-family: var(--display); font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+.step .when { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-left: 8px; }
+table.plan { min-width: 0; }
+table.plan td { font-size: 14px; }
+table.plan td:first-child { font-weight: 600; }
+table.plan td.who, table.plan td.when { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; color: var(--muted); }
+.q { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 12px 14px; font-size: 14px; }
+.q b { display: block; font-weight: 600; margin-bottom: 2px; }
+.links a { margin-right: 14px; }
+.caps.two { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+@media (max-width: 560px) { .caps.two { grid-template-columns: 1fr; } }
+</style>
+<style>
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 18px; border-bottom: 1px solid var(--line); }
+.tabs a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--muted); padding: 8px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs a.on { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs a:hover { color: var(--ink); }
+.chart { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 12px; margin-top: 14px; }
+.chart h3 { font-size: 19px; }
+.chart .sub { color: var(--muted); font-size: 13px; margin: 2px 0 10px; }
+.rows { display: grid; gap: 7px; }
+.row { display: grid; grid-template-columns: minmax(120px, 210px) 1fr 86px; gap: 10px; align-items: center; font-size: 13.5px; }
+.row .lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .lbl small { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-left: 4px; }
+.row .track { height: 12px; background: var(--bar-track); position: relative; }
+.row .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--chart); border-radius: 0 4px 4px 0; min-width: 2px; }
+.row.ref .track i { background: var(--tier3); }
+.row .val { font-family: var(--mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.row:hover .track i { filter: brightness(0.85); }
+.none { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.none b { color: var(--ink); font-weight: 600; }
+.read { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 22px; margin-top: 16px; }
+.read div { font-size: 14px; min-width: 0; }
+.read b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.read .hot { border-left: 3px solid var(--accent); padding-left: 10px; }
+.quote { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; color: var(--muted); font-size: 14px; margin: 10px 0 0; max-width: 70ch; }
+.quote b { color: var(--ink); font-weight: 600; }
+.diagram { background: var(--surface); border: 1px solid var(--line); padding: 12px; margin-top: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--body); }
+.diagram .box { fill: var(--bg); stroke: var(--line); }
+.diagram .core { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram .t { fill: var(--ink); font-size: 13px; }
+.diagram .h { fill: var(--ink); font-size: 12px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.diagram .m { fill: var(--muted); font-size: 11.5px; }
+.diagram .arrow { stroke: var(--muted); stroke-width: 1.5; fill: none; marker-end: url(#ah); }
+.diagram .later { stroke-dasharray: 4 3; }
+.caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 14px; }
+.cap { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; font-size: 14px; }
+.cap b { display: block; font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.cap .st { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+.cap .st.live { color: var(--tier1); }
+.cap .st.next { color: var(--tier2); }
+a { color: var(--accent); }
+:root { --chart: #2a78d6; }
+:root[data-theme="dark"] { --chart: #6aa6ea; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --chart: #6aa6ea; } }
+</style>
+
+
+</head>
+<body>
+<div class="wrap">
+<nav class="tabs"><a class=on href="engine.html">The engine</a><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a href="learnai.html">Learn AI</a></nav>
+<header>
+  <div class="eyebrow">The project the group ended up on · Nov 11 Davenport session, transcribed · ideas 1, 2 and 7 on the board</div>
+  <h1>The engine</h1>
+  <p class="lede">Clark and Tally together: one place where your email, your money and your files are cleaned, classified and linked the moment they arrive, so anything asked later is instant. It is not sold on its own. Products sit on top of it, and the first one is for Orca.</p>
+  <p class="quote"><b>Phil, Nov 11:</b> "That is what every single business is. It is trying to make someone's high entropy environment that's a pain in the ass to work in into lower entropy. And then you sell that order to the customer."</p>
+</header>
+
+<section>
+  <h2>In plain words</h2>
+  <p class="big">Every business you have ever paid sells order. A car is 30,000 parts sold as one thing. A property manager sells a calm month to an owner who would otherwise be chasing invoices. <b>The engine is the machine that makes order out of a person's or a company's mess</b>, and the mess today is email, bank transactions and files. Phil has been building it for himself under two names: <b>Clark</b> for email and <b>Tally</b> for money. On Nov 11 the three of you agreed that the engine is the thing worth building, that it is never the product, and that the products stack on top of it in a set order.</p>
+  <div class="read">
+    <div><b>Why it feels different from Claude on its own</b>Most agents work at read time. You ask, and the model searches, scrapes and reads raw text for minutes. The engine works at write time. Every email and transaction is cleaned, named, typed and linked when it lands, so a question is a lookup, not an expedition. Steve's own version: "You have to solve the data layer before you can do the harness really well."</div>
+    <div><b>Why it is not a feature Google or Anthropic ships tomorrow</b>Phil looked: Google does not vector-index free Gmail because the compute costs more than the account earns. A chat app would have to pull in all of your mail, money and files and store them. The engine does exactly that, for a price, on infrastructure that belongs to one customer.</div>
+    <div class="hot"><b>Why not the health app</b>Phil: "We all agree that a health app is out." Steve has Mercury for salary and Orca for the long game; a third context is impossible. Anything new must feed Orca, "two birds, one stone." The engine does: the first product is for Steve's customers.</div>
+  </div>
+</section>
+
+<section>
+  <h2>How it fits together</h2>
+  <div class="diagram"><svg viewBox="0 0 1040 470" role="img" aria-label="The engine: sources flow into Clark and Tally, which clean and link everything at write time into one stack per customer; products sit on top"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs><text class="h" x="20" y="24" text-anchor="start">1 · What comes in</text><text class="h" x="300" y="24" text-anchor="start">2 · The engine, at write time</text><text class="h" x="760" y="24" text-anchor="start">3 · Products on top</text><rect class="box" x="20" y="40" width="230" height="46" rx="6"/><text class="t" x="32" y="59" text-anchor="start">Email</text><text class="m" x="32" y="76" text-anchor="start">Gmail, by Google sign-in</text><rect class="box" x="20" y="100" width="230" height="46" rx="6"/><text class="t" x="32" y="119" text-anchor="start">Transactions</text><text class="m" x="32" y="136" text-anchor="start">Plaid webhooks, every bank and card</text><rect class="box" x="20" y="160" width="230" height="46" rx="6"/><text class="t" x="32" y="179" text-anchor="start">Files</text><text class="m" x="32" y="196" text-anchor="start">local embedding model on the Mac; next</text><rect class="box" x="20" y="220" width="230" height="46" rx="6"/><text class="t" x="32" y="239" text-anchor="start">Property data</text><text class="m" x="32" y="256" text-anchor="start">Orca: work orders, vendors, tenants</text><rect class="box" x="20" y="280" width="230" height="46" rx="6"/><text class="t" x="32" y="299" text-anchor="start">Statements and K-1s</text><text class="m" x="32" y="316" text-anchor="start">brokerages, 401(k), the tax pile; later</text><rect class="core" x="300" y="40" width="420" height="370" rx="8"/><rect class="box" x="316" y="56" width="388" height="46" rx="6"/><text class="t" x="328" y="75" text-anchor="start">Clark: email</text><text class="m" x="328" y="92" text-anchor="start">vectorized plus keyword search; spots receipts</text><rect class="box" x="316" y="116" width="388" height="46" rx="6"/><text class="t" x="328" y="135" text-anchor="start">Tally: money</text><text class="m" x="328" y="152" text-anchor="start">stage 1 names the merchant, stage 2 types the money</text><rect class="box" x="316" y="176" width="388" height="46" rx="6"/><text class="t" x="328" y="195" text-anchor="start">Link</text><text class="m" x="328" y="212" text-anchor="start">receipt to transaction, person to thread, invoice to job</text><rect class="box" x="316" y="236" width="388" height="46" rx="6"/><text class="t" x="328" y="255" text-anchor="start">Normalize and classify once</text><text class="m" x="328" y="272" text-anchor="start">47 economic types, cleaned aliases, confidence scores</text><rect class="box" x="316" y="296" width="388" height="46" rx="6"/><text class="t" x="328" y="315" text-anchor="start">One index per customer</text><text class="m" x="328" y="332" text-anchor="start">its own AWS stack; nobody shares a table</text><text class="m" x="316" y="372" text-anchor="start">Node and Python on AWS. Cleaned on arrival, so every later question is fast and cheap.</text><text class="m" x="316" y="390" text-anchor="start">Open by API, CLI and MCP. No lock-in to one chat app.</text><rect class="box" x="760" y="40" width="260" height="54" rx="6"/><text class="t" x="772" y="59" text-anchor="start">Orca statement reconciliation</text><text class="m" x="772" y="76" text-anchor="start">first; Jason at WSPM is the guinea pig</text><rect class="box" x="760" y="108" width="260" height="54" rx="6"/><text class="t" x="772" y="127" text-anchor="start">The executive record</text><text class="m" x="772" y="144" text-anchor="start">$1,000 a month; 100 customers is $1.2M</text><rect class="box" x="760" y="176" width="260" height="54" rx="6"/><text class="t" x="772" y="195" text-anchor="start">Tax season, pre-assembled</text><text class="m" x="772" y="212" text-anchor="start">the pain that started it; a December question</text><rect class="box" x="760" y="244" width="260" height="54" rx="6"/><text class="t" x="772" y="263" text-anchor="start">Your own agent</text><text class="m" x="772" y="280" text-anchor="start">Claude Code, Cowork, a terminal</text><path class="arrow" d="M250 63 L300 63"/><path class="arrow" d="M250 123 L300 123"/><path class="arrow later" d="M250 183 L300 183"/><path class="arrow" d="M250 243 L300 243"/><path class="arrow later" d="M250 303 L300 303"/><path class="arrow" d="M720 110 L760 67"/><path class="arrow" d="M720 160 L760 135"/><path class="arrow later" d="M720 210 L760 203"/><path class="arrow" d="M720 260 L760 271"/><text class="m" x="20" y="445" text-anchor="start">Dashed: not built yet. Solid: running for Phil today, multi-tenant in progress.</text></svg></div>
+</section>
+
+<section>
+  <h2>The two halves, as Phil described them</h2>
+  <div class="caps two">
+    <div class="cap"><span class="st live">Running</span><b>Tally: money</b>Plaid pushes each bank and card transaction into a pipeline the moment it posts. <b>Stage 1</b> cleans the name. A fast model reasons over the cryptic descriptor and gives a confidence score. Low confidence sends a second model to the web, with account numbers and names stripped first, to find out that "paddle viewstax" is a software vendor. The result is saved as a machine-cleaned alias, and nobody is asked to confirm it. Amazon direct and Amazon Marketplace come out as different vendors. <b>Stage 2</b> says what kind of money it is: a merchant purchase, Maddy sending Phil money, a card payoff, a transfer between accounts, a brokerage deposit or withdrawal. 47 economic types, none of which Plaid supplies. Phil hand-labelled 450 of his own transactions to tune it. Accuracy is 94 to 95 percent.</div>
+    <div class="cap"><span class="st live">Running</span><b>Clark: email</b>Every message is ingested, vectorized and stored next to a keyword index, so search is meaning plus exact terms, not Gmail's Boolean operators. "Morning Brew contract" finds the 2023 thread with Devin Emery about pay, before any contract existed, even though the word contract is not in it. Clark also watches for receipts and passes candidates to Tally, which attaches the receipt to the exact transaction.</div>
+    <div class="cap"><span class="st next">Next</span><b>Files, then the rest</b>A lightweight embedding model runs on the Mac or PC and indexes the local disk, which Spotlight cannot do inside PDFs and decks. After that, Slack and browser history. Health and wearables are a later layer, not a product.</div>
+    <div class="cap"><span class="st live">Running</span><b>One stack per customer</b>Email and transactions are the most private data a person has, so no customer shares a database. A CloudFormation template spins up a full isolated stack for each one; a prompt injection against SQL cannot reach anyone else's table. The team can still sign in through SSO to run it. Phil's own stack costs about $350 a month unoptimized, which is the number the $1,000 price has to clear.</div>
+  </div>
+</section>
+
+<section>
+  <h2>The products, in the order you agreed</h2>
+  <div class="steps">
+    <div class="step"><b>Statement reconciliation for property managers, on Orca <span class="when">first</span></b>The scenario Phil walked through: an owner's bill is $10,000 above a normal month and the manager has to explain why. Today that is a scramble across vendor threads, invoices and tenant tickets. With work orders in Orca and email and payments in the engine, the explanation assembles itself: the furnace was serviced four times before it was fixed, here are the four invoices, here is the thread. Same machine for 50-owner month ends. Jason at WSPM is the guinea pig; Kyle at Green Street already queries Orca from Claude Code. ProFlow, the "AI property manager" Jason pays $1,200 a month, turned out to be a voice harness that had to build on Orca's webhooks to do anything about maintenance. This is board idea 2 and the <a href="audit.html">Audit</a> tab.</div>
+    <div class="step"><b>The executive system of record <span class="when">second</span></b>White glove, $1,000 a month, for the operators Maxinomics already reaches: people with several entities, real estate, deal flow, eight financial institutions and no order in any of it. Phil's number: 100 customers is $1.2M a year, with no funding. Steve's reaction to the price was the customer's: "Shut up and take my money." The pitch is privacy and portability. It is on your own infrastructure, we cannot see it, and you can take the data anywhere. This is board idea 1 and the <a href="clark.html">Clark</a> tab.</div>
+    <div class="step"><b>Tax season, pre-assembled <span class="when">third</span></b>The pain that started all of it. Phil spent an evening finding a five-year-old Fidelity 401(k) withdrawal to offset an IRS letter. Steve spent two and a half hours with Claude driving a browser through Schwab and old returns, stuck on login screens. A $1,500 CPA still makes you collect the documents. With a year of transactions and statements already typed and linked, the return is itemized before filing season opens. Board idea 7. Open question for December: a feature of the record, or the hook that sells it.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Who else is building it</h2>
+  <div class="read">
+    <div class="hot"><b>Supermemory</b>Steve found it on the night: "That's basically what's on our chalkboard." Sold to developers, billed by the token. Same architecture, different buyer.</div>
+    <div><b>Glean</b>Enterprise search over a company's tools. The corporate version of the idea, sold to IT.</div>
+    <div><b>Instinct</b>Venture-backed personal context. Nobody in the room has used it. Steve's point stands that he does not want a second app; he wants Claude to be the app, with better data under it.</div>
+    <div><b>Microsoft and Google</b>Have the data, not the economics. Indexing every free account is too expensive, which is why Gmail search is what it is.</div>
+    <div><b>The platform risk, still open</b>Steve's standing worry is that Anthropic ships the feature. The answer on the night was the architecture: write-time processing on one isolated stack per customer is not what a chat app ships, and the first customers are property managers who will never sign up for Instinct.</div>
+    <div><b>A second opinion, from Claude itself</b>Steve asked Fable whether the design was sound. It said the warehouse is "buildable with standard parts" and that no product gives it ready made, that it mostly helps questions about clients, operations and money rather than code, and it pulled four recent failures from its own lessons file that an index would have prevented: a misidentified site visitor, a wrong client price, a missed Green Street purchase, a question already answered in an unread email.</div>
+  </div>
+</section>
+
+<section>
+  <h2>What happens next</h2>
+  <div class="tablewrap"><table class="plan">
+    <thead><tr><th>Step</th><th>Who</th><th>When</th><th>What it unlocks</th></tr></thead>
+    <tbody>
+      <tr><td>Multi-tenant on AWS</td><td class="who">Phil</td><td class="when">builds running Nov 11</td><td>More than one email address and one person on the pipeline. Everything below waits on it.</td></tr>
+      <tr><td>Multi-lane email ingestion</td><td class="who">Phil</td><td class="when">inside two weeks</td><td>Thousands of messages a day in parallel. Two to three days of agent builds plus QA.</td></tr>
+      <tr><td>Web onboarding page</td><td class="who">Phil</td><td class="when">after the two above</td><td>Google sign-in and Plaid on one screen, so Maddy and Steve connect in 15 to 20 minutes without the CLI.</td></tr>
+      <tr><td>Repos to Steve</td><td class="who">Phil</td><td class="when">once multi-tenant passes</td><td>Steve reads the code, not just the product.</td></tr>
+      <tr><td>Jason's WSPM data as the first test</td><td class="who">Steve</td><td class="when">after access</td><td>Leases, tenant inquiries and vendor work orders through the engine. Steve is still deciding how finished it must be before Jason touches it.</td></tr>
+      <tr><td>Keep the SEO loop running</td><td class="who">Steve</td><td class="when">ongoing</td><td>Organic search is the only thing bringing Orca demos today, Green Street and the Canadians included.</td></tr>
+      <tr><td>Test the engine in person</td><td class="who">all three</td><td class="when">first two weeks of December</td><td>Each of you on your own stack, with real mail and real money, before Phil and Maddy leave around Dec 20.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Carried to December</h2>
+  <div class="caps">
+    <div class="q"><b>Margin per customer</b>$350 a month to run Phil's stack against a $1,000 price, before optimization. Digital Ocean or a leaner template could change the number.</div>
+    <div class="q"><b>Accounting depth</b>Tally types the economics, not the ledger. Mercury spent six months and an acquisition on categorization against 300-ledger charts of accounts. Owner statements may need the ledger.</div>
+    <div class="q"><b>How finished before Jason</b>Steve's call. A guinea pig who hits a rough edge is still a customer who hit a rough edge.</div>
+    <div class="q"><b>Tax: feature or hook</b>Phil's instinct is that tax is the pain everyone recognizes. Whether it is the first thing a customer hears about or the third is undecided.</div>
+    <div class="q"><b>Things mentioned, not scored</b>Per-project token tracking (Phil burned a weekly ChatGPT allocation in two days), the Sentry to Buzz auto-fix loop, PostHog session replays feeding a morning review, and sensors as the system of record for physical things. See the <a href="./">board</a> footer.</div>
+  </div>
+</section>
+
+<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
+</div>
+</body>
+</html>
