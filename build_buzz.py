@@ -125,7 +125,7 @@ replace_html=f"""
 body=f'''<div class="wrap">
 {NAV}
 <header>
-  <div class="eyebrow">Idea 9 on the board · Maddy, Nov 11 · Block's open-source project · the group runs 63 agents on it</div>
+  <div class="eyebrow">Idea 10 on the board · Maddy, Nov 11 · Block's open-source project · the group runs 63 agents on it</div>
   <h1>Buzz</h1>
   <p class="lede">Buzz is Block's open-source team chat for people and AI agents, built on Nostr: a relay, a desktop app and a CLI. Created on GitHub in March 2026, first release in May. The group runs its own relay with 63 agents across 181 channels and has written its own fixes for the gaps. The question on this tab: is anyone else using it, and are the chat giants losing anything to it?</p>
 </header>

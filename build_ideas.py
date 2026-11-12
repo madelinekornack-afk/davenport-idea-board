@@ -43,7 +43,7 @@ table.cmp td.w { font-weight: 700; }
 g={}; exec(prefix, g); linechart=g['linechart']
 METHOD='<div class="read"><div><b>Scope</b>US, iPhone, App Store only. Android, web sign-ups and web billing are not here, and most of these companies sell on the web, so revenue understates them.</div><div><b>Estimates</b>Appfigures models downloads from ranks and ratings. Apps below its threshold show as "not modeled," which means small, not zero.</div><div><b>Method</b>Keyword Inspector searches in a signed-in session on Nov 11, top 15 results per keyword with 30-day US estimates for the top 10, plus the ratings report for every app named here, Nov 2024 to Nov 2026. No credits, no tracking slots. Raw data in <code>~/Projects/appfigures-ideas</code>.</div></div>'
 
-# ---------------- BLOODWORK (idea 8) ----------------
+# ---------------- BLOODWORK (idea 9) ----------------
 bw_bars=bars('Who is on the phone: at-home testing and biomarker apps, US iPhone, 30 days to Nov 11','Only four of the nineteen apps in the sweep clear the download model. None sells in-app; all of them bill on the web.',[
  ('Rythm Health',112937,0,'launched Oct 7, 2026; $79 monthly panel'),
  ('Function Health',16594,0,'$499/yr, 100+ biomarkers twice a year'),
@@ -79,7 +79,7 @@ bw_body=f'''
   </div>
 </section>
 <section>
-  <h2>What this says for idea 8</h2>
+  <h2>What this says for idea 9</h2>
   <div class="read">
     <div class="hot"><b>Three first conversations</b>1. Rythm: the product on the card, one month in, with the install curve of a company that is spending to grow and would rather not. 2. Superpower: early and stalled, the classic audience-for-equity fit. 3. Function: only if the ask is a content partnership, not equity.</div>
     <div><b>What to verify before any of them</b>Whether Rythm's 113K is organic or bought (ask for their install source split), what each pays per acquired customer today, and whether a Maxinomics video converts at a tenth of that. One sponsored video with a tracking link answers all three for under $10K of opportunity cost.</div>
@@ -87,9 +87,9 @@ bw_body=f'''
   </div>
   {METHOD}
 </section>'''
-page('bloodwork.html','Bloodwork','Idea 8 on the board · buy into something like Rythm · Appfigures sweep, Nov 11','At-home bloodwork: who to call first','Idea 8 is to take a stake in a company like Rythm and bring Maxinomics as distribution instead of building a clone. This tab answers the whiteboard question on the card: which three companies deserve a first conversation? Every at-home testing, biomarker and longevity app the Keyword Inspector returns, with two years of ratings velocity for the ones that matter.',bw_body,'Built Nov 11, 2026 for the Davenport session.')
+page('bloodwork.html','Bloodwork','Idea 9 on the board · buy into something like Rythm · Appfigures sweep, Nov 11','At-home bloodwork: who to call first','Idea 9 is to take a stake in a company like Rythm and bring Maxinomics as distribution instead of building a clone. This tab answers the whiteboard question on the card: which three companies deserve a first conversation? Every at-home testing, biomarker and longevity app the Keyword Inspector returns, with two years of ratings velocity for the ones that matter.',bw_body,'Built Nov 11, 2026 for the Davenport session.')
 
-# ---------------- GLP-1 (idea 7) ----------------
+# ---------------- GLP-1 (idea 8) ----------------
 g_rev=bars('GLP-1 and peptide trackers that make money, US iPhone, 30 days to Nov 11','Of 62 tracker apps the sweep returned, seven clear the download model and three clear the revenue model.',[
  ('MeAgain: GLP-1 Tracker',49698,380303,'Apr 2025; shot log, weight, food, AI coach'),
  ('Shotsy GLP-1 Tracker',13572,184986,'May 2024; the original, shot log and side effects'),
@@ -121,17 +121,17 @@ g_body=f'''
   {g_lines2}
 </section>
 <section>
-  <h2>What this says for idea 7</h2>
+  <h2>What this says for idea 8</h2>
   <div class="read">
     <div class="hot"><b>The card was right: another shot log is dead on arrival</b>Twenty-five of them shipped this year and one makes money. Steve's "would likely crush" has to mean the layer the trackers lack: the regimen compared against bloodwork, food and labs in one place, which MeAgain is already inching toward with an AI coach.</div>
     <div><b>The market is real but small on the phone</b>About $7M a year in the US App Store for the top two, with MeAgain still growing at 4,500 ratings a month. The money in GLP-1 is in prescribing (Mochi Health went from 229 to 2,000 ratings a month in a year) and in the drugs, not the log.</div>
-    <div><b>Where the audience helps</b>GLP-1 users skew to the income band Maxinomics has, and the peptide spike says the Bryan Johnson crowd is in there too. That is a distribution edge for a Rythm-style partner (idea 8) as much as for a tracker.</div>
+    <div><b>Where the audience helps</b>GLP-1 users skew to the income band Maxinomics has, and the peptide spike says the Bryan Johnson crowd is in there too. That is a distribution edge for a Rythm-style partner (idea 9) as much as for a tracker.</div>
   </div>
   {METHOD}
 </section>'''
-page('glp1.html','GLP-1 trackers','Idea 7 on the board · peptide / GLP-1 regimen tracker · Appfigures sweep, Nov 11','GLP-1 and peptide trackers: 62 apps, two businesses','The card said "GLP-1 dose trackers are already a pile" without numbers. Here are the numbers: every tracker the Keyword Inspector returns for eight GLP-1, Ozempic, semaglutide, tirzepatide and peptide terms, who makes money, who is growing, and how many launched this year.',g_body,'Built Nov 11, 2026 for the Davenport session.')
+page('glp1.html','GLP-1 trackers','Idea 8 on the board · peptide / GLP-1 regimen tracker · Appfigures sweep, Nov 11','GLP-1 and peptide trackers: 62 apps, two businesses','The card said "GLP-1 dose trackers are already a pile" without numbers. Here are the numbers: every tracker the Keyword Inspector returns for eight GLP-1, Ozempic, semaglutide, tirzepatide and peptide terms, who makes money, who is growing, and how many launched this year.',g_body,'Built Nov 11, 2026 for the Davenport session.')
 
-# ---------------- LEARN AI (idea 6, Nora) ----------------
+# ---------------- LEARN AI (idea 7, Nora) ----------------
 l_bars=bars('Anything that sells "learn AI" on the phone, US iPhone, 30 days to Nov 11','Of 74 learn-AI, prompt and AI-course apps in the sweep, zero clear the download model. The only apps with estimates on these keywords are platforms and a homework bot.',[
  ('Coursera',22381,390494,'the course platform; AI is one shelf'),
  ('DataCamp',0,2903,'data and AI courses, bills on the web'),
@@ -156,7 +156,7 @@ l_body=f'''
   {l_lines2}
 </section>
 <section>
-  <h2>What this says for Nora, idea 6</h2>
+  <h2>What this says for Nora, idea 7</h2>
   <div class="read">
     <div class="hot"><b>Open field, wrong shelf</b>There is no incumbent to displace, which supports the edge score. But the App Store is also telling you that the buyer Nora is for, a senior person who wants to learn by doing, does not go to the App Store for it. They buy a cohort course, a newsletter, a workshop, or they watch a video, which is where Maxinomics already is.</div>
     <div><b>What that means for the build</b>Nora as a Maxinomics product (a paid series, exercises delivered by email and in a browser, a Buzz channel to do them in) fits the data. Nora as an iOS app with in-app purchase would be the seventy-fifth entry in a category where the seventy-fourth has six ratings.</div>
@@ -164,4 +164,4 @@ l_body=f'''
   </div>
   {METHOD}
 </section>'''
-page('learnai.html','Learn AI apps','Idea 6 on the board · Nora, learn AI by doing · Appfigures sweep, Nov 11','Learn-AI apps: 74 of them, none with traction','Nora moved to rank 6 on the argument that the Maxinomics audience is the buyer. This tab checks whether anyone sells AI education on the phone today and what it earns: every app the Keyword Inspector returns for eight learn-AI, prompt-engineering and AI-course terms, with two years of ratings for the ones that have any.',l_body,'Built Nov 11, 2026 for the Davenport session.')
+page('learnai.html','Learn AI apps','Idea 7 on the board · Nora, learn AI by doing · Appfigures sweep, Nov 11','Learn-AI apps: 74 of them, none with traction','Nora moved to rank 6 on the argument that the Maxinomics audience is the buyer. This tab checks whether anyone sells AI education on the phone today and what it earns: every app the Keyword Inspector returns for eight learn-AI, prompt-engineering and AI-course terms, with two years of ratings for the ones that have any.',l_body,'Built Nov 11, 2026 for the Davenport session.')

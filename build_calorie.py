@@ -68,7 +68,7 @@ SUB_US="About three quarters of both apps' revenue is American."
 body=f'''<div class="wrap">
 {NAV}
 <header>
-  <div class="eyebrow">Idea 3 on the board · Health copilot · Appfigures competitor tracking, pulled Oct 26 and refreshed Nov 11</div>
+  <div class="eyebrow">Ideas 3 and 4 on the board · a better Cal AI, and the health copilot on top of it · Appfigures competitor tracking, pulled Oct 26 and refreshed Nov 11</div>
   <h1>Calorie apps: MyFitnessPal vs Cal AI</h1>
   <p class="lede">The incumbent and the AI-photo newcomer, 24 months of modeled iPhone downloads, revenue and ratings, plus the rest of the category from a keyword sweep. The question for the health copilot: is a new entrant winning here, and what does it earn when it does?</p>
 </header>
@@ -105,7 +105,7 @@ body=f'''<div class="wrap">
   <div class="chart"><h3>Calorie and macro loggers, US iPhone, 30 days to Oct 26 <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· net revenue</span></h3><p class="sub">From Keyword Inspector searches on "calorie counter", "macro tracker" and "food scanner". Only the top ten results per search carry estimates.</p><div class="rows">{ref}{rows_html}</div><p class="none"><b>Read.</b> MacroFactor has the best revenue per download after MFP: 58K downloads to $1.3M. The AI-photo clones (Numify, Calo, Foodvisor, BitePal) together make less than a quarter of Cal AI, which makes Cal AI the category's one breakout rather than the front of a wave. Cronometer gets the most downloads of the group and converts worst.</p></div>
   <div class="read">
     <div><b>Who buys ads</b>On "calorie counter", MFP had 43% of Apple Ads impressions, Lose It 27%, Cal AI 15%, and Cal AI had been absent for about a month at the time of the pull. On "cal ai", a look-alike called Calor AI had taken 20% of the impressions on Cal AI's own name.</div>
-    <div><b>What this says for idea 3</b>A newcomer can take the download lead in this category in a year, and the money is real: Cal AI cleared {M(c['ww_rev'])} on iOS in twelve months. But its growth has turned over, the photo-logging clones behind it are tiny, and MFP's revenue barely moved. The open ground is not another logger; it is the thing that sits on top of one, which is the health copilot pitch, and the reason the board scores its market 5 and its edge 2.</div>
+    <div><b>What this says for idea 4</b>A newcomer can take the download lead in this category in a year, and the money is real: Cal AI cleared {M(c['ww_rev'])} on iOS in twelve months. But its growth has turned over, the photo-logging clones behind it are tiny, and MFP's revenue barely moved. The open ground is not another logger; it is the thing that sits on top of one, which is the health copilot pitch, and the reason the board scores its market 5 and its edge 2.</div>
   </div>
   <div class="read">
     <div><b>Scope</b>iPhone, App Store only. Android and web are not here. Cal AI is owned by Viral Development, not MFP; MFP belongs to Francisco Partners.</div>
