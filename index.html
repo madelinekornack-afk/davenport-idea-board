@@ -78,6 +78,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .t1 { background: var(--tier1-soft); color: var(--tier1); }
 .t2 { background: var(--tier2-soft); color: var(--tier2); }
 .t3 { background: var(--tier3-soft); color: var(--tier3); }
+.t4 { background: var(--tier3-soft); color: var(--tier3); text-decoration: line-through; text-decoration-color: var(--accent); }
 .who { color: var(--muted); font-size: 13px; }
 
 /* dossier cards */
@@ -120,9 +121,9 @@ tbody tr:last-child td { border-bottom: 0; }
 <div class="wrap">
 <nav class="tabs"><a class="on" href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a href="learnai.html">Learn AI</a></nav>
 <header>
-  <div class="eyebrow">Oct 22 call + Phil &amp; Steve iMessage (voice notes included) + Buzz #product-ideas · Oct 22 to Nov 11, 2026</div>
+  <div class="eyebrow">Oct 22 call + Phil &amp; Steve iMessage (voice notes included) + Buzz #product-ideas + the Nov 11 Davenport session, transcribed · Oct 22 to Nov 11, 2026</div>
   <h1>Davenport Idea Board</h1>
-  <p class="lede">Every product idea the three of you floated across the group chat and the Buzz channel, ranked. Scores are 1 to 5 on four axes, and the order follows the total, with ties broken by how much evidence is already on the table.</p>
+  <p class="lede">Every product idea the three of you floated across the group chat and the Buzz channel, ranked. Scores are 1 to 5 on four axes, and the order follows the total, with ties broken by how much evidence is already on the table. Ideas the group set aside at the Nov 11 session keep their scores and rank below every live idea.</p>
   <div class="method">
     <div><b>Market</b>How big and how fast it is growing, from the research the agents posted.</div>
     <div><b>Edge</b>What you three bring. Phil's own map (Nov 11): Orca, Clark and Media Studio, with Orca and Media Studio as the real ones because they are niche and need inside expertise. Distribution counts too, per Maddy (Nov 11): Maxinomics has 850K YouTube subscribers who skew senior and finance-literate, many of them C-suite, so an idea whose buyer is in that audience gets credit for it. It does nothing for B2B hardware or anything sold to IT departments.</div>
@@ -132,52 +133,67 @@ tbody tr:last-child td { border-bottom: 0; }
 </header>
 
 <section>
+  <h2>Nov 11 Davenport session: what was decided</h2>
+  <p class="lede">Phil, Steve and Maddy in person on Wednesday night, about two hours at the chalkboard, transcribed. Three things changed on the board.</p>
+  <div class="facts">
+    <div class="risk"><b>1. A health app is out</b>Phil: "We all agree that a health app is out." Steve: the only way he could focus on one is if he quit Mercury, and between Mercury and Orca there is no room for a third context, so anything new has to make Orca and the engine feed each other, "two birds, one stone." Phil: an unrelated product would mean dropping the engine. Ideas 15 to 20 keep their scores and move below every live idea.</div>
+    <div><b>2. The engine is the thing, not the product</b>Phil's framing: every business sells order, taking a customer's high-entropy mess and handing back low entropy (a car is 30,000 parts sold as one thing, and the one that lasts longest charges the most). Clark plus Tally is that engine: email, transactions and files cleaned, classified and linked at write time, so anything asked later is fast and cheap. Products sit on top and nobody is told about the engine. Steve, who had read it as "a harness," came round on the night: "you have to solve the data layer before you can do the harness well," and a harness alone "is just not that valuable."</div>
+    <div><b>3. Three product layers, in order</b>Orca first (statement reconciliation for Jason's and Kyle's shops, which keeps Steve's rule), then the executive personal system of record at a white-glove $1,000 a month for the high-net-worth operators the channel already reaches (Phil's number: 100 customers is $1.2M a year, bootstrapped, "anything we can do to avoid funding"), then tax season pre-assembled, which is the pain that started all of it. Ideas 2, 1 and 7.</div>
+    <div class="risk"><b>Who else is building it</b>Supermemory ("that's basically what's on our chalkboard," but sold to developers and billed by the token), Glean for enterprise search, Instinct for the personal assistant, and Microsoft and Google, who have the data but not the economics to vector-index free accounts. Steve's platform worry stands: Anthropic can ship the feature. The answer on the night was the architecture: write-time processing, one isolated stack per customer, is not what a chat app ships.</div>
+    <div><b>Next steps</b>Phil: finish multi-tenant on AWS and the multi-lane email ingestion (two to three days of agent builds plus QA, done inside two weeks), then a web onboarding page with Google sign-in and Plaid so Steve and Maddy connect without the CLI. Steve gets the repos once multi-tenant passes. Steve: bring Jason's WSPM data as the first property-management test; keep the SEO loop running for Orca demos. All three: reconvene in person in the first two weeks of December to test the engine, before Phil and Maddy leave around Dec 20.</div>
+    <div><b>Not changed</b>Nora, the Rythm buy-in, the book series, Nozzle and the Pass tier were not discussed. Buzz came up once (Steve prefers Slack's UX; Phil, "very similar"). Media Studio only as one of the four systems Phil has wired to Sentry.</div>
+  </div>
+</section>
+
+<section>
   <h2>Scoreboard</h2>
   <div class="tablewrap">
   <table>
     <thead><tr><th>#</th><th>Idea</th><th>Raised by</th><th>Tier</th><th class="num">Market</th><th class="num">Edge</th><th class="num">Evid.</th><th class="num">Build</th><th class="num">Total</th><th class="num pen" title="Annual revenue per buyer assumed">$/yr</th><th class="num pen" title="850K audience x 1% x price">1%</th><th class="num pen">10%</th><th class="num pen">50%</th></tr></thead>
     <tbody>
-      <tr><td class="rank">1</td><td>Clark: personal data pipeline (email + transactions + files, CLI first)</td><td class="who">Phil (Maddy built one too)</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td><td class="num pen" title="personal finance tools sell at $100 to $120 a year">$120</td><td class="num pen">$1.0M</td><td class="num pen">$10M</td><td class="num pen">$51M</td></tr>
-      <tr><td class="rank">2</td><td>Audit your property manager</td><td class="who">Steve</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td><td class="num pen" title="$20 a month for an owner; the audience includes owners">$240</td><td class="num pen">$2.0M</td><td class="num pen">$20M</td><td class="num pen">$102M</td></tr>
-      <tr><td class="rank">3</td><td>Build a better Cal AI</td><td class="who">Maddy</td><td><span class="pill t2">Whiteboard</span></td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td><td class="num pen" title="Cal AI's own price band, $30 to $60 a year">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
-      <tr><td class="rank">4</td><td>Health copilot with an "Out of Lab" switch</td><td class="who">All three</td><td><span class="pill t2">Whiteboard</span></td><td class="num">5</td><td class="num">2</td><td class="num">5</td><td class="num">3</td><td class="num total">15</td><td class="num pen" title="Cal AI to MFP range">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
-      <tr><td class="rank">5</td><td>Media Studio: script-anchored production + packaging attribution</td><td class="who">Phil (built it)</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num total">15</td><td class="num pen" title="$50 a month per channel; buyers are a few hundred YouTube teams, not the audience">$600</td><td class="num pen b2b">$5.1M</td><td class="num pen b2b">$51M</td><td class="num pen b2b">$255M</td></tr>
-      <tr><td class="rank">6</td><td>"Is what I pay for working?" ops monitoring (Orca, generalized)</td><td class="who">Steve</td><td><span class="pill t2">Whiteboard</span></td><td class="num">4</td><td class="num">5</td><td class="num">3</td><td class="num">3</td><td class="num total">15</td><td class="num pen" title="$100 a month per small business; buyers are SMB owners, not the audience">$1,200</td><td class="num pen b2b">$10M</td><td class="num pen b2b">$102M</td><td class="num pen b2b">$510M</td></tr>
-      <tr><td class="rank">7</td><td>Nora: learn AI by doing exercises</td><td class="who">Phil</td><td><span class="pill t2">Whiteboard</span></td><td class="num">3</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num total">15</td><td class="num pen" title="one-time course">$300</td><td class="num pen">$2.5M</td><td class="num pen">$26M</td><td class="num pen">$128M</td></tr>
-      <tr><td class="rank">8</td><td>Peptide / GLP-1 regimen tracker</td><td class="who">Steve</td><td><span class="pill t2">Whiteboard</span></td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num total">14</td><td class="num pen" title="tracker subscription">$50</td><td class="num pen">$425K</td><td class="num pen">$4.2M</td><td class="num pen">$21M</td></tr>
-      <tr><td class="rank">9</td><td>Buy into something like Rythm instead of building it</td><td class="who">Maddy</td><td><span class="pill t2">Whiteboard</span></td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num total">14</td><td class="num pen" title="$79 a month; revenue goes to the partner, the group gets its share">$948</td><td class="num pen partner">$8.1M</td><td class="num pen partner">$81M</td><td class="num pen partner">$403M</td></tr>
-      <tr><td class="rank">10</td><td>Buzz: contribute to it, or build the missing layer on top</td><td class="who">Maddy</td><td><span class="pill t2">Whiteboard</span></td><td class="num">2</td><td class="num">4</td><td class="num">2</td><td class="num">5</td><td class="num total">13</td><td class="num pen" title="$10 a seat a month">$120</td><td class="num pen">$1.0M</td><td class="num pen">$10M</td><td class="num pen">$51M</td></tr>
-      <tr><td class="rank">11</td><td>Form-check video coach</td><td class="who">Maddy</td><td><span class="pill t2">Whiteboard</span></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num total">12</td><td class="num pen" title="app subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
-      <tr><td class="rank">12</td><td>Sell Phil's family's 10-book series for a cut</td><td class="who">Phil</td><td><span class="pill t2">Whiteboard</span></td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num total">11</td><td class="num pen" title="one book set">$80</td><td class="num pen">$680K</td><td class="num pen">$6.8M</td><td class="num pen">$34M</td></tr>
-      <tr><td class="rank">13</td><td>Nozzle: cross-medium content router</td><td class="who">Steve</td><td><span class="pill t2">Whiteboard</span></td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num total">11</td><td class="num pen" title="app subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
-      <tr><td class="rank">14</td><td>Rythm clone (monthly at-home bloodwork)</td><td class="who">Phil</td><td><span class="pill t3">Pass for now</span></td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num total">10</td><td class="num pen" title="$79 a month">$948</td><td class="num pen">$8.1M</td><td class="num pen">$81M</td><td class="num pen">$403M</td></tr>
-      <tr><td class="rank">15</td><td>Phone blocker / screen-time app</td><td class="who">Maddy</td><td><span class="pill t3">Pass for now</span></td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">5</td><td class="num total">10</td><td class="num pen" title="Opal-style subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
-      <tr><td class="rank">16</td><td>Prompt-a-podcast</td><td class="who">Phil</td><td><span class="pill t3">Pass for now</span></td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num total">10</td><td class="num pen" title="app subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
-      <tr><td class="rank">17</td><td>Productize Max's research system</td><td class="who">Steve</td><td><span class="pill t3">Pass for now</span></td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num total">9</td><td class="num pen" title="$25 a month">$300</td><td class="num pen">$2.5M</td><td class="num pen">$26M</td><td class="num pen">$128M</td></tr>
-      <tr><td class="rank">18</td><td>Camera-over-scale device (or phone stand)</td><td class="who">Phil</td><td><span class="pill t3">Pass for now</span></td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num total">8</td><td class="num pen" title="one-time hardware">$150</td><td class="num pen">$1.3M</td><td class="num pen">$13M</td><td class="num pen">$64M</td></tr>
-      <tr><td class="rank">19</td><td>Better Loom</td><td class="who">Steve</td><td><span class="pill t3">Pass for now</span></td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num total">7</td><td class="num pen" title="$10 a seat a month; buyers are teams">$120</td><td class="num pen b2b">$1.0M</td><td class="num pen b2b">$10M</td><td class="num pen b2b">$51M</td></tr>
+      <tr><td class="rank">1</td><td>Clark + Tally: the engine (email + transactions + files), products on top</td><td class="who">Phil (Maddy built one too)</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">5</td><td class="num">4</td><td class="num total">17</td><td class="num pen" title="the white-glove tier Phil named on Nov 11: $1,000 a month to executives; his own target is 100 customers, $1.2M a year, so these cells are scale only">$12,000</td><td class="num pen b2b">$102M</td><td class="num pen b2b">$1.0B</td><td class="num pen b2b">$5.1B</td></tr>
+      <tr><td class="rank">2</td><td>Property-manager statement reconciliation on Orca + the engine (was: audit your PM)</td><td class="who">Steve</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td><td class="num pen" title="$20 a month for an owner; the audience includes owners">$240</td><td class="num pen">$2.0M</td><td class="num pen">$20M</td><td class="num pen">$102M</td></tr>
+      <tr><td class="rank">3</td><td>"Is what I pay for working?" ops monitoring (Orca, generalized)</td><td class="who">Steve</td><td><span class="pill t2">Whiteboard</span></td><td class="num">4</td><td class="num">5</td><td class="num">4</td><td class="num">3</td><td class="num total">16</td><td class="num pen" title="$100 a month per small business; buyers are SMB owners, not the audience">$1,200</td><td class="num pen b2b">$10M</td><td class="num pen b2b">$102M</td><td class="num pen b2b">$510M</td></tr>
+      <tr><td class="rank">4</td><td>Media Studio: script-anchored production + packaging attribution</td><td class="who">Phil (built it)</td><td><span class="pill t1">Build</span></td><td class="num">3</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num total">15</td><td class="num pen" title="$50 a month per channel; buyers are a few hundred YouTube teams, not the audience">$600</td><td class="num pen b2b">$5.1M</td><td class="num pen b2b">$51M</td><td class="num pen b2b">$255M</td></tr>
+      <tr><td class="rank">5</td><td>Nora: learn AI by doing exercises</td><td class="who">Phil</td><td><span class="pill t2">Whiteboard</span></td><td class="num">3</td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num total">15</td><td class="num pen" title="one-time course">$300</td><td class="num pen">$2.5M</td><td class="num pen">$26M</td><td class="num pen">$128M</td></tr>
+      <tr><td class="rank">6</td><td>Buy into something like Rythm instead of building it</td><td class="who">Maddy</td><td><span class="pill t2">Whiteboard</span></td><td class="num">4</td><td class="num">4</td><td class="num">2</td><td class="num">4</td><td class="num total">14</td><td class="num pen" title="$79 a month; revenue goes to the partner, the group gets its share">$948</td><td class="num pen partner">$8.1M</td><td class="num pen partner">$81M</td><td class="num pen partner">$403M</td></tr>
+      <tr><td class="rank">7</td><td>Tax season pre-assembled: a product layer on the engine</td><td class="who">Phil (Steve has the same pain)</td><td><span class="pill t2">Whiteboard</span></td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num total">14</td><td class="num pen" title="between TurboTax and a $1,500 CPA; or the moment that sells the $1,000-a-month record">$300</td><td class="num pen">$2.5M</td><td class="num pen">$26M</td><td class="num pen">$128M</td></tr>
+      <tr><td class="rank">8</td><td>Buzz: contribute to it, or build the missing layer on top</td><td class="who">Maddy</td><td><span class="pill t2">Whiteboard</span></td><td class="num">2</td><td class="num">4</td><td class="num">2</td><td class="num">5</td><td class="num total">13</td><td class="num pen" title="$10 a seat a month">$120</td><td class="num pen">$1.0M</td><td class="num pen">$10M</td><td class="num pen">$51M</td></tr>
+      <tr><td class="rank">9</td><td>Sell Phil's family's 10-book series for a cut</td><td class="who">Phil</td><td><span class="pill t2">Whiteboard</span></td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num total">11</td><td class="num pen" title="one book set">$80</td><td class="num pen">$680K</td><td class="num pen">$6.8M</td><td class="num pen">$34M</td></tr>
+      <tr><td class="rank">10</td><td>Nozzle: cross-medium content router</td><td class="who">Steve</td><td><span class="pill t2">Whiteboard</span></td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num total">11</td><td class="num pen" title="app subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
+      <tr><td class="rank">11</td><td>Phone blocker / screen-time app</td><td class="who">Maddy</td><td><span class="pill t3">Pass for now</span></td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">5</td><td class="num total">10</td><td class="num pen" title="Opal-style subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
+      <tr><td class="rank">12</td><td>Prompt-a-podcast</td><td class="who">Phil</td><td><span class="pill t3">Pass for now</span></td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num total">10</td><td class="num pen" title="app subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
+      <tr><td class="rank">13</td><td>Productize Max's research system</td><td class="who">Steve</td><td><span class="pill t3">Pass for now</span></td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num total">9</td><td class="num pen" title="$25 a month">$300</td><td class="num pen">$2.5M</td><td class="num pen">$26M</td><td class="num pen">$128M</td></tr>
+      <tr><td class="rank">14</td><td>Better Loom</td><td class="who">Steve</td><td><span class="pill t3">Pass for now</span></td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="num total">7</td><td class="num pen" title="$10 a seat a month; buyers are teams">$120</td><td class="num pen b2b">$1.0M</td><td class="num pen b2b">$10M</td><td class="num pen b2b">$51M</td></tr>
+      <tr><td class="rank">15</td><td>Build a better Cal AI</td><td class="who">Maddy</td><td><span class="pill t4">Set aside Nov 11</span></td><td class="num">5</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num total">16</td><td class="num pen" title="Cal AI's own price band, $30 to $60 a year">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
+      <tr><td class="rank">16</td><td>Health copilot with an "Out of Lab" switch</td><td class="who">All three</td><td><span class="pill t4">Set aside Nov 11</span></td><td class="num">5</td><td class="num">2</td><td class="num">5</td><td class="num">3</td><td class="num total">15</td><td class="num pen" title="Cal AI to MFP range">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
+      <tr><td class="rank">17</td><td>Peptide / GLP-1 regimen tracker</td><td class="who">Steve</td><td><span class="pill t4">Set aside Nov 11</span></td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num total">14</td><td class="num pen" title="tracker subscription">$50</td><td class="num pen">$425K</td><td class="num pen">$4.2M</td><td class="num pen">$21M</td></tr>
+      <tr><td class="rank">18</td><td>Form-check video coach</td><td class="who">Maddy</td><td><span class="pill t4">Set aside Nov 11</span></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num total">12</td><td class="num pen" title="app subscription">$60</td><td class="num pen">$510K</td><td class="num pen">$5.1M</td><td class="num pen">$26M</td></tr>
+      <tr><td class="rank">19</td><td>Rythm clone (monthly at-home bloodwork)</td><td class="who">Phil</td><td><span class="pill t4">Set aside Nov 11</span></td><td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num total">10</td><td class="num pen" title="$79 a month">$948</td><td class="num pen">$8.1M</td><td class="num pen">$81M</td><td class="num pen">$403M</td></tr>
+      <tr><td class="rank">20</td><td>Camera-over-scale device (or phone stand)</td><td class="who">Phil</td><td><span class="pill t4">Set aside Nov 11</span></td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num total">8</td><td class="num pen" title="one-time hardware">$150</td><td class="num pen">$1.3M</td><td class="num pen">$13M</td><td class="num pen">$64M</td></tr>
     </tbody>
   </table>
   </div>
-  <p class="pen-note"><b>Penetration columns:</b> annual gross revenue if 1%, 10% or 50% of the Maxinomics audience (850K subscribers, taken as 8.5K, 85K and 425K buyers) paid the price in the $/yr column. Creator-sold products convert 1% to 3% of an engaged audience, so read 1% as the realistic case, 10% as a multi-year ceiling and 50% as the size of the whole audience spending. <i>Italic</i> rows (Media Studio, Orca ops, Better Loom) are sold to teams and businesses, not to viewers, so the audience is not the buyer and the cells are for scale only. Rythm buy-in revenue accrues to the partner; the group's take is the stake it negotiates. Market-pool versions of the same bands are on the Buzz, Calorie apps, Bloodwork, GLP-1 and Learn AI tabs.</p>
+  <p class="pen-note"><b>Penetration columns:</b> annual gross revenue if 1%, 10% or 50% of the Maxinomics audience (850K subscribers, taken as 8.5K, 85K and 425K buyers) paid the price in the $/yr column. Creator-sold products convert 1% to 3% of an engaged audience, so read 1% as the realistic case, 10% as a multi-year ceiling and 50% as the size of the whole audience spending. <i>Italic</i> rows (Clark, Media Studio, Orca ops, Better Loom) are sold to businesses or at a white-glove price, not to viewers at large, so the cells are for scale only; Clark's own target per Phil on Nov 11 is 100 customers at $1,000 a month, $1.2M a year. Rythm buy-in revenue accrues to the partner; the group's take is the stake it negotiates. Market-pool versions of the same bands are on the Buzz, Calorie apps, Bloodwork, GLP-1 and Learn AI tabs.</p>
 </section>
 
 <div class="tier">
   <div class="tier-head"><h2>Build</h2><span>Real market, real edge, and the group already did the homework.</span></div>
   <div class="cards">
 
-
-  <article class="card"><div class="n">1</div><div class="b">
-    <h3>Clark: personal data pipeline for email, transactions, files</h3>
+<article class="card"><div class="n">1</div><div class="b">
+    <h3>Clark + Tally: the engine under everything (email, transactions, files)</h3>
     <p class="pitch">A personal system of record. Authenticate once and get vectorized email search, normalized transactions (classifier first, web search when unsure, email as evidence), and classified files, indexed together and open to any agent you choose. Phil's framing on Nov 11: every business queries a system of record all day; no individual has ever had one. A Mac and iOS app for email and transactions sits on top, because "it will not only be agents."</p>
-    <div class="meta"><span class="chip src">Oct 22 call</span><span class="chip src">iMessage</span><span class="chip src">Reddit (archived)</span><span class="chip src">Six voice notes, Nov 11</span><a class="chip src" href="clark.html" style="text-decoration:none">Clark tab: what it is, diagram, market scan →</a><span class="chip">Working prototype at Phil's</span><span class="chip">Maddy runs her own version</span></div>
+    <div class="meta"><span class="chip src">Oct 22 call</span><span class="chip src">iMessage</span><span class="chip src">Reddit (archived)</span><span class="chip src">Six voice notes, Nov 11</span><span class="chip src">Nov 11 session, transcribed</span><a class="chip src" href="clark.html" style="text-decoration:none">Clark tab: what it is, diagram, market scan →</a><span class="chip">Working prototype at Phil's</span><span class="chip">Maddy runs her own version</span></div>
     <div class="scores">
       <div class="score"><label>Market</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
       <div class="score"><label>Edge</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
       <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
     </div>
     <div class="facts">
+      <div><b>Nov 11 session: the engine, as built</b>Tally takes Plaid webhooks and runs two stages. First, merchant cleaning with a fast model, a web-search fallback when confidence is low (account numbers and names stripped before the search), aliases saved as "machine cleaned" with no review queue, Amazon direct told apart from Amazon Marketplace. Then one of 47 economic types (merchant purchase, someone sending you money, a card payoff, a transfer, brokerage in or out), tuned on 450 of Phil's own hand-labelled transactions to 94 to 95%. Clark ingests every email, hands receipt candidates to Tally to pin to the transaction, and searches by vectors plus keywords: "Morning Brew contract" found a 2023 thread with Devin Emery that never used the word. Local files are next, a small embedding model on the Mac, because Spotlight cannot see inside a PDF. Node and Python on AWS, about $350 a month for Phil alone, and every customer gets their own CloudFormation stack so no two people share a table.</div>
+      <div><b>Who pays, per Phil</b>Not a $200 consumer tool. High-net-worth operators and executives with several entities, real estate and deal flow, who lose contracts in email and dread tax season: the people who already answer his videos (Craig Fuller of FreightWaves, Austin Rief of Morning Brew, Steve's friends Graham and Gnome, "total mess"). White-glove, $1,000 a month, on your own infrastructure, "and we don't see it." Steve: "shut up and take my money." 100 customers is $1.2M a year with no funding round.</div>
       <div><b>Why it ranks here</b>Two of three of you already built and use it. Phil's version hits about 94% on merchant identification and filed his taxes (K-1, wash sales, a closed Fidelity rollover) in an hour and a half. Maddy's version found and submitted her FSA-eligible expenses to HealthEquity. Steve said Mercury put its best engineers on transaction categorization for six months.</div>
       <div><b>Edge</b>It exists. Phil on Nov 11: Clark is one of the three places the group has an edge, "because I've already built a lot of it." Steve's Books-on-Mercury experience covers the hardest part, and Max's audience is the launch channel. Steve flipped on CLI by the end: a trending "install this and your email is searchable" post would get him to try it. Audience fit is strong and already in the 5: K-1s, wash sales and rollovers are a senior-income problem, and that is who watches Maxinomics.</div>
       <div><b>Reddit signal</b>The loudest personal-finance ask found was a 259-upvote thread praising Monarch Money's receipt scanner and then listing what it cannot do: match Amazon and PayPal line items, edit splits, attach receipts that never link to the posted charge. That is the email-as-evidence step this pipeline already does. A separate thread calls medical bills "harder to track than anything else," with people keeping spreadsheets; five tiny bill-vs-EOB apps launched in 2026 and none has traction. Subscription trackers, by contrast, get the same reply every time: the bank app already does that.</div>
@@ -186,14 +202,15 @@ tbody tr:last-child td { border-bottom: 0; }
       <div><b>Phil's answer (voice notes, Nov 11)</b>"That's really useful to hear," and yes, Plaid alone is easy. The case that is not: he gets a revenue-share lump sum Friday, the statement is lighter than expected, and checking it means Slack, email, transactions and a spreadsheet, plus who signed which deal for how much and when a decision was later reversed. Hooking Claude Code to each source is bespoke, the question would run for an hour or two on a top model, and Slack does not work that way anyway. What it needs is a graph of events, people and decisions that validates and invalidates them over time, "running in the background all the time" so you can rely on it when you need it. "How to market exactly, still not entirely sure."</div>
       <div class="risk"><b>Steve's counter (three voice notes, 11:03 to 11:15)</b>He already runs Claude over Slack, Notion, Linear, Gmail and GitHub at Mercury all day and it answers complex questions fast, so his two questions are: what is the technical missing piece versus an out-of-the-box agent setup, and what does a user actually gain? He can see one answer, background ingestion that tags things as they arrive ("this matters for getting paid"), but calls that hard to do better than the existing tools. Platform risk: funded startups keep building this shape and then Anthropic ships a feature that makes them obsolete. Whole thing feels "nebulous, across the board we're just making personal AI use better," which is "a really tall order." His proposal: shrink it to one problem area at a time, the best agentic setup for personal finance, or for relationships. Then, catching himself: "now we're getting into harness land," every vertical AI startup has an ingestion pipeline underneath, "we're still talking about infrastructure." Not against it, thinking it through.</div>
       <div><b>Where Steve landed (11:33, "last one until I get feedback")</b>Instinct apparently cracked the general personal assistant, and what makes it better than plain Claude is the infrastructure behind the app. Every vertical agentic app (CRM, SEO, whatever) does the same thing one level down, and every one of them puts a UI on top that locks you in. Phil's version is that backend without the lock-in. So the product might be "headless agentic apps: bring your own agent, we give you the backend," aimed at specific use cases rather than all of personal life. That is the first framing both of them have agreed on.</div>
-      <div><b>Where it stands</b>The Oct 22 call ended mid-sentence on packaging: CLI utility for tech-savvy users first, GUI route second, Plaid optional at signup. Maddy asked Phil on Oct 27 to onboard her; no sign that happened. Steve asked Phil for the repo on Nov 11; no answer yet. Phil is building the next layer now: email and transactions in one Mac app and one iOS app on top of the index, since people still want to see transactions, not just balances. Whiteboard question for tonight (Wed, Nov 11): Phil has described the thing (a personal system of record with a GUI on top) and Steve has named the gap (infrastructure, not yet a product). Steve's own fix is the agenda: pick one problem area. Personal finance is the obvious one, since the receipt-to-transaction matching and the revenue-share audit are both already there. Who pays for that first, what does the Anthropic-ships-it-next-quarter version look like, and is "headless, bring your own agent" the pitch or just the architecture?</div>
+      <div><b>Where it stood before Nov 11</b>The Oct 22 call ended mid-sentence on packaging: CLI utility for tech-savvy users first, GUI route second, Plaid optional at signup. Maddy asked Phil on Oct 27 to onboard her; no sign that happened. Steve asked Phil for the repo on Nov 11; no answer yet. Phil is building the next layer now: email and transactions in one Mac app and one iOS app on top of the index, since people still want to see transactions, not just balances. Whiteboard question, not reached on Nov 11, carried to December: Phil has described the thing (a personal system of record with a GUI on top) and Steve has named the gap (infrastructure, not yet a product). Steve's own fix is the agenda: pick one problem area. Personal finance is the obvious one, since the receipt-to-transaction matching and the revenue-share audit are both already there. Who pays for that first, what does the Anthropic-ships-it-next-quarter version look like, and is "headless, bring your own agent" the pitch or just the architecture?</div>
+      <div><b>Where it stands (Nov 11 session)</b>Evidence moved to 5. Steve has now seen it running and called it "a way better engine than I have," the headless framing from the voice notes held, and the product layers are picked: Orca reconciliation (idea 2), the $1,000-a-month executive record, tax (idea 7). Phil is on multi-tenant now, hands it over inside two weeks behind a web onboarding page (Google sign-in, Plaid, "15 or 20 minutes" to connect), and Steve gets the repos then. The December session is the test.</div>
     </div>
   </div></article>
 
-  <article class="card"><div class="n">2</div><div class="b">
-    <h3>Audit your property manager</h3>
-    <p class="pitch">Owners upload the monthly PM statement; the app checks every charge against the management contract, tracks all-time spend per property, and builds the evidence pack for a dispute. The general form is auditing any variable monthly vendor bill.</p>
-    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip src">BiggerPockets</span><span class="chip">Nov 3</span><span class="chip">Fireworks analysis · Claude design file</span><a class="chip src" href="audit.html" style="text-decoration:none">Audit tab: what it is, diagram, market scan →</a></div>
+<article class="card"><div class="n">2</div><div class="b">
+    <h3>Property-manager statement reconciliation on Orca and the engine (was: audit your property manager)</h3>
+    <p class="pitch">Started as the owner-side auditor: upload the statement, check every charge against the contract, build the dispute pack. On Nov 11 it flipped to the manager's side: the engine indexes a property manager's vendor emails, invoices and tenant tickets next to Orca's work orders, so "why is this month $10,000 higher" is a query with an answer, and the same index catches repeat repairs and reconciles fifty owners' statements at month end.</p>
+    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip src">BiggerPockets</span><span class="chip">Nov 3</span><span class="chip">Fireworks analysis · Claude design file</span><span class="chip src">Nov 11 session</span><span class="chip">Guinea pig: Jason, WSPM</span><a class="chip src" href="audit.html" style="text-decoration:none">Audit tab: what it is, diagram, market scan →</a></div>
     <div class="scores">
       <div class="score"><label>Market</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
       <div class="score"><label>Edge</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
@@ -201,15 +218,16 @@ tbody tr:last-child td { border-bottom: 0; }
       <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
     </div>
     <div class="facts">
+      <div><b>Nov 11 session: flipped to the PM's side</b>Phil's scenario: a manager bills an owner $10,000 above normal and the owner asks why. Today the answer is assembled by hand from vendor emails, invoices and tickets. With Orca's work orders and the engine's email and transaction index in one place it is a question, and the same index finds the furnace that was "fixed" four times before it was fixed and reconciles a 50-owner book at month end. Steve has the customer: Jason at WSPM already runs Claude Cowork over Orca, AppFolio and his email, "would be totally down to guinea pig," and has buyer's remorse about ProFlow, a $1,200-a-month "AI property manager" that turned out to be a voice harness for leasing calls and had to build on Orca's webhooks for anything real. Kyle at Green Street is further along, querying Orca's technician GPS from Claude Code. This is the version that passes Steve's rule: it strengthens Orca instead of competing for his time.</div>
       <div><b>Why it ranks here</b>It sits on Orca, which Phil calls one of the two real edges, and neither he nor Steve has a packaging doubt about it the way they do about Clark. Market is a 3, not a 4: the 5M owner-to-PM relationships in the Fireworks analysis is funnel size, not buyers. Only owners who use a PM and suspect them are in play, and most of those switch PMs rather than buy software. Havyn charges $19 to 99/mo for the same promise, so some people pay. Steve's generalization, auditing any variable monthly vendor bill, is what keeps it at 3. Briefly rank 1 on Nov 11 before Maddy questioned the market score.</div>
       <div><b>Edge</b>Orca is one of the three edges Phil named on Nov 11, and this is Orca pointed at owners. Steve sees the sloppy invoicing daily, and Orca's verified maintenance data is the moat nobody else has. Upload-and-check alone is a commodity. The audience helps here too: people who own property and hire managers are in it, so the owner side can be sold straight from the channel without a sales team.</div>
-      <div class="risk"><b>Risk</b>Channel conflict: an owner-side auditor is aimed at Orca's own PM customers. DoorVault gives the statement audit away free. Fireworks' read is that the recovery workflow is the product, the audit is only the hook.</div>
+      <div class="risk"><b>Risk</b>Channel conflict was the risk on the owner-side version (an auditor aimed at Orca's own PM customers); the PM-side version removes it. What remains: Phil does not know how an owner dispute actually runs ("I'm naive to that actual process") and Steve has to learn it from Jason before anyone builds. DoorVault gives the owner-side audit away free, so that stays a hook, not the product.</div>
       <div><b>Landlord forums</b>Across three BiggerPockets threads on what landlords want from software, nobody asked to audit their PM's statement. What they asked for, in order: every tenant and vendor message in one auditable thread, maintenance tracked from report through vendor to payment, maintenance history that does not vanish so they stop "paying for the same problem twice," and hidden or creeping fees. That points at the PM-branded trust portal with a verified maintenance record, which Orca's data already is, rather than the owner-side auditor.</div>
-      <div><b>Where it stands</b>Steve is considering an MVP as an owner-facing surface on Orca. Design concept exists, not iterated. Phil and Maddy have not weighed in yet.</div>
+      <div><b>Where it stands</b>Steve brings Jason's WSPM data as the first domain test once Phil hands over the engine (inside two weeks). The owner-side design concept still exists, not iterated. First thing to try in December.</div>
     </div>
   </div></article>
 
-  <article class="card"><div class="n">5</div><div class="b">
+<article class="card"><div class="n">4</div><div class="b">
     <h3>Media Studio: script-anchored production, plus packaging attribution</h3>
     <p class="pitch">Phil's production system for long-form explainer video, already running 54 Maxinomics productions. Graphics beats, shots, comments and notes all anchor to script lines; agents write Research and Visuals over MCP; a Performance tab links the published video to YouTube and shows what each title or thumbnail change did to CTR and views, by traffic source.</p>
     <div class="meta"><span class="chip src">studio.maxinomics.com</span><span class="chip">Reviewed Nov 10</span><span class="chip">Live, in daily use</span><span class="chip">Reference customer: Max</span></div>
@@ -224,7 +242,7 @@ tbody tr:last-child td { border-bottom: 0; }
       <div><b>Who buys</b>Educational long-form YouTube teams of 3 to 15 people with graphics-heavy videos: the Harris, Abram, Wendover, Economics Explained tier and the few hundred channels below. A couple thousand teams worldwide, all already paying for StudioBinder, Frame.io, Spotter Studio or vidIQ. $50 to 150 a seat a month is plausible.</div>
       <div class="risk"><b>Risk</b>Writers live in Google Docs, and moving a script into a new editor is the hardest switch in software. Without Phil's agent setup, Research and Visuals sit empty, so a buyer sees chrome around nothing. Multi-tenant auth, billing, onboarding, YouTube API compliance and support do not exist yet. And Phil's own instinct, said about his other tools, is "maybe it's just a bespoke internal tool."</div>
       <div><b>Recommended wedge</b>Sell the Performance tab alone first: connect YouTube, log packaging changes, see what moved by traffic source. A 30-second demo at $20 to 50 a month with every serious YouTuber as the funnel. The production suite is the upsell, and building it in public on Max is the marketing.</div>
-      <div><b>Where it stands</b>Reviewed from Maddy's account: script, shot list, punch list, style guide, assets, voice, performance and the productions list. Video and Activity surfaces, editing, exports and the YouTube link flow were not tested. Nobody has discussed selling it yet.</div>
+      <div><b>Where it stands</b>Reviewed from Maddy's account: script, shot list, punch list, style guide, assets, voice, performance and the productions list. Video and Activity surfaces, editing, exports and the YouTube link flow were not tested. Nobody has discussed selling it yet. Nov 11 session: mentioned only as one of the four systems Phil has wired to Sentry.</div>
     </div>
   </div></article>
 
@@ -232,64 +250,29 @@ tbody tr:last-child td { border-bottom: 0; }
 </div>
 
 <div class="tier">
-  <div class="tier-head"><h2>Whiteboard</h2><span>Worth an hour at the next Davenport session before anyone builds.</span></div>
+  <div class="tier-head"><h2>Whiteboard</h2><span>Worth an hour at the December session before anyone builds.</span></div>
   <div class="cards">
 
-  <article class="card"><div class="n">3</div><div class="b">
-    <h3>Build a better Cal AI</h3>
-    <p class="pitch">Cal AI with the hundred things fixed. Maddy switched to it from MyFitnessPal on Oct 24 because it is so much easier, and listed what it gets wrong the same afternoon. This is the head-on version: the same product, done properly, launched to 850K people. The health copilot (idea 4) is what you build on top of it afterwards.</p>
-    <div class="meta"><span class="chip src">iMessage</span><span class="chip">Oct 24, Nov 8</span><a class="chip src" href="calories.html" style="text-decoration:none">Calorie apps tab: MFP vs Cal AI, 24 months →</a><span class="chip">Maddy uses it daily</span></div>
-    <div class="scores">
-      <div class="score"><label>Market</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
-      <div class="score"><label>Edge</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-      <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-    </div>
-    <div class="facts">
-      <div><b>What "better" means, from the Oct 24 thread</b>1. Photograph the food and its ingredient label in one capture, so the buffalo skewers from the New Leaf counter get their real label instead of a guess (Steve: "so many image models and then OCR models, add a reasoning layer, I don't see why a library for CalAI would be a moat"). 2. Modifiers: the latte was whole milk and there was nowhere to say so. 3. Read the scale in the photo, so weight is measured, not guessed from the picture. 4. An avoid list, so the label feature flags ingredients (Phil's add). 5. "Suggest what I should eat the rest of the day to stay in line" from the macro target. 6. Oura, Whoop and a CGM in, not just Apple Health. 7. Easier voice logging (Nov 8). 8. A better name.</div>
-      <div><b>Why it ranks here</b>Market 5 is measured, not guessed: Cal AI cleared $28M on iOS in the last twelve months, out-downloaded MyFitnessPal in the US every month for a year, and took 28% of the two-app revenue pool from a standing start. Evidence 4: that data plus the target user using the product every day. Build 4: Phil's one-month rule applies to a single-purpose consumer app, and the hard parts (vision, OCR, a reasoning layer) are the parts Steve calls easy.</div>
-      <div><b>Edge</b>Phil on Oct 24: "pretty claude-slopped app and then he just had a really good social media strat. We could just compete with his ass and prob do it much better." The founder's edge is distribution; Maxinomics is distribution with a more serious audience. That is why this scores 3, not the 2 the health copilot got for a product that also has to beat Oura and Whoop. It is not inside expertise.</div>
-      <div class="risk"><b>Risk</b>Maddy herself, Nov 8: "I feel it mostly fits my needs, not a fuck ton I would do to improve, so I'm not sure how going that direction would go. It would be mostly a copy." Phil, Nov 11: no edge in health, "going to get crowded quickly, already kind of is." The Calorie apps tab shows Cal AI's own growth turning over since January 2026 and the AI-photo clones behind it (Numify, Calo, Foodvisor, BitePal) tiny, so a late copy fights for a slowing newcomer's downloads. MFP's hand-entered recipe library is the one real moat, and Maddy thinks it is becoming less important.</div>
-      <div><b>Where it stands</b>Sixteen points on paper, Whiteboard tier until the group answers the Nov 8 objection: is the fix list above a product, or a feature request. Tonight's question: ship this narrow version as the copilot's v1 and let the "Out of Lab" switch, labs and wearables come after, or skip the logger and go straight to the layer on top.</div>
-    </div>
-  </div></article>
-
-  <article class="card"><div class="n">4</div><div class="b">
-    <h3>Health copilot with an "Out of Lab" switch</h3>
-    <p class="pitch">Photo-plus-label food logging that works on day one with nothing connected, an avoid list, and one switch that treats a planned bender as part of the plan. Labs, wearables and a scale attach later and sharpen the same screen.</p>
-    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip">Oct 24 to Nov 11</span><span class="chip">Grok Build MVP · Fireworks market map</span><a class="chip src" href="calories.html" style="text-decoration:none">Calorie apps tab: MFP vs Cal AI, 24 months →</a></div>
-    <div class="scores">
-      <div class="score"><label>Market</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
-      <div class="score"><label>Edge</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
-      <div class="score"><label>Build</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-    </div>
-    <div class="facts">
-      <div><b>Why it ranks here</b>Biggest market on the board: nutrition apps are a $4.8B category growing about 9% a year, and Cal AI went from zero to $30M+ in under two years. It was ranked first until Nov 11, when Steve and Phil both pushed back on the edge, and that pushback moved it out of the Build tier.</div>
-      <div><b>Edge</b>Thin. Max's audience is a launch channel and Maddy is the target user, but Phil's read on Nov 11: "we don't have any edge in that space, and it's going to get crowded quickly, already kind of is." Steve: if he were Oura or Whoop he would "already be looking to expand the platform to be more wholistic and integrate with other data," and Apple Health could do the same. Maddy's Nov 11 point, that the 850K audience is real distribution, is the one thing in this column, and it is already counted in the 2. Raising it would mean overturning what Phil and Steve said the same day, so that is a question for tonight, not a scoring change.</div>
-      <div class="risk"><b>Risk</b>Funded incumbents on every side: Cal AI is independent (Viral Development) and fast, MFP belongs to Francisco Partners, and the wearable companies own the data and the subscription. Steve expects "other venture backed startups launching versions of that" and says it "would have to put out something really good," with no engineering time on his side right now. Maddy said on Nov 8 a competitor "would be mostly a copy."</div>
-      <div><b>Where it stands</b>MVP sketched in Buzz on Oct 24. The biomarker angle from Nov 7 feeds this; the data pipeline (Clark, idea 1) is the backbone it would run on. Phil, later on Nov 11: "we'd need to get our hands on all integrations that would make sense, which I feel like there's a bunch, unsure what MVP would look like but we could decide on something." Whiteboard question for tonight (Wed, Nov 11): is there a version of this that is a feature of Clark rather than a product against Oura, Whoop and Apple?</div>
-    </div>
-  </div></article>
-  <article class="card"><div class="n">6</div><div class="b">
+<article class="card"><div class="n">3</div><div class="b">
     <h3>"Is what I pay for working?" ops monitoring, Orca generalized</h3>
     <p class="pitch">Small business owners pay every day for operations they cannot see. Stream raw data from phones or cheap off-the-shelf sensors, let AI turn it into a daily story about their assets, and sell that picture. Orca does it with GPS from employees' phones today; freezers, machinery and kitchens are the next cases.</p>
-    <div class="meta"><span class="chip src">iMessage voice note</span><span class="chip">Nov 10, this morning</span><span class="chip">Live version: Orca</span><span class="chip">Prior art: UpKeep Sensors (Monnit)</span></div>
+    <div class="meta"><span class="chip src">iMessage voice note</span><span class="chip">Nov 10, this morning</span><span class="chip">Live version: Orca</span><span class="chip">Prior art: UpKeep Sensors (Monnit)</span><span class="chip src">Nov 11 session</span></div>
     <div class="scores">
       <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
       <div class="score"><label>Edge</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
       <div class="score"><label>Build</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
     </div>
     <div class="facts">
       <div><b>Why it ranks here</b>Steve already sells a version of this and his Orca customers pay for it. He built the same thing at UpKeep: Monnit sensors resold under UpKeep's name, alerting an industrial kitchen when the freezer gets warm. Equipment monitoring is an established market with willing SMB buyers.</div>
       <div><b>Edge</b>Phil's Nov 11 read: Orca and Media Studio are where the real edge is, "because they're niche and require inside expertise." Steve has the customers, the data pipeline and the sensor supplier. It is the "vibe hardware" idea from the Oct 24 jam with a buyer attached, which the camera scale never had.</div>
       <div class="risk"><b>Risk</b>Sensor monitoring is crowded (Monnit sells direct, plus SmartSense, Samsara and every CMMS). The edge has to be the AI narrative layer plus finding the use cases, not the hardware. It is a B2B play with sensors in the box, so Max's audience helps less and this is the one idea on the board where Phil's one-month rule does not hold: SMB sales cycles plus hardware.</div>
-      <div><b>Where it stands</b>One voice note, "my product thought for today." Nobody has replied yet. Steve is still thinking through use cases.</div>
+      <div><b>Nov 11 session</b>Steve, unprompted at the end of the night: the iOS app is "not the perfect way," it needs technicians to log in and keep it running; a sensor "doesn't require someone to turn on or off, it's just always running, then you own that data and you kind of own the whole stack, because no one else can come in and put a layer on top." Vibration on an expensive machine, temperature in a restaurant fridge during an outage. Phil agreed and said he had not thought about it enough; the only monitoring he needs himself is token spend per project. Steve's rule for what people pay to track: "things that are worth a lot to them," which is why the buyer is a business. Evidence up to 4: raised twice now, both founders for it.</div>
+      <div><b>Where it stands</b>A Nov 10 voice note and the Nov 11 session. No customer has asked for it yet, and it is the second product on the engine after reconciliation (idea 2), not the first.</div>
     </div>
   </div></article>
 
-  <article class="card"><div class="n">7</div><div class="b">
+<article class="card"><div class="n">5</div><div class="b">
     <h3>Nora: learn AI by doing exercises</h3>
     <p class="pitch">Opt-in, self-guided exercises that introduce a real AI tool and have you apply it in a contrived situation right away, so you learn when to reach for it. Phil's idea, previously abandoned; Steve revived it Nov 4.</p>
     <div class="meta"><span class="chip src">iMessage</span><span class="chip">Nov 4</span><span class="chip">Phil's idea</span><span class="chip">Validation: a coworker's unprompted Slack ask</span><a class="chip src" href="learnai.html" style="text-decoration:none">Learn AI tab: 74 apps, none with traction →</a></div>
@@ -307,28 +290,10 @@ tbody tr:last-child td { border-bottom: 0; }
     </div>
   </div></article>
 
-  <article class="card"><div class="n">8</div><div class="b">
-    <h3>Peptide / GLP-1 regimen tracker</h3>
-    <p class="pitch">Not distribution. A regimen and dose tracker that compares what you take against Rythm-style bloodwork, with affiliate fees from distributors. Steve: "would likely crush."</p>
-    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Reddit / App Store</span><span class="chip">Oct 28</span><a class="chip src" href="glp1.html" style="text-decoration:none">GLP-1 tab: 62 trackers, two businesses →</a></div>
-    <div class="scores">
-      <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-      <div class="score"><label>Edge</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-      <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-    </div>
-    <div class="facts">
-      <div><b>Why it ranks here</b>GLP-1s made millions of people active managers of their own dosing, and the peptide market is riding behind it. Maddy's mom forgets her doses, which is the whole product in one sentence. Amble already exists, so there is a comp to study.</div>
-      <div><b>Edge</b>Fits as a module inside idea 4 rather than a separate company. Also a video topic ("interesting economics on the market"). A GLP-1 user skews to the same higher-income audience the channel has, which is a point for it, but the trackers that already exist get the same customers through the App Store.</div>
-      <div class="risk"><b>Risk</b>GLP-1 dose trackers are already a pile: Shotsy, TrackShot, Glapp, GLP Compass and GLP AI (at $120 a year) all ship injection logs, reminders and side-effect journals. Another shot log is dead on arrival; if this lives, it is the food-plus-labs layer the trackers lack. Regulatory grey zone around non-prescribed peptides. Maddy noted she knows surprisingly few people on them.</div>
-      <div><b>Where it stands</b>One iMessage thread. Maddy reacted with eyes and called it intriguing.</div>
-    </div>
-  </div></article>
-
-  <article class="card"><div class="n">9</div><div class="b">
+<article class="card"><div class="n">6</div><div class="b">
     <h3>Buy into something like Rythm instead of building it</h3>
-    <p class="pitch">Take an owner's stake in an existing company in one of these spaces (Rythm is the example) and bring what the group has: Maxinomics as distribution, a YouTube channel with 850K subscribers that can put a product in front of the exact people who buy it, the agent and data tooling from ideas 1 and 5 as the ops layer, Phil and Steve's engineering. Equity for distribution and operating leverage, not a cheque for a clone. Added by Maddy on Nov 11.</p>
-    <div class="meta"><span class="chip src">Maddy, Nov 11</span><span class="chip">No target company yet</span><span class="chip">Distribution: Maxinomics, 850K YouTube subs</span><span class="chip">Example: Rythm, $79 monthly bloodwork</span><span class="chip">Same shape as the book series, idea 12</span><a class="chip src" href="bloodwork.html" style="text-decoration:none">Bloodwork tab: who to call first →</a></div>
+    <p class="pitch">Take an owner's stake in an existing company in one of these spaces (Rythm is the example) and bring what the group has: Maxinomics as distribution, a YouTube channel with 850K subscribers that can put a product in front of the exact people who buy it, the agent and data tooling from ideas 1 and 4 as the ops layer, Phil and Steve's engineering. Equity for distribution and operating leverage, not a cheque for a clone. Added by Maddy on Nov 11.</p>
+    <div class="meta"><span class="chip src">Maddy, Nov 11</span><span class="chip">No target company yet</span><span class="chip">Distribution: Maxinomics, 850K YouTube subs</span><span class="chip">Example: Rythm, $79 monthly bloodwork</span><span class="chip">Same shape as the book series, idea 9</span><a class="chip src" href="bloodwork.html" style="text-decoration:none">Bloodwork tab: who to call first →</a></div>
     <div class="scores">
       <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
       <div class="score"><label>Edge</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
@@ -336,13 +301,32 @@ tbody tr:last-child td { border-bottom: 0; }
       <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
     </div>
     <div class="facts">
-      <div><b>Why it ranks here</b>The Rythm clone (idea 14) was passed because it is a capital-heavy logistics business with no owned edge: kits, a contract lab, 3-to-5-day turnarounds, parity at $119 to 149 a test. Owning a piece of a company that already solved that skips the whole objection and keeps the market score. Build is 4 because there is nothing to engineer; the work is a deal.</div>
+      <div><b>Why it ranks here</b>The Rythm clone (idea 19) was passed because it is a capital-heavy logistics business with no owned edge: kits, a contract lab, 3-to-5-day turnarounds, parity at $119 to 149 a test. Owning a piece of a company that already solved that skips the whole objection and keeps the market score. Build is 4 because there is nothing to engineer; the work is a deal.</div>
       <div><b>Edge</b>Distribution, and it is already built: Maxinomics has 850K YouTube subscribers who watch explainers about money and health, which is the audience a Rythm-style company pays to reach. A founder gives up equity for that long before they give it up for cash. On top of it, an AI-run marketing and support stack the target does not have. It is the same pitch Phil made for the book series, so the group has a worked example of the model, and it is why Edge is 4 here while the clone scores 2: the audience is an edge for a partner, not for a competitor who still has to build the lab side.</div>
       <div class="risk"><b>Risk</b>No target, no terms, no idea whether Rythm or anyone like it wants a partner. A founder-led health startup gives up equity for audience only if the audience converts, which means a test campaign before a deal. Minority stakes carry no control, and the group's time is the scarce asset, not its capital. Evidence is 2 because this is one message and an analogy.</div>
-      <div><b>Where it stands</b>One text from Maddy on Nov 11. Whiteboard question for tonight: is this an idea on its own, or the operating model for ideas 12 and 14, and which three companies would be worth a first conversation?</div>
+      <div><b>Where it stands</b>One text from Maddy on Nov 11. Whiteboard question, not reached on Nov 11, carried to December: is this an idea on its own, or the operating model for ideas 9 and 19, and which three companies would be worth a first conversation?</div>
     </div>
   </div></article>
-  <article class="card"><div class="n">10</div><div class="b">
+
+<article class="card"><div class="n">7</div><div class="b">
+    <h3>Tax season, pre-assembled: a product layer on the engine</h3>
+    <p class="pitch">The engine keeps every K-1, 1099, brokerage statement and withdrawal document itemised as it arrives, in the shape of last year's return, so filing is a review instead of a weekend of collection. Phil's own pain, Steve's too, and the first non-Orca product the group named on Nov 11.</p>
+    <div class="meta"><span class="chip src">Nov 11 session</span><span class="chip">Raised by Phil</span><span class="chip">Steve: 2.5 hours with Claude to find last year's forms</span><a class="chip src" href="clark.html" style="text-decoration:none">Clark tab: the engine it runs on →</a></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+    </div>
+    <div class="facts">
+      <div><b>Why it ranks here</b>Phil's story: a five-year-old Fidelity 401(k) withdrawal document, needed to answer the IRS, dug out of email archives; K-1s, eight financial institutions, seven or eight cards. TurboTax is a weekend of collecting and a $1,500 CPA still makes you assemble the pile. Steve filed late this year and spent two and a half hours with Claude driving a browser through Schwab and old returns, and it kept stalling on login screens. Phil's own instance already filed his taxes in an hour and a half (idea 1). Market 4: everyone with a K-1 or a brokerage account has this once a year, and the Maxinomics audience is exactly those people.</div>
+      <div><b>Edge</b>The engine runs at write time, which is the whole difference from asking Claude in April: the documents are already found, matched to transactions and filed under the right year before anyone asks. Edge 4, not 5, because the audience fit is strong but the incumbents are the biggest in consumer software.</div>
+      <div class="risk"><b>Risk</b>Seasonal: one urgent week a year and then nothing, unless it is the executive-record subscription with tax as the moment that sells it. Documents beyond email (brokerage portals, payroll sites) are the login-screen problem again. Nobody said who files: this is prep for a CPA or TurboTax, not a filing product, so the incumbents are partners, not targets. Evidence 3: two founders' own pain and one working private instance, no outside user.</div>
+      <div><b>Where it stands</b>Named as a product layer on Nov 11, not scheduled. Whiteboard question for December: a feature of the $1,000-a-month record, or the free hook that sells it?</div>
+    </div>
+  </div></article>
+
+<article class="card"><div class="n">8</div><div class="b">
     <h3>Buzz: contribute to it, or build the missing layer on top</h3>
     <p class="pitch">Buzz is Block's open-source agent chat on Nostr (Rust, Apache 2.0, about 37K stars, commits today). The group runs 63 agents across 181 channels on its own relay and has been patching around its gaps for months. The idea: turn that into upstream contributions, a fork, or a product on top. Added by Maddy on Nov 11.</p>
     <div class="meta"><span class="chip src">Maddy, Nov 11</span><span class="chip">Upstream: block/buzz, Apache 2.0</span><span class="chip">Relay: buzz.maxinomics.com</span><span class="chip">63 agents, 55 of them Phil's</span><a class="chip src" href="buzz.html" style="text-decoration:none">Buzz tab: is anyone using it, are the giants slipping →</a></div>
@@ -356,30 +340,12 @@ tbody tr:last-child td { border-bottom: 0; }
       <div><b>Why it ranks here</b>Build is a 5 because the code exists and the fixes are small; Phil's team already lives in it. Market is a 2 because open-source work does not pay by itself, and the product paths (a hosted relay, managed agent teams, channel templates) sit on Block's own roadmap.</div>
       <div><b>Edge</b>By Phil's own definition, inside expertise. The group has found Buzz's real problems the hard way and already fixed them locally: the mention gate that hides other people's agents, a second message restarting an agent's turn, dropped asks, an Agents page that only shows your own bots, no agent descriptions on the relay, no way to staff a channel. The mention bridge, the <code>buzz-agent</code> CLI and the roster page are the backlog of contributions, already written.</div>
       <div class="risk"><b>Risk</b>It is Block's project. The two-line mention-gate fix went up as PR #3292 and was closed unmerged, so upstream may not want the changes. "Improve" is a maintenance commitment with no revenue line, and a fork splits a community the group did not build.</div>
-      <div><b>Where it stands</b>Nobody has discussed it yet. Whiteboard question for tonight: contribute upstream, fork, or build the ops layer (roster, busy state, staffing, templates) as its own thing that any Buzz relay can run?</div>
+      <div><b>Nov 11 session</b>Maddy asked what makes Slack better than Buzz. Steve: "I just like the Slack UX, honestly." Phil: "very similar." What Buzz has that Slack does not is the back end: every agent's system prompt, chain of thought and reply lands in the group's own AWS database, about 40 MB of structured telemetry a day, and Sentry errors from Clark, Tally, the relay and Media Studio post into Buzz, wake an agent with the full dump, and get fixed and merged without a person. That is the "ops layer" case on this card, already running in-house.</div>
+      <div><b>Where it stands</b>Not discussed as a product on Nov 11. Whiteboard question, not reached on Nov 11, carried to December: contribute upstream, fork, or build the ops layer (roster, busy state, staffing, templates) as its own thing that any Buzz relay can run?</div>
     </div>
   </div></article>
 
-
-  <article class="card"><div class="n">11</div><div class="b">
-    <h3>Form-check video coach</h3>
-    <p class="pitch">Film a lift or a movement, get told what you are doing wrong and how to fix it, and track improvement over time. Maddy: "I would 1000% use this as an app."</p>
-    <div class="meta"><span class="chip src">iMessage</span><span class="chip">Nov 8</span><span class="chip">No research yet</span><a class="chip src" href="formcheck.html" style="text-decoration:none">Form check tab: what it is, diagram, market scan →</a></div>
-    <div class="scores">
-      <div class="score"><label>Market</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-      <div class="score"><label>Edge</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-      <div class="score"><label>Build</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-    </div>
-    <div class="facts">
-      <div><b>Why it ranks here</b>Strong personal pull from the target user, and it sits in the same health vein as idea 4. Video models can now critique movement well enough to be useful.</div>
-      <div><b>Edge</b>Could be a feature of the health copilot rather than its own app. Max's audience skews toward people who track things.</div>
-      <div class="risk"><b>Risk</b>Nobody has looked at who already does this or what they earn. Phil and Steve have not responded to it. Accurate pose feedback from phone video is a real engineering problem, but one this group can take on.</div>
-      <div><b>Where it stands</b>One message and a tweet link. Needs the same Appfigures treatment the calorie apps got.</div>
-    </div>
-  </div></article>
-
-  <article class="card"><div class="n">12</div><div class="b">
+<article class="card"><div class="n">9</div><div class="b">
     <h3>Sell Phil's family's 10-book series for a cut</h3>
     <p class="pitch">A finished, well-liked educational book series owned by a company Phil is still part of with his family. They are bad at selling it and do not use AI. The deal: the three of you run marketing and fulfillment with AI, and take roughly $10 a book, or Phil splits his equity stake. No product to build.</p>
     <div class="meta"><span class="chip src">iMessage voice note</span><span class="chip">Nov 3</span><span class="chip">Phil already holds equity</span></div>
@@ -397,7 +363,7 @@ tbody tr:last-child td { border-bottom: 0; }
     </div>
   </div></article>
 
-  <article class="card"><div class="n">13</div><div class="b">
+<article class="card"><div class="n">10</div><div class="b">
     <h3>Nozzle: cross-medium content router</h3>
     <p class="pitch">One place that decides what deserves your attention today across X, YouTube, Spotify, Substack and newsletters, instead of five algorithms competing for it. Phil's version: "what's good on the Anthropic S-1, across every platform."</p>
     <div class="meta"><span class="chip src">Buzz</span><span class="chip">Oct 30 to 31</span><span class="chip">Fireworks competitive map</span></div>
@@ -422,23 +388,7 @@ tbody tr:last-child td { border-bottom: 0; }
   <div class="tier-head"><h2>Pass for now</h2><span>Researched or discussed, and the evidence points away. Keep on the list in case something changes.</span></div>
   <div class="cards">
 
-  <article class="card"><div class="n">14</div><div class="b">
-    <h3>Rythm clone: monthly at-home bloodwork</h3>
-    <p class="pitch">Buy Tasso kits, contract a white-label CLIA lab, sell the monthly panel under your own brand. Phil: "big swing but interesting, it would be possible to close the loop."</p>
-    <div class="meta"><span class="chip src">Buzz</span><span class="chip">Oct 25 to 26</span><span class="chip">Fireworks patent + contract-lab pricing</span></div>
-    <div class="scores">
-      <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
-      <div class="score"><label>Edge</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
-      <div class="score"><label>Build</label><div class="track"><i style="width:20%"></i></div><div class="v">1</div></div>
-    </div>
-    <div class="facts">
-      <div><b>What the research said</b>No patent blocks it and six white-label labs exist. But price parity lands at $119 to 149 per test, not Rythm's $79, and a contract lab turns 48 hours into 3 to 5 days. Ash Wellness died selling kits just under $150.</div>
-      <div class="risk"><b>Why pass</b>Capital-heavy logistics business with no owned edge. Maddy's own read on Oct 27: "already kinda crowded, I defer." Better as an integration for idea 4 than a company.</div>
-    </div>
-  </div></article>
-
-  <article class="card"><div class="n">15</div><div class="b">
+<article class="card"><div class="n">11</div><div class="b">
     <h3>Phone blocker / screen-time app</h3>
     <p class="pitch">Gamify how many minutes you block your phone each month. Maddy already pays for one.</p>
     <div class="meta"><span class="chip src">Buzz</span><span class="chip">Oct 26</span><span class="chip">Appfigures pull · Grok on Opal</span></div>
@@ -454,7 +404,7 @@ tbody tr:last-child td { border-bottom: 0; }
     </div>
   </div></article>
 
-  <article class="card"><div class="n">16</div><div class="b">
+<article class="card"><div class="n">12</div><div class="b">
     <h3>Prompt-a-podcast</h3>
     <p class="pitch">Describe what you want to hear and get a natural-voice episode, possibly built on Max's research so it is "any podcast, for Max specifically." Maddy added voice follow-up questions after listening.</p>
     <div class="meta"><span class="chip src">iMessage</span><span class="chip">Nov 2</span><span class="chip">No research yet</span></div>
@@ -470,7 +420,7 @@ tbody tr:last-child td { border-bottom: 0; }
     </div>
   </div></article>
 
-  <article class="card"><div class="n">17</div><div class="b">
+<article class="card"><div class="n">13</div><div class="b">
     <h3>Productize Max's research system</h3>
     <p class="pitch">Sell the research and data pipeline built for videos to other video makers and writers.</p>
     <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Voice note</span><span class="chip">Nov 3, Nov 11</span></div>
@@ -482,28 +432,12 @@ tbody tr:last-child td { border-bottom: 0; }
     </div>
     <div class="facts">
       <div><b>What was said</b>Phil: "research is cheap these days. If anything it would have to be the system we use." Steve agreed he was just looking for ways to leverage upfront work.</div>
-      <div class="risk"><b>Why pass</b>The owner of the asset does not think it is worth selling. The system is a better input to Nozzle (idea 13) than a product on its own.</div>
+      <div class="risk"><b>Why pass</b>The owner of the asset does not think it is worth selling. The system is a better input to Nozzle (idea 10) than a product on its own.</div>
       <div><b>Steve, Nov 11 voice note</b>Claude keeps telling him his one-person-company agent setup for Orca ("different roles and agents, just text files") is a product he could sell. His own read: it is a loose thing he changes as he goes, "basically saving settings," and he assumes everyone prompts this way. Same conclusion from the other side.</div>
     </div>
   </div></article>
 
-  <article class="card"><div class="n">18</div><div class="b">
-    <h3>Camera-over-scale device, or a phone stand</h3>
-    <p class="pitch">A 3D-printed gantry over a kitchen scale with a camera that reads the display and the food, uploading weight and a food ID. Phil's cheaper variant: a stand that just holds your phone over the scale.</p>
-    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip">Oct 24, Nov 2</span><span class="chip">Fireworks BOM + prior art</span></div>
-    <div class="scores">
-      <div class="score"><label>Market</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
-      <div class="score"><label>Edge</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
-      <div class="score"><label>Evidence</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
-      <div class="score"><label>Build</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
-    </div>
-    <div class="facts">
-      <div><b>What the research said</b>About $92 per prototype, $31 to 33 a unit at 1,000 with molded housings. Reading the 7-segment LCD is the whole project. Qalzy already ships a camera scale at $199 to 349, and SmartPlate, Prep Pad and TellSpec all died.</div>
-      <div class="risk"><b>Why pass</b>Maddy's question on Nov 2 is the one to answer: "how would that be different than taking a photo of it." Hardware plus an app is two businesses. Keep it as an accessory idea if idea 4 ever needs it.</div>
-    </div>
-  </div></article>
-
-  <article class="card"><div class="n">19</div><div class="b">
+<article class="card"><div class="n">14</div><div class="b">
     <h3>Better Loom</h3>
     <p class="pitch">"Loom is such an average UX. Could be done so much better. Another idea."</p>
     <div class="meta"><span class="chip src">iMessage</span><span class="chip">Oct 26</span></div>
@@ -521,13 +455,132 @@ tbody tr:last-child td { border-bottom: 0; }
   </div>
 </div>
 
+<div class="tier">
+  <div class="tier-head"><h2>Set aside on Nov 11</h2><span>The group agreed a health app is out. Scores stand; the decision ranks them below every live idea.</span></div>
+  <div class="cards">
+
+<article class="card"><div class="n">15</div><div class="b">
+    <h3>Build a better Cal AI</h3>
+    <p class="pitch">Cal AI with the hundred things fixed. Maddy switched to it from MyFitnessPal on Oct 24 because it is so much easier, and listed what it gets wrong the same afternoon. This is the head-on version: the same product, done properly, launched to 850K people. The health copilot (idea 16) is what you build on top of it afterwards.</p>
+    <div class="meta"><span class="chip src">iMessage</span><span class="chip">Oct 24, Nov 8</span><a class="chip src" href="calories.html" style="text-decoration:none">Calorie apps tab: MFP vs Cal AI, 24 months →</a><span class="chip">Maddy uses it daily</span></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+    </div>
+    <div class="facts">
+      <div class="risk"><b>Set aside, Nov 11 session</b>Phil: "We all agree that a health app is out." Steve cannot carry a third context next to Mercury and Orca, and Phil would have to drop the engine to do an unrelated product. Score unchanged; the group's call ranks it below every live idea. It comes back only as a layer on the engine (ideas 1 and 2), not as its own app.</div>
+      <div><b>What "better" means, from the Oct 24 thread</b>1. Photograph the food and its ingredient label in one capture, so the buffalo skewers from the New Leaf counter get their real label instead of a guess (Steve: "so many image models and then OCR models, add a reasoning layer, I don't see why a library for CalAI would be a moat"). 2. Modifiers: the latte was whole milk and there was nowhere to say so. 3. Read the scale in the photo, so weight is measured, not guessed from the picture. 4. An avoid list, so the label feature flags ingredients (Phil's add). 5. "Suggest what I should eat the rest of the day to stay in line" from the macro target. 6. Oura, Whoop and a CGM in, not just Apple Health. 7. Easier voice logging (Nov 8). 8. A better name.</div>
+      <div><b>Why it ranks here</b>Market 5 is measured, not guessed: Cal AI cleared $28M on iOS in the last twelve months, out-downloaded MyFitnessPal in the US every month for a year, and took 28% of the two-app revenue pool from a standing start. Evidence 4: that data plus the target user using the product every day. Build 4: Phil's one-month rule applies to a single-purpose consumer app, and the hard parts (vision, OCR, a reasoning layer) are the parts Steve calls easy.</div>
+      <div><b>Edge</b>Phil on Oct 24: "pretty claude-slopped app and then he just had a really good social media strat. We could just compete with his ass and prob do it much better." The founder's edge is distribution; Maxinomics is distribution with a more serious audience. That is why this scores 3, not the 2 the health copilot got for a product that also has to beat Oura and Whoop. It is not inside expertise.</div>
+      <div class="risk"><b>Risk</b>Maddy herself, Nov 8: "I feel it mostly fits my needs, not a fuck ton I would do to improve, so I'm not sure how going that direction would go. It would be mostly a copy." Phil, Nov 11: no edge in health, "going to get crowded quickly, already kind of is." The Calorie apps tab shows Cal AI's own growth turning over since January 2026 and the AI-photo clones behind it (Numify, Calo, Foodvisor, BitePal) tiny, so a late copy fights for a slowing newcomer's downloads. MFP's hand-entered recipe library is the one real moat, and Maddy thinks it is becoming less important.</div>
+      <div><b>Where it stands</b>Sixteen points on paper, Whiteboard tier until the group answers the Nov 8 objection: is the fix list above a product, or a feature request. The question, now moot: ship this narrow version as the copilot's v1 and let the "Out of Lab" switch, labs and wearables come after, or skip the logger and go straight to the layer on top.</div>
+    </div>
+  </div></article>
+
+<article class="card"><div class="n">16</div><div class="b">
+    <h3>Health copilot with an "Out of Lab" switch</h3>
+    <p class="pitch">Photo-plus-label food logging that works on day one with nothing connected, an avoid list, and one switch that treats a planned bender as part of the plan. Labs, wearables and a scale attach later and sharpen the same screen.</p>
+    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip">Oct 24 to Nov 11</span><span class="chip">Grok Build MVP · Fireworks market map</span><a class="chip src" href="calories.html" style="text-decoration:none">Calorie apps tab: MFP vs Cal AI, 24 months →</a></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:100%"></i></div><div class="v">5</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+    </div>
+    <div class="facts">
+      <div class="risk"><b>Set aside, Nov 11 session</b>Phil: "We all agree that a health app is out." Steve cannot carry a third context next to Mercury and Orca, and Phil would have to drop the engine to do an unrelated product. Score unchanged; the group's call ranks it below every live idea. It comes back only as a layer on the engine (ideas 1 and 2), not as its own app.</div>
+      <div><b>Why it ranks here</b>Biggest market on the board: nutrition apps are a $4.8B category growing about 9% a year, and Cal AI went from zero to $30M+ in under two years. It was ranked first until Nov 11, when Steve and Phil both pushed back on the edge, and that pushback moved it out of the Build tier.</div>
+      <div><b>Edge</b>Thin. Max's audience is a launch channel and Maddy is the target user, but Phil's read on Nov 11: "we don't have any edge in that space, and it's going to get crowded quickly, already kind of is." Steve: if he were Oura or Whoop he would "already be looking to expand the platform to be more wholistic and integrate with other data," and Apple Health could do the same. Maddy's Nov 11 point, that the 850K audience is real distribution, is the one thing in this column, and it is already counted in the 2. Raising it would mean overturning what Phil and Steve said the same day, so that was a question for the Nov 11 session, and the session answered it the other way.</div>
+      <div class="risk"><b>Risk</b>Funded incumbents on every side: Cal AI is independent (Viral Development) and fast, MFP belongs to Francisco Partners, and the wearable companies own the data and the subscription. Steve expects "other venture backed startups launching versions of that" and says it "would have to put out something really good," with no engineering time on his side right now. Maddy said on Nov 8 a competitor "would be mostly a copy."</div>
+      <div><b>Where it stands</b>MVP sketched in Buzz on Oct 24. The biomarker angle from Nov 7 feeds this; the data pipeline (Clark, idea 1) is the backbone it would run on. Phil, later on Nov 11: "we'd need to get our hands on all integrations that would make sense, which I feel like there's a bunch, unsure what MVP would look like but we could decide on something." Whiteboard question, not reached on Nov 11, carried to December: is there a version of this that is a feature of Clark rather than a product against Oura, Whoop and Apple?</div>
+    </div>
+  </div></article>
+
+<article class="card"><div class="n">17</div><div class="b">
+    <h3>Peptide / GLP-1 regimen tracker</h3>
+    <p class="pitch">Not distribution. A regimen and dose tracker that compares what you take against Rythm-style bloodwork, with affiliate fees from distributors. Steve: "would likely crush."</p>
+    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Reddit / App Store</span><span class="chip">Oct 28</span><a class="chip src" href="glp1.html" style="text-decoration:none">GLP-1 tab: 62 trackers, two businesses →</a></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+    </div>
+    <div class="facts">
+      <div class="risk"><b>Set aside, Nov 11 session</b>Phil: "We all agree that a health app is out." Steve cannot carry a third context next to Mercury and Orca, and Phil would have to drop the engine to do an unrelated product. Score unchanged; the group's call ranks it below every live idea. It comes back only as a layer on the engine (ideas 1 and 2), not as its own app.</div>
+      <div><b>Why it ranks here</b>GLP-1s made millions of people active managers of their own dosing, and the peptide market is riding behind it. Maddy's mom forgets her doses, which is the whole product in one sentence. Amble already exists, so there is a comp to study.</div>
+      <div><b>Edge</b>Fits as a module inside idea 16 rather than a separate company. Also a video topic ("interesting economics on the market"). A GLP-1 user skews to the same higher-income audience the channel has, which is a point for it, but the trackers that already exist get the same customers through the App Store.</div>
+      <div class="risk"><b>Risk</b>GLP-1 dose trackers are already a pile: Shotsy, TrackShot, Glapp, GLP Compass and GLP AI (at $120 a year) all ship injection logs, reminders and side-effect journals. Another shot log is dead on arrival; if this lives, it is the food-plus-labs layer the trackers lack. Regulatory grey zone around non-prescribed peptides. Maddy noted she knows surprisingly few people on them.</div>
+      <div><b>Where it stands</b>One iMessage thread. Maddy reacted with eyes and called it intriguing.</div>
+    </div>
+  </div></article>
+
+<article class="card"><div class="n">18</div><div class="b">
+    <h3>Form-check video coach</h3>
+    <p class="pitch">Film a lift or a movement, get told what you are doing wrong and how to fix it, and track improvement over time. Maddy: "I would 1000% use this as an app."</p>
+    <div class="meta"><span class="chip src">iMessage</span><span class="chip">Nov 8</span><span class="chip">No research yet</span><a class="chip src" href="formcheck.html" style="text-decoration:none">Form check tab: what it is, diagram, market scan →</a></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+    </div>
+    <div class="facts">
+      <div class="risk"><b>Set aside, Nov 11 session</b>Phil: "We all agree that a health app is out." Steve cannot carry a third context next to Mercury and Orca, and Phil would have to drop the engine to do an unrelated product. Score unchanged; the group's call ranks it below every live idea. It comes back only as a layer on the engine (ideas 1 and 2), not as its own app.</div>
+      <div><b>Why it ranks here</b>Strong personal pull from the target user, and it sits in the same health vein as idea 16. Video models can now critique movement well enough to be useful.</div>
+      <div><b>Edge</b>Could be a feature of the health copilot rather than its own app. Max's audience skews toward people who track things.</div>
+      <div class="risk"><b>Risk</b>Nobody has looked at who already does this or what they earn. Phil and Steve have not responded to it. Accurate pose feedback from phone video is a real engineering problem, but one this group can take on.</div>
+      <div><b>Where it stands</b>One message and a tweet link. Needs the same Appfigures treatment the calorie apps got.</div>
+    </div>
+  </div></article>
+
+<article class="card"><div class="n">19</div><div class="b">
+    <h3>Rythm clone: monthly at-home bloodwork</h3>
+    <p class="pitch">Buy Tasso kits, contract a white-label CLIA lab, sell the monthly panel under your own brand. Phil: "big swing but interesting, it would be possible to close the loop."</p>
+    <div class="meta"><span class="chip src">Buzz</span><span class="chip">Oct 25 to 26</span><span class="chip">Fireworks patent + contract-lab pricing</span></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:80%"></i></div><div class="v">4</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:60%"></i></div><div class="v">3</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:20%"></i></div><div class="v">1</div></div>
+    </div>
+    <div class="facts">
+      <div class="risk"><b>Set aside, Nov 11 session</b>Phil: "We all agree that a health app is out." Steve cannot carry a third context next to Mercury and Orca, and Phil would have to drop the engine to do an unrelated product. Score unchanged; the group's call ranks it below every live idea. It comes back only as a layer on the engine (ideas 1 and 2), not as its own app.</div>
+      <div><b>What the research said</b>No patent blocks it and six white-label labs exist. But price parity lands at $119 to 149 per test, not Rythm's $79, and a contract lab turns 48 hours into 3 to 5 days. Ash Wellness died selling kits just under $150.</div>
+      <div class="risk"><b>Why pass</b>Capital-heavy logistics business with no owned edge. Maddy's own read on Oct 27: "already kinda crowded, I defer." Better as an integration for idea 16 than a company.</div>
+    </div>
+  </div></article>
+
+<article class="card"><div class="n">20</div><div class="b">
+    <h3>Camera-over-scale device, or a phone stand</h3>
+    <p class="pitch">A 3D-printed gantry over a kitchen scale with a camera that reads the display and the food, uploading weight and a food ID. Phil's cheaper variant: a stand that just holds your phone over the scale.</p>
+    <div class="meta"><span class="chip src">iMessage</span><span class="chip src">Buzz</span><span class="chip">Oct 24, Nov 2</span><span class="chip">Fireworks BOM + prior art</span></div>
+    <div class="scores">
+      <div class="score"><label>Market</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
+      <div class="score"><label>Edge</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
+      <div class="score"><label>Evidence</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
+      <div class="score"><label>Build</label><div class="track"><i style="width:40%"></i></div><div class="v">2</div></div>
+    </div>
+    <div class="facts">
+      <div class="risk"><b>Set aside, Nov 11 session</b>Phil: "We all agree that a health app is out." Steve cannot carry a third context next to Mercury and Orca, and Phil would have to drop the engine to do an unrelated product. Score unchanged; the group's call ranks it below every live idea. It comes back only as a layer on the engine (ideas 1 and 2), not as its own app.</div>
+      <div><b>What the research said</b>About $92 per prototype, $31 to 33 a unit at 1,000 with molded housings. Reading the 7-segment LCD is the whole project. Qalzy already ships a camera scale at $199 to 349, and SmartPlate, Prep Pad and TellSpec all died.</div>
+      <div class="risk"><b>Why pass</b>Maddy's question on Nov 2 is the one to answer: "how would that be different than taking a photo of it." Hardware plus an app is two businesses. Keep it as an accessory idea if idea 16 ever needs it.</div>
+    </div>
+  </div></article>
+
+  </div>
+</div>
+
 <div class="foot">
   <b>Not ranked, because they are content rather than products:</b>
   <ul>
     <li>A video on peptides and the economics of that market (Steve, Oct 28).</li>
     <li>Biomarkers as a topic: "the ppl just wana kno about biomarkers" (Maddy, Nov 7).</li>
     <li>Phil's a16z "State of Longevity" link and "taking off globally" chart (Buzz, Oct 31 and Nov 3) were dropped without discussion.</li>
+    <li>Mentioned on Nov 11 and not scored: per-project token-spend tracking for people running agent fleets (Phil: "the only data collection thing I have at the moment," after burning a week of ChatGPT Enterprise credits in two days); a local-file embedding layer (a feature of idea 1); the Sentry-to-Buzz closed loop (internal tooling, see idea 8).</li>
   </ul>
-  <p>Scores are a judgment call from the Oct 22 call, the group chat (voice notes included), the Buzz channel, and a Nov 10 pass over archived Reddit threads and BiggerPockets forums (live Reddit is blocked from this machine, so that sample runs Jan to Jun 2026). Nov 11 updates: Maddy's "build a better Cal AI" split out of the health copilot and scored on its own at 3 (16 points, Whiteboard until the group answers her own Nov 8 objection), Buzz added at 10, Maddy's buy-in-rather-than-build idea added at 9 (edge 4 on Maxinomics distribution), the Edge rule widened to count the 850K audience where the buyer is in it, which lifted Nora to 7 and left the other scores where they were, then three Appfigures tabs added for ideas 7, 8 and 9 (learn-AI apps, GLP-1 trackers, at-home bloodwork), health copilot rescored, Phil's edge map added, the audit briefly moved above Clark, then its market score came down to 3 and Clark holds rank 1 on the tie (two working builds beat a design concept). Not a vote. Next Davenport session is tonight, Wednesday, Nov 11.</p>
+  <p>Scores are a judgment call from the Oct 22 call, the group chat (voice notes included), the Buzz channel, a Nov 10 pass over archived Reddit threads and BiggerPockets forums, and the transcript of the Nov 11 Davenport session. Nov 11 daytime: Maddy's "build a better Cal AI" split out of the health copilot and scored on its own, Buzz and the buy-in-rather-than-build idea added, the Edge rule widened to count the 850K audience where the buyer is in it, three Appfigures tabs added, Phil's edge map added. Nov 11 evening, from the session: the health ideas (a better Cal AI, the health copilot, GLP-1, form check, the Rythm clone, the camera scale) set aside by the group and moved to 15 to 20 with scores intact; Clark reframed as the engine with Tally and its evidence raised to 5, so it holds rank 1 alone at 17; the PM audit flipped to the manager's side on Orca; Orca ops monitoring's evidence raised to 4 on the sensor discussion, so it moves to 3; a tax-prep layer on the engine added at 7. Not a vote. Next Davenport session: in person, first two weeks of December, to test the engine.</p>
 </div>
 </div>

@@ -87,7 +87,7 @@ SUB_US="About three quarters of both apps' revenue is American."
 body=f'''<div class="wrap">
 {NAV}
 <header>
-  <div class="eyebrow">Ideas 3 and 4 on the board · a better Cal AI, and the health copilot on top of it · Appfigures competitor tracking, pulled Oct 26, refreshed Nov 11, MacroFactor added Nov 11</div>
+  <div class="eyebrow">Ideas 15 and 16 on the board · set aside by the group on Nov 11 · a better Cal AI, and the health copilot on top of it · Appfigures competitor tracking, pulled Oct 26, refreshed Nov 11, MacroFactor added Nov 11</div>
   <h1>Calorie apps: MyFitnessPal vs Cal AI vs MacroFactor</h1>
   <p class="lede">The incumbent, the AI-photo newcomer and the premium macro coach, 24 months of modeled iPhone downloads, revenue and ratings, plus the rest of the category from a keyword sweep. The question for the health copilot: is a new entrant winning here, and what does it earn when it does?</p>
 </header>
@@ -118,7 +118,7 @@ body=f'''<div class="wrap">
   <div class="read">
     <div class="hot"><b>What it is</b>An adaptive macro coach from Stronger By Science, the evidence-based lifting site run by Greg Nuckols and Eric Trexler. You log food and weigh in; it back-calculates your real energy expenditure and resets your targets weekly. Manual logging, no ads, no scolding. $71.99 a year or $11.99 a month; a Workouts app launched January 2026 and bundles at $89.99.</div>
     <div><b>The MFP model, not the Cal AI model</b>24K all-time US ratings against Cal AI's 375K, so a far smaller base, paying a real annual subscription. Revenue per US download is about ${f['ppd']:.0f} against Cal AI's ${c['ppd']:.0f}. The June 2026 ratings spike (4,257) looks like an in-app prompt, not a surge of users.</div>
-    <div><b>What this says for idea 3</b>MacroFactor is the one newcomer in the field that grew by being better rather than louder, and it is the only one whose revenue is still rising. A better Cal AI that charges like MacroFactor is the shape to aim at: Cal AI's volume with MacroFactor's retention.</div>
+    <div><b>What this says for idea 15</b>MacroFactor is the one newcomer in the field that grew by being better rather than louder, and it is the only one whose revenue is still rising. A better Cal AI that charges like MacroFactor is the shape to aim at: Cal AI's volume with MacroFactor's retention.</div>
   </div>
 </section>
 
@@ -143,7 +143,7 @@ body=f'''<div class="wrap">
   </div>
   <div class="read">
     <div><b>Who buys ads</b>On "calorie counter", MFP had 43% of Apple Ads impressions, Lose It 27%, Cal AI 15%, and Cal AI had been absent for about a month at the time of the pull. On "cal ai", a look-alike called Calor AI had taken 20% of the impressions on Cal AI's own name.</div>
-    <div><b>What this says for idea 4</b>A newcomer can take the download lead in this category in a year, and the money is real: Cal AI cleared {M(c['ww_rev'])} on iOS in twelve months. But its growth has turned over, the photo-logging clones behind it are tiny, and MFP's revenue barely moved. The open ground is not another logger; it is the thing that sits on top of one, which is the health copilot pitch, and the reason the board scores its market 5 and its edge 2.</div>
+    <div><b>What this says for idea 16</b>A newcomer can take the download lead in this category in a year, and the money is real: Cal AI cleared {M(c['ww_rev'])} on iOS in twelve months. But its growth has turned over, the photo-logging clones behind it are tiny, and MFP's revenue barely moved. The open ground is not another logger; it is the thing that sits on top of one, which is the health copilot pitch, and the reason the board scores its market 5 and its edge 2.</div>
   </div>
   <div class="read">
     <div><b>Scope</b>iPhone, App Store only. Android and web are not here. Cal AI is owned by Viral Development, not MFP; MFP belongs to Francisco Partners.</div>
