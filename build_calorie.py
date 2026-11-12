@@ -47,11 +47,26 @@ for cc in mk:
     mt+=f'<tr><td>{mn[cc]}</td><td class="{"neg" if a<0 else "pos"}">{a:+.0f}%</td><td class="{"neg" if b<0 else "pos"}">{b:+.0f}%</td></tr>'
 mt+='</tbody></table>'
 # rest of category, US iPhone last 30 days as of Oct 26 (Keyword Inspector)
-cat=[('MyFitnessPal',None,round(m['us_rev']/12/1e3),'owned by Francisco Partners; bought Cal AI? no, separate'),]
-cat=[('MacroFactor',58,1300,'macro coach, adaptive targets'),('Cronometer',158,764,'micronutrients, the nerd favorite'),('MyNetDiary',84,697,'old-guard logger'),('Lose It!',66,633,'old-guard logger, 2008'),('Numify',51,347,'AI photo logging'),('Calo',59,264,'AI photo logging'),('Foodvisor',45,237,'AI photo logging, French'),('BitePal',23,86,'AI photo logging')]
-mx=max(r[2] for r in cat)
-rows_html=''.join(f'<div class="row" title="{n}: ${r:,}K net revenue, US iPhone, 30 days, {d}K downloads. {t}"><div class="lbl">{n}<small>{d}K dl</small></div><div class="track"><i style="width:{100*r/mx:.1f}%"></i></div><div class="val">{"$%.1fM"%(r/1000) if r>=1000 else "$%dK"%r}</div></div>' for n,d,r,t in cat)
-ref=f'<div class="row ref" title="For scale: Cal AI, monthly average over the last 12 months (tracked, not from the keyword sweep)"><div class="lbl">Cal AI, 12-mo avg<small>{int(c["us_dl"]/12/1e3)}K dl</small></div><div class="track"><i style="width:100%"></i></div><div class="val">${c["us_rev"]/12/1e6:.1f}M</div></div>'
+# ---- the full field, Nov 11 sweep ----
+CF=json.load(open('/Users/madelinekornack/Projects/appfigures-calorie/../appfigures-ideas/calorie_ratings_monthly_us.json')); CFM=CF['months']; CFA=CF['apps']
+def fs(pid): return {mm:v for mm,v in zip(CFM,CFA[pid]['new']) if mm<='2026-10' and v>=0}
+field=[(a['name'],a['dl30'] or 0,a['rev30'] or 0,a['release'][:4]) for pid,a in CFA.items() if a['rev30'] and pid not in ('280009581858',)]
+field.sort(key=lambda r:-r[2])
+mx=field[0][2]
+rows_html=''.join(f'<div class="row" title="{n}: ${r:,.0f} net revenue, US iPhone, 30 days to Nov 11, {d:,} downloads, app since {y}"><div class="lbl">{n}<small>{y}{(", "+str(round(d/1000))+"K dl") if d else ""}</small></div><div class="track"><i style="width:{100*r/mx:.1f}%"></i></div><div class="val">{"$%.1fM"%(r/1e6) if r>=1e6 else "$%dK"%(r/1e3)}</div></div>' for n,d,r,y in field)
+ref=''
+field_total=sum(r for _,_,r,_ in field)
+def chg(pid):
+    n=CFA[pid]['new']; a=sum(n[0:3])/3; b=sum(n[21:24])/3; return a,b,((b/a-1) if a>0 else None)
+order=['6013158','337323818982','334409656467','265024508487','5849975','5861283','5969522','11908476640','337202977153','336637125505','42112725269','280330041588','337433311120','6456187','5849513','40913192180','6037940']
+trs=''
+for pid in order:
+    a,b,p=chg(pid); nm=CFA[pid]['name']; y=CFA[pid]['release'][:4]
+    cls='pos' if (p is not None and p>0.15) else ('neg' if (p is not None and p<-0.15) else '')
+    trs+=f'<tr><td>{nm}</td><td>{y}</td><td>{a:,.0f}</td><td>{b:,.0f}</td><td class="{cls}">{("%+.0f%%"%(p*100)) if p is not None else "from zero"}</td></tr>'
+field_tbl='<div class="tablewrap2"><table class="cmp"><thead><tr><th>App</th><th>Since</th><th>New ratings / mo, Nov 24 to Jan 25</th><th>Aug to Oct 2026</th><th>Change</th></tr></thead><tbody>'+trs+'</tbody></table></div>'
+field_lines1=linechart('New App Store ratings per month: the old guard','MyFitnessPal, Lose It!, MyNetDiary and Cronometer. January is the resolution spike for all of them.',[('MyFitnessPal',fs('6013158')),('Lose It!',fs('5861283')),('MyNetDiary',fs('5849975')),('Cronometer',fs('265024508487'))])
+field_lines2=linechart('New App Store ratings per month: the AI-photo newcomers','Cal AI against the three clones behind it. Cal AI is down 73% from its January 2026 peak; Calo is the only one still rising.',[('Cal AI',fs('337323818982')),('Numify',fs('337202977153')),('BitePal',fs('337433311120')),('Calo',fs('336637125505'))])
 extra2='''<style>
 table.cmp { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; background: var(--surface); border: 1px solid var(--line); }
 table.cmp th, table.cmp td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); }
@@ -59,7 +74,8 @@ table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em
 table.cmp td:not(:first-child) { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
 table.cmp td.w { font-weight: 700; }
 table.cmp td small { color: var(--muted); font-size: 11px; margin-left: 4px; }
-table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; }
+table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; font-weight: 700; }
+.tablewrap2 { overflow-x: auto; }
 </style>'''
 head=head.replace('</style>','</style>'+extra2,1)
 lastm='Oct 2026'
@@ -102,19 +118,26 @@ body=f'''<div class="wrap">
 
 <section>
   <h2>The rest of the category</h2>
-  <div class="chart"><h3>Calorie and macro loggers, US iPhone, 30 days to Oct 26 <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· net revenue</span></h3><p class="sub">From Keyword Inspector searches on "calorie counter", "macro tracker" and "food scanner". Only the top ten results per search carry estimates.</p><div class="rows">{ref}{rows_html}</div><p class="none"><b>Read.</b> MacroFactor has the best revenue per download after MFP: 58K downloads to $1.3M. The AI-photo clones (Numify, Calo, Foodvisor, BitePal) together make less than a quarter of Cal AI, which makes Cal AI the category's one breakout rather than the front of a wave. Cronometer gets the most downloads of the group and converts worst.</p></div>
+  <div class="chart"><h3>Every calorie and diet app that makes money on US iPhone, 30 days to Nov 11 <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· net revenue, field total {money(field_total)}</span></h3><p class="sub">Keyword Inspector searches by name for Noom, WeightWatchers, Lifesum, Yazio, fatsecret, Lose It, Cronometer, MacroFactor and Carb Manager, plus "calorie counter", "macro tracker" and "food scanner". Yuka (a label scanner, $512K) is left out.</p><div class="rows">{rows_html}</div><p class="none"><b>Read.</b> MyFitnessPal is half the field on its own and nothing sits between it and Cal AI. WeightWatchers makes $605K a month from 1,270 downloads: a legacy subscriber base, not a growing app. Noom, Lifesum, Yazio and fatsecret, the names people assume are big, are small on US iPhone. MacroFactor earns more per download than anyone. The AI-photo clones together make about 60% of Cal AI.</p></div>
+  {field_tbl}
+  {field_lines1}
+  {field_lines2}
+  <div class="read">
+    <div class="hot"><b>Cal AI is not the front of a wave</b>Its new ratings are down 73% from January 2026 (23K a month to 5.9K in October). Numify and BitePal each spiked past 5,000 a month in early 2026 and have faded by two thirds. Calo is the only AI-photo app still growing, from 53 a month to about 2,000.</div>
+    <div><b>The old guard is holding</b>MyNetDiary has doubled its ratings pace in two years, Cronometer and Noom are flat, Lose It! is up on a March 2026 spike. WeightWatchers and Lifesum are the ones fading. Nobody in the field is going away; the newcomers are not taking the incumbents' users, they are adding and then churning their own.</div>
+  </div>
   <div class="read">
     <div><b>Who buys ads</b>On "calorie counter", MFP had 43% of Apple Ads impressions, Lose It 27%, Cal AI 15%, and Cal AI had been absent for about a month at the time of the pull. On "cal ai", a look-alike called Calor AI had taken 20% of the impressions on Cal AI's own name.</div>
     <div><b>What this says for idea 4</b>A newcomer can take the download lead in this category in a year, and the money is real: Cal AI cleared {M(c['ww_rev'])} on iOS in twelve months. But its growth has turned over, the photo-logging clones behind it are tiny, and MFP's revenue barely moved. The open ground is not another logger; it is the thing that sits on top of one, which is the health copilot pitch, and the reason the board scores its market 5 and its edge 2.</div>
   </div>
   <div class="read">
     <div><b>Scope</b>iPhone, App Store only. Android and web are not here. Cal AI is owned by Viral Development, not MFP; MFP belongs to Francisco Partners.</div>
-    <div><b>Method</b>MFP and Cal AI are two of the plan's five tracked competitors, so their monthly history comes through the API at no credit cost (three requests tonight). Country splits are from the Oct 26 pull and run Oct 2025 to Sep 2026. The category sweep is from the Keyword Inspector on Oct 26. Raw data in <code>~/Projects/appfigures-calorie</code>.</div>
+    <div><b>Method</b>MFP and Cal AI are two of the plan's five tracked competitors, so their monthly history comes through the API at no credit cost. Country splits are from the Oct 26 pull and run Oct 2025 to Sep 2026. The field chart, table and ratings lines are from a Keyword Inspector sweep by app name on Nov 11 plus one ratings call for 20 apps. Raw data in <code>~/Projects/appfigures-calorie</code> and <code>~/Projects/appfigures-ideas/calorie_*</code>.</div>
   </div>
 </section>
 
 {bands_html('calories.html')}
-<div class="foot">Built Oct 26, refreshed Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
+<div class="foot">Built Oct 26, refreshed Nov 11 with the full field, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>
 </body>
 </html>
