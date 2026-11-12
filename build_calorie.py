@@ -2,7 +2,10 @@ import json, re
 from bands import bands_html
 D='/Users/madelinekornack/Projects/appfigures-calorie'
 exec(open('build_buzz.py').read().split("repo=json.load")[0].replace("<title>Buzz</title>","<title>Calorie apps</title>").replace('<a class="on" href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a>','<a href="buzz.html">Buzz</a><a class="on" href="calories.html">Calorie apps</a>'))
-NAMES={'6013158':'MyFitnessPal','337323818982':'Cal AI'}
+NAMES={'6013158':'MyFitnessPal','337323818982':'Cal AI','334409656467':'MacroFactor'}
+MF='334409656467'
+mf_us=json.load(open(f'{D}/macrofactor_full_us_monthly.json'))[MF]; mf_ww=json.load(open(f'{D}/macrofactor_full_ww_monthly.json'))[MF]
+def mfser(d,key,a='2021-09'): return {k[:7]:(int(v[key]) if key=='downloads' else float(v[key])) for k,v in d.items() if a<=k[:7]<='2026-10'}
 us=json.load(open(f'{D}/raw_monthly_us_v2.json')); ww=json.load(open(f'{D}/raw_monthly_ww_v2.json')); rat=json.load(open(f'{D}/raw_ratings_v2.json'))
 def ser(d,pid,key):
     return {k[:7]:(int(v[key]) if key in('downloads','new_total') else float(v[key])) for k,v in d[pid].items() if not k.startswith('2026-11')}
@@ -22,17 +25,17 @@ for p,n in NAMES.items():
               ww_rev=win(ser(ww,p,'revenue'),A1,B1), ww_rev0=win(ser(ww,p,'revenue'),A0,B0),
               rt=win(ser(rat,p,'new_total'),A1,B1), rt0=win(ser(rat,p,'new_total'),A0,B0))
     T[n]['ppd']=T[n]['us_rev']/T[n]['us_dl']
-m,c=T['MyFitnessPal'],T['Cal AI']
+m,c,f=T['MyFitnessPal'],T['Cal AI'],T['MacroFactor']
 last=max(dl_us[0][1]); 
 def M(v): return f"${v/1e6:.0f}M"
 def K(v): return f"{v/1e6:.2f}M" if v>=1e6 else f"{v/1e3:.0f}K"
-tbl=f'''<table class="cmp"><thead><tr><th></th><th>MyFitnessPal</th><th>Cal AI</th></tr></thead><tbody>
-<tr><td>US downloads</td><td>{K(m['us_dl'])} <small>{pct(m['us_dl'],m['us_dl0'])}</small></td><td class="w">{K(c['us_dl'])} <small>{pct(c['us_dl'],c['us_dl0'])}</small></td></tr>
-<tr><td>US net revenue</td><td class="w">{M(m['us_rev'])} <small>{pct(m['us_rev'],m['us_rev0'])}</small></td><td>{M(c['us_rev'])} <small>{pct(c['us_rev'],c['us_rev0'])}</small></td></tr>
-<tr><td>Worldwide downloads</td><td class="w">{K(m['ww_dl'])} <small>{pct(m['ww_dl'],m['ww_dl0'])}</small></td><td>{K(c['ww_dl'])} <small>{pct(c['ww_dl'],c['ww_dl0'])}</small></td></tr>
-<tr><td>Worldwide net revenue</td><td class="w">{M(m['ww_rev'])} <small>{pct(m['ww_rev'],m['ww_rev0'])}</small></td><td>{M(c['ww_rev'])} <small>{pct(c['ww_rev'],c['ww_rev0'])}</small></td></tr>
-<tr><td>Revenue per US download</td><td class="w">${m['ppd']:.2f}</td><td>${c['ppd']:.2f}</td></tr>
-<tr><td>New App Store ratings</td><td class="w">{K(m['rt'])} <small>{pct(m['rt'],m['rt0'])}</small></td><td>{K(c['rt'])} <small>{pct(c['rt'],c['rt0'])}</small></td></tr>
+tbl=f'''<table class="cmp"><thead><tr><th></th><th>MyFitnessPal</th><th>Cal AI</th><th>MacroFactor</th></tr></thead><tbody>
+<tr><td>US downloads</td><td>{K(m['us_dl'])} <small>{pct(m['us_dl'],m['us_dl0'])}</small></td><td class="w">{K(c['us_dl'])} <small>{pct(c['us_dl'],c['us_dl0'])}</small></td><td>{K(f['us_dl'])} <small>{pct(f['us_dl'],f['us_dl0'])}</small></td></tr>
+<tr><td>US net revenue</td><td class="w">{M(m['us_rev'])} <small>{pct(m['us_rev'],m['us_rev0'])}</small></td><td>{M(c['us_rev'])} <small>{pct(c['us_rev'],c['us_rev0'])}</small></td><td>{M(f['us_rev'])} <small>{pct(f['us_rev'],f['us_rev0'])}</small></td></tr>
+<tr><td>Worldwide downloads</td><td class="w">{K(m['ww_dl'])} <small>{pct(m['ww_dl'],m['ww_dl0'])}</small></td><td>{K(c['ww_dl'])} <small>{pct(c['ww_dl'],c['ww_dl0'])}</small></td><td>{K(f['ww_dl'])} <small>{pct(f['ww_dl'],f['ww_dl0'])}</small></td></tr>
+<tr><td>Worldwide net revenue</td><td class="w">{M(m['ww_rev'])} <small>{pct(m['ww_rev'],m['ww_rev0'])}</small></td><td>{M(c['ww_rev'])} <small>{pct(c['ww_rev'],c['ww_rev0'])}</small></td><td>{M(f['ww_rev'])} <small>{pct(f['ww_rev'],f['ww_rev0'])}</small></td></tr>
+<tr><td>Revenue per US download</td><td>${m['ppd']:.2f}</td><td>${c['ppd']:.2f}</td><td class="w">${f['ppd']:.2f}</td></tr>
+<tr><td>New App Store ratings</td><td class="w">{K(m['rt'])} <small>{pct(m['rt'],m['rt0'])}</small></td><td>{K(c['rt'])} <small>{pct(c['rt'],c['rt0'])}</small></td><td>{K(f['rt'])} <small>{pct(f['rt'],f['rt0'])}</small></td></tr>
 </tbody></table>'''
 # markets, Oct25-Sep26 vs prior (from the Oct 26 pull)
 import csv
@@ -79,14 +82,14 @@ table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; font-wei
 </style>'''
 head=head.replace('</style>','</style>'+extra2,1)
 lastm='Oct 2026'
-SUB_WW="After Apple's cut. MFP is a $10M-to-$18M-a-month business on the phone; Cal AI peaked at $4.2M in January 2026."
+SUB_WW="After Apple's cut. MFP is a $10M-to-$18M-a-month business on the phone; Cal AI peaked at $4.2M in January 2026; MacroFactor has out-earned it every month since June."
 SUB_US="About three quarters of both apps' revenue is American."
 body=f'''<div class="wrap">
 {NAV}
 <header>
-  <div class="eyebrow">Ideas 3 and 4 on the board · a better Cal AI, and the health copilot on top of it · Appfigures competitor tracking, pulled Oct 26 and refreshed Nov 11</div>
-  <h1>Calorie apps: MyFitnessPal vs Cal AI</h1>
-  <p class="lede">The incumbent and the AI-photo newcomer, 24 months of modeled iPhone downloads, revenue and ratings, plus the rest of the category from a keyword sweep. The question for the health copilot: is a new entrant winning here, and what does it earn when it does?</p>
+  <div class="eyebrow">Ideas 3 and 4 on the board · a better Cal AI, and the health copilot on top of it · Appfigures competitor tracking, pulled Oct 26, refreshed Nov 11, MacroFactor added Nov 11</div>
+  <h1>Calorie apps: MyFitnessPal vs Cal AI vs MacroFactor</h1>
+  <p class="lede">The incumbent, the AI-photo newcomer and the premium macro coach, 24 months of modeled iPhone downloads, revenue and ratings, plus the rest of the category from a keyword sweep. The question for the health copilot: is a new entrant winning here, and what does it earn when it does?</p>
 </header>
 
 <section>
@@ -95,16 +98,28 @@ body=f'''<div class="wrap">
   <div class="read">
     <div class="hot"><b>The crossover already happened</b>Cal AI has out-downloaded MyFitnessPal in the US every month since October 2025. In {lastm} it was {K(dl_us[1][1]['2026-10'])} to {K(dl_us[0][1]['2026-10'])}.</div>
     <div class="hot"><b>MFP still makes about {m['ww_rev']/c['ww_rev']:.0f}x the money</b>It earns ${m['ppd']:.0f} per US download against Cal AI's ${c['ppd']:.0f}. MFP's downloads fell {pct(m['ww_dl'],m['ww_dl0'])[1:]} worldwide while revenue fell only {pct(m['ww_rev'],m['ww_rev0'])[1:]}: it is squeezing more out of the base it has.</div>
+    <div class="hot"><b>MacroFactor is the one that is actually growing</b>Same downloads as last year ({pct(f['us_dl'],f['us_dl0'])} US) and {pct(f['us_rev'],f['us_rev0'])} revenue: {M(f['ww_rev'])} worldwide in twelve months on {K(f['ww_dl'])} installs. At ${f['ppd']:.0f} per US download it monetises better than MFP. It has out-earned Cal AI worldwide every month since June 2026, and in the US since August.</div>
     <div><b>Cal AI's growth is slowing</b>US downloads were +43% a year ago on the Oct 26 pull. On the refreshed window they are {pct(c['us_dl'],c['us_dl0'])}, and every month since January 2026 has been below the one before. The January spike was its best month ever and it has not held any of it.</div>
   </div>
 </section>
 
 <section>
   <h2>Month by month</h2>
-  {linechart('US iPhone downloads per month','Appfigures estimates, Oct 2024 to Oct 2026. January is New Year resolutions for both.',dl_us)}
+  {linechart('US iPhone downloads per month','Appfigures estimates, Oct 2024 to Oct 2026. January is New Year resolutions for all three. MacroFactor runs at a quarter to a third of Cal AI.',dl_us)}
   {linechart('Worldwide iPhone net revenue per month',SUB_WW,rev_ww,money=True)}
   {linechart('US iPhone net revenue per month',SUB_US,rev_us,money=True)}
-  {linechart('New App Store ratings per month','A usage proxy independent of the download model. MFP spiked to 97K in January 2026 and is rising again this fall; Cal AI has fallen from 37K a month in October 2025 to 8K.',rt)}
+  {linechart('New App Store ratings per month','A usage proxy independent of the download model. MFP spiked to 97K in January 2026 and is rising again this fall; Cal AI has fallen from 37K a month in October 2025 to 8K. MacroFactor is a few hundred to a few thousand a month and sits on the floor of this chart.',rt)}
+</section>
+
+<section>
+  <h2>MacroFactor since launch</h2>
+  {linechart('MacroFactor iPhone net revenue per month, Sep 2021 to Oct 2026','Worldwide and US. Five years from zero to $2M-plus a month with no viral moment: each January steps up and the step holds.',[('Worldwide',mfser(mf_ww,'revenue')),('US',mfser(mf_us,'revenue'))],money=True)}
+  {linechart('MacroFactor US iPhone downloads per month','Never above 90K in a month. The growth is in what each user pays, not in how many arrive.',[('US downloads',mfser(mf_us,'downloads'))])}
+  <div class="read">
+    <div class="hot"><b>What it is</b>An adaptive macro coach from Stronger By Science, the evidence-based lifting site run by Greg Nuckols and Eric Trexler. You log food and weigh in; it back-calculates your real energy expenditure and resets your targets weekly. Manual logging, no ads, no scolding. $71.99 a year or $11.99 a month; a Workouts app launched January 2026 and bundles at $89.99.</div>
+    <div><b>The MFP model, not the Cal AI model</b>24K all-time US ratings against Cal AI's 375K, so a far smaller base, paying a real annual subscription. Revenue per US download is about ${f['ppd']:.0f} against Cal AI's ${c['ppd']:.0f}. The June 2026 ratings spike (4,257) looks like an in-app prompt, not a surge of users.</div>
+    <div><b>What this says for idea 3</b>MacroFactor is the one newcomer in the field that grew by being better rather than louder, and it is the only one whose revenue is still rising. A better Cal AI that charges like MacroFactor is the shape to aim at: Cal AI's volume with MacroFactor's retention.</div>
+  </div>
 </section>
 
 <section>
@@ -132,12 +147,12 @@ body=f'''<div class="wrap">
   </div>
   <div class="read">
     <div><b>Scope</b>iPhone, App Store only. Android and web are not here. Cal AI is owned by Viral Development, not MFP; MFP belongs to Francisco Partners.</div>
-    <div><b>Method</b>MFP and Cal AI are two of the plan's five tracked competitors, so their monthly history comes through the API at no credit cost. Country splits are from the Oct 26 pull and run Oct 2025 to Sep 2026. The field chart, table and ratings lines are from a Keyword Inspector sweep by app name on Nov 11 plus one ratings call for 20 apps. Raw data in <code>~/Projects/appfigures-calorie</code> and <code>~/Projects/appfigures-ideas/calorie_*</code>.</div>
+    <div><b>Method</b>MFP, Cal AI and MacroFactor are three of the plan's five tracked competitors (MacroFactor took Microsoft Teams' slot on Nov 11; Teams was downgraded to basic tracking after its history was archived), so their monthly history comes through the API at no credit cost. MacroFactor's full history since its September 2021 launch is in <code>~/Projects/appfigures-archive/macrofactor_*</code>. Country splits are from the Oct 26 pull and run Oct 2025 to Sep 2026. The field chart, table and ratings lines are from a Keyword Inspector sweep by app name on Nov 11 plus one ratings call for 20 apps. Raw data in <code>~/Projects/appfigures-calorie</code> and <code>~/Projects/appfigures-ideas/calorie_*</code>.</div>
   </div>
 </section>
 
 {bands_html('calories.html')}
-<div class="foot">Built Oct 26, refreshed Nov 11 with the full field, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
+<div class="foot">Built Oct 26, refreshed Nov 11 with the full field and MacroFactor, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>
 </body>
 </html>
