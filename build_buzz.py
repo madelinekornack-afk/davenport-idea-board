@@ -23,6 +23,14 @@ extra='''
 </style>
 '''
 head=head.replace('</style>','</style>'+extra,1)
+head=head.replace('</style>','</style>'+'''<style>
+table.cmp { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); }
+table.cmp th, table.cmp td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+table.cmp td:nth-child(n+3) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; font-weight: 700; }
+.tablewrap2 { overflow-x: auto; }
+</style>''',1)
 COL=['#2a78d6','#d9641e','#2f7a4f','#7a4fb0']
 def fmt(v,money=False):
     if money: return f"${v/1e6:.1f}M" if v>=1e6 else (f"${v/1e3:.0f}K" if v>=1000 else f"${v:,.0f}")
@@ -74,6 +82,45 @@ if hist:
     sl=[(nm.get(p,p),rk_s(p,'overall_free')) for p in ['4696409368','267680453599','41279274901'] if rk_s(p,'overall_free')]
     if sl: hist_html+=linechart('Overall US iPhone Top Free rank, monthly average (lower is better)','Where each sits in the whole store, not just its category.',sl,note='Rank axis is inverted in meaning: a rising line means falling in the charts.')
 
+
+# ---- what is going up instead (chat / AI / community sweep, Nov 11 late) ----
+CH=json.load(open('/Users/madelinekornack/Projects/appfigures-ideas/chat_ratings_monthly_us.json')); CM=CH['months']; CA=CH['apps']
+def cs(pid): return {m:v for m,v in zip(CM,CA[pid]['new']) if m<='2026-10' and v>=0}
+def chg(pid):
+    n=CA[pid]['new']; a=sum(n[0:3])/3; b=sum(n[21:24])/3
+    return a,b,(b/a-1) if a>0 else None
+def cfmt(v): return f"{v/1e6:.2f}M" if v>=1e6 else (f"{v/1e3:.1f}K" if v>=1000 else f"{v:.0f}")
+order=['336744124021','337819614201','337924427373','337365095251','338665378456','336597891347','336758442084','5893317','31932595429','40188328711','6756611','280670085405','212786893','263458146435','4696409368','267680453599','41279274901','9334987','336594876475','124714775577','336853432807','5980590','6603280','212710021']
+trs=[]
+for pid in order:
+    a,b,p=chg(pid); nm=CA[pid]['name']; g=CA[pid]['group']
+    if pid=='338665378456': cell='launched Sep 2026: 111K, then 300K'
+    elif p is None: cell='from zero'
+    else: cell=f'{p*100:+.0f}%'
+    cls='pos' if (p is not None and p>0.15) else ('neg' if (p is not None and p<-0.15) else '')
+    trs.append(f'<tr><td>{nm}</td><td>{g}</td><td>{cfmt(a)}</td><td>{cfmt(b)}</td><td class="{cls}">{cell}</td></tr>')
+replace_tbl='<div class="tablewrap2"><table class="cmp"><thead><tr><th>App</th><th>Group</th><th>New ratings / mo, Nov 24 to Jan 25</th><th>Aug to Oct 2026</th><th>Change</th></tr></thead><tbody>'+''.join(trs)+'</tbody></table></div>'
+replace_html=f"""
+<section>
+  <h2>If Discord is going down, what is going up?</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">Same measure for 30 apps: new US App Store ratings per month, Nov 2024 to Oct 2026, from a keyword sweep of messengers, AI assistants, streaming and community apps on Nov 11. Ratings are the usage proxy the download model cannot hide, and on this measure Discord has not moved at all.</p>
+  {linechart('AI assistants: new ratings per month','ChatGPT went from 100K a month to 1M. Gemini and Grok from near zero to 100K+. Muse from Meta launched in September and did 300K in its second month.',[('ChatGPT',cs('336744124021')),('Google Gemini',cs('337819614201')),('Grok',cs('337924427373')),('Muse from Meta',cs('338665378456'))])}
+  {linechart('Chat with people: new ratings per month','WhatsApp flat, Signal flat, Telegram flat, Messenger down by two thirds.',[('WhatsApp',cs('5893317')),('Messenger (Meta)',cs('6756611')),('Signal',cs('40188328711')),('Telegram',cs('31932595429'))])}
+  {linechart('Where Discord lives: community and streaming','Discord is flat at about 27K a month for two years. Twitch and Reddit are drifting down. Kick, the Twitch rival, went from nothing to 5K a month in November 2025 and held.',[('Discord',cs('41279274901')),('Twitch',cs('9334987')),('Reddit',cs('124714775577')),('Kick',cs('336594876475'))])}
+  {replace_tbl}
+  <div class="read">
+    <div class="hot"><b>Nothing in chat is replacing Discord</b>Every messenger is flat or down. WhatsApp, Signal and Telegram have the same rating velocity they had two years ago; Messenger has lost two thirds; Google Chat half; GroupMe and Google Meet are at zero. Discord itself is flat on ratings, which means its 40% download drop is mostly the install model and the gaming cycle, not people leaving.</div>
+    <div class="hot"><b>What went up is talking to models</b>ChatGPT's new ratings went from 100K a month to 1M. Gemini 5x. Grok from zero to 100K. Claude from 2K to 36K at the March 2026 peak. Muse from Meta is the biggest launch in the sweep, 2.7M US installs in 30 days. Across the same two years that is the only category on the phone that grew by an order of magnitude.</div>
+    <div><b>The one human-chat exception is streaming</b>Kick went from 80 ratings a month to 5,600 when it started paying streamers in late 2025, and is now at 530K US installs a month to Twitch's 320K. That is share moving inside a category, which is what Buzz would have to do in team chat.</div>
+    <div><b>What this says for Buzz</b>Attention did not move to a better chat app. It moved to a chat window with an agent on the other side. Buzz is the one product in this group that puts agents and people in the same channels, so the growth story is not "beat Slack," it is "be where the two kinds of chat meet." That is also the strongest argument on this board for building on it.</div>
+  </div>
+  <div class="read">
+    <div><b>Caveats</b>Ratings count people who rate, so a prompt change moves the line (Slack's jump in Aug 2025, Labcorp's in May 2026 on the Bloodwork tab). The AI apps' curves are so steep that no prompt change explains them. Messenger's decline could partly be Meta moving ratings prompts to Instagram.</div>
+    <div><b>Method</b>Keyword Inspector searches for whatsapp, telegram, signal, messenger, chatgpt, claude, gemini, character ai, twitch, kick, reddit, discord, group chat, community, zoom, threads, steam, voice chat; then one ratings call for 30 apps, Nov 2024 to Nov 2026, US. Raw data in <code>~/Projects/appfigures-ideas/chat_*</code>.</div>
+  </div>
+</section>
+"""
+
 body=f'''<div class="wrap">
 {NAV}
 <header>
@@ -118,6 +165,7 @@ body=f'''<div class="wrap">
   </div>
 </section>
 
+{replace_html}
 <div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>
 </body>
