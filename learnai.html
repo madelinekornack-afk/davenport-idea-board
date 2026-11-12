@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn AI apps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: scoreboard first (every idea in one glance), then one dossier card per idea in rank order. */
+:root {
+  --bg: #f3f4f0;
+  --surface: #ffffff;
+  --ink: #1b2430;
+  --muted: #5d6673;
+  --line: #d6d9d2;
+  --accent: #d9641e;
+  --accent-soft: #fbe9dc;
+  --tier1: #2f7a4f; --tier1-soft: #e2f0e6;
+  --tier2: #b07a12; --tier2-soft: #f7edd2;
+  --tier3: #7a7f88; --tier3-soft: #e9ebe6;
+  --bar: #1b2430;
+  --bar-track: #e4e6e0;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+    --accent: #f0864a; --accent-soft: #3a2719;
+    --tier1: #6fc48f; --tier1-soft: #1f3327;
+    --tier2: #e0b454; --tier2-soft: #3a2f16;
+    --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+    --bar: #e8eaed; --bar-track: #2c3139;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171a1f; --surface: #1f232a; --ink: #e8eaed; --muted: #a0a7b1; --line: #343941;
+  --accent: #f0864a; --accent-soft: #3a2719;
+  --tier1: #6fc48f; --tier1-soft: #1f3327;
+  --tier2: #e0b454; --tier2-soft: #3a2f16;
+  --tier3: #9aa1ab; --tier3-soft: #2a2e35;
+  --bar: #e8eaed; --bar-track: #2c3139;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; margin: 0; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 36px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; letter-spacing: -0.01em; }
+.eyebrow { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header p.lede { max-width: 66ch; color: var(--muted); margin: 14px 0 0; }
+.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 22px; }
+.method div { border-top: 2px solid var(--line); padding-top: 8px; font-size: 13px; color: var(--muted); }
+.method b { display: block; color: var(--ink); font-weight: 600; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+
+section { margin-top: 44px; }
+section > h2 { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+
+/* scoreboard */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.rank, td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td.rank { width: 44px; font-weight: 500; }
+td.num { text-align: right; width: 54px; }
+th.num { text-align: right; }
+td.total { font-weight: 600; }
+tbody tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.t1 { background: var(--tier1-soft); color: var(--tier1); }
+.t2 { background: var(--tier2-soft); color: var(--tier2); }
+.t3 { background: var(--tier3-soft); color: var(--tier3); }
+.who { color: var(--muted); font-size: 13px; }
+
+/* dossier cards */
+.tier { margin-top: 36px; }
+.tier-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 16px; }
+.tier-head h2 { font-size: 24px; }
+.tier-head span { color: var(--muted); font-size: 14px; }
+.cards { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 64px 1fr; }
+.card .n { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; padding: 18px 0 0 16px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card .b { padding: 18px 18px 18px 8px; min-width: 0; }
+.card h3 { font-size: 21px; font-weight: 700; }
+.card .pitch { margin: 6px 0 0; color: var(--muted); max-width: 70ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.chip.src { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+.scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; max-width: 520px; }
+.score label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.score .track { height: 6px; background: var(--bar-track); margin-top: 4px; position: relative; }
+.score .track i { position: absolute; inset: 0 auto 0 0; background: var(--bar); }
+.score .v { font-family: var(--mono); font-size: 12px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 20px; margin-top: 16px; }
+.facts div { min-width: 0; font-size: 14px; }
+.facts b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.facts .risk { border-left: 3px solid var(--accent); padding-left: 10px; }
+.foot { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: 13px; max-width: 72ch; }
+.foot ul { padding-left: 18px; margin: 6px 0 0; }
+@media (max-width: 560px) {
+  .card { grid-template-columns: 1fr; }
+  .card .n { padding: 14px 16px 0; font-size: 30px; }
+  .card .b { padding: 8px 16px 16px; }
+  .scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
+.line h3 { font-size: 19px; }
+.line .sub { color: var(--muted); font-size: 13px; margin: 2px 0 8px; }
+.line svg { display: block; width: 100%; height: auto; font-family: var(--body); }
+.line .ax { stroke: var(--line); stroke-width: 1; }
+.line .tk { fill: var(--muted); font-size: 11px; font-family: var(--mono); }
+.line .lg { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.line .lg i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+.line .pt { fill: var(--surface); stroke-width: 2; }
+.line .pt:hover { r: 5; }
+.s1 { color: #2a78d6 } .s2 { color: #d9641e } .s3 { color: #2f7a4f } .s4 { color: #7a4fb0 }
+.stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 14px; }
+.stat div { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; }
+.stat b { display: block; font-family: var(--display); font-size: 26px; font-weight: 700; line-height: 1.1; }
+.stat span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+</style><style>
+table.cmp { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); }
+table.cmp th, table.cmp td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+table.cmp td:nth-child(2), table.cmp td:nth-child(3), table.cmp td:nth-child(4), table.cmp td:nth-child(5) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.w { font-weight: 700; }
+.tablewrap2 { overflow-x: auto; }
+</style>
+<style>
+.line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
+.line h3 { font-size: 19px; }
+.line .sub { color: var(--muted); font-size: 13px; margin: 2px 0 8px; }
+.line svg { display: block; width: 100%; height: auto; font-family: var(--body); }
+.line .ax { stroke: var(--line); stroke-width: 1; }
+.line .tk { fill: var(--muted); font-size: 11px; font-family: var(--mono); }
+.line .lg { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.line .lg i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+.line .pt { fill: var(--surface); stroke-width: 2; }
+.line .pt:hover { r: 5; }
+.s1 { color: #2a78d6 } .s2 { color: #d9641e } .s3 { color: #2f7a4f } .s4 { color: #7a4fb0 }
+.stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 14px; }
+.stat div { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; }
+.stat b { display: block; font-family: var(--display); font-size: 26px; font-weight: 700; line-height: 1.1; }
+.stat span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+</style>
+
+<style>
+.tabs { display: flex; gap: 4px; margin: 0 0 18px; border-bottom: 1px solid var(--line); }
+.tabs a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--muted); padding: 8px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs a.on { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs a:hover { color: var(--ink); }
+.chart { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 12px; margin-top: 14px; }
+.chart h3 { font-size: 19px; }
+.chart .sub { color: var(--muted); font-size: 13px; margin: 2px 0 10px; }
+.rows { display: grid; gap: 7px; }
+.row { display: grid; grid-template-columns: minmax(120px, 210px) 1fr 86px; gap: 10px; align-items: center; font-size: 13.5px; }
+.row .lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .lbl small { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-left: 4px; }
+.row .track { height: 12px; background: var(--bar-track); position: relative; }
+.row .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--chart); border-radius: 0 4px 4px 0; min-width: 2px; }
+.row.ref .track i { background: var(--tier3); }
+.row .val { font-family: var(--mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.row:hover .track i { filter: brightness(0.85); }
+.none { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.none b { color: var(--ink); font-weight: 600; }
+.read { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 22px; margin-top: 16px; }
+.read div { font-size: 14px; min-width: 0; }
+.read b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.read .hot { border-left: 3px solid var(--accent); padding-left: 10px; }
+.quote { border-left: 3px solid var(--line); padding: 2px 0 2px 12px; color: var(--muted); font-size: 14px; margin: 10px 0 0; max-width: 70ch; }
+.quote b { color: var(--ink); font-weight: 600; }
+.diagram { background: var(--surface); border: 1px solid var(--line); padding: 12px; margin-top: 14px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--body); }
+.diagram .box { fill: var(--bg); stroke: var(--line); }
+.diagram .core { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram .t { fill: var(--ink); font-size: 13px; }
+.diagram .h { fill: var(--ink); font-size: 12px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.diagram .m { fill: var(--muted); font-size: 11.5px; }
+.diagram .arrow { stroke: var(--muted); stroke-width: 1.5; fill: none; marker-end: url(#ah); }
+.diagram .later { stroke-dasharray: 4 3; }
+.caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 14px; }
+.cap { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; font-size: 14px; }
+.cap b { display: block; font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.cap .st { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+.cap .st.live { color: var(--tier1); }
+.cap .st.next { color: var(--tier2); }
+a { color: var(--accent); }
+:root { --chart: #2a78d6; }
+:root[data-theme="dark"] { --chart: #6aa6ea; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --chart: #6aa6ea; } }
+</style>
+
+
+</head>
+<body>
+<div class="wrap">
+<nav class="tabs"><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a class=on href="learnai.html">Learn AI</a></nav>
+<header>
+  <div class="eyebrow">Idea 6 on the board · Nora, learn AI by doing · Appfigures sweep, Nov 11</div>
+  <h1>Learn-AI apps: 74 of them, none with traction</h1>
+  <p class="lede">Nora moved to rank 6 on the argument that the Maxinomics audience is the buyer. This tab checks whether anyone sells AI education on the phone today and what it earns: every app the Keyword Inspector returns for eight learn-AI, prompt-engineering and AI-course terms, with two years of ratings for the ones that have any.</p>
+</header>
+
+<section>
+  <h2>The field: 74 apps, none with traction</h2>
+  <div class="chart"><h3>Anything that sells "learn AI" on the phone, US iPhone, 30 days to Nov 11 <span style="font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400">· net revenue, group total $1.0M</span></h3><p class="sub">Of 74 learn-AI, prompt and AI-course apps in the sweep, zero clear the download model. The only apps with estimates on these keywords are platforms and a homework bot.</p><div class="rows"><div class="row" title="Coursera: $390K, US iPhone, 30 days. the course platform; AI is one shelf"><div class="lbl">Coursera<small>22K dl</small></div><div class="track"><i style="width:62.2%"></i></div><div class="val">$390K</div></div><div class="row" title="DataCamp: $3K, US iPhone, 30 days. data and AI courses, bills on the web"><div class="lbl">DataCamp</div><div class="track"><i style="width:0.5%"></i></div><div class="val">$3K</div></div><div class="row" title="Khan Academy: $0, US iPhone, 30 days. free"><div class="lbl">Khan Academy<small>49K dl</small></div><div class="track"><i style="width:0.0%"></i></div><div class="val">$0</div></div><div class="row" title="Gauth: AI Study Companion: $628K, US iPhone, 30 days. students photographing homework, not executives"><div class="lbl">Gauth: AI Study Companion<small>277K dl</small></div><div class="track"><i style="width:100.0%"></i></div><div class="val">$628K</div></div></div><p class=none><b>Not modeled, all 74 of them:</b> Sololearn's Learn AI, Learn AI: AI Tools Mastery, Coursiv, DeepLearning.AI, Skilario, Kairo, Curio, explainx, Cyberminds, Cosmo (CodeSignal), Noesion, Prompt Dojo, PromptCraft, Learn AI Prompt Engineering, AI Academy, AI From Zero, UnlockAI, Pawsitive AI, Iro, mainio, Skiller, sqills, Tixu, kju.ai and the rest. Thirty-three of the 74 launched in 2026.</p></div>
+  <div class="read">
+    <div class="hot"><b>Nobody has made "learn AI" work as an app</b>Seventy-four apps rank for the terms, thirty-three of them launched this year, and not one clears Appfigures' download threshold. The best of them, Coursiv, ran a paid spike to 1,311 ratings in May 2026 and is at 70. Andrew Ng's DeepLearning.AI app has 54 ratings in four months.</div>
+    <div><b>Who buys the ads instead</b>On "learn ai" the Apple Ads buyers are Learna (an English-learning app), DataCamp, and then Gemini, Claude and ChatGPT themselves. The labs are bidding on the phrase, which says the "learning" happens inside the chatbot, not in a course app.</div>
+    <div><b>Where the money on these keywords is</b>Gauth, a homework-photo bot for students, makes $628K a month. Coursera makes $390K across every subject. "Learn AI" as a phone purchase is a student behavior, not an executive one.</div>
+  </div>
+</section>
+<section>
+  <h2>Who is growing</h2>
+  <div class="line"><h3>New App Store ratings per month: the only learn-AI apps with any</h3><p class="sub">Coursiv is the one that got past 1,000 in a month; it bought that in spring and is at 70 now.</p><svg viewBox="0 0 960 300" role="img" aria-label="New App Store ratings per month: the only learn-AI apps with any"><line class="ax" x1="56" y1="264.0" x2="944" y2="264.0"/><text class="tk" x="50" y="268.0" text-anchor="end">0</text><line class="ax" x1="56" y1="202.0" x2="944" y2="202.0"/><text class="tk" x="50" y="206.0" text-anchor="end">327</text><line class="ax" x1="56" y1="140.0" x2="944" y2="140.0"/><text class="tk" x="50" y="144.0" text-anchor="end">655</text><line class="ax" x1="56" y1="78.0" x2="944" y2="78.0"/><text class="tk" x="50" y="82.0" text-anchor="end">983</text><line class="ax" x1="56" y1="16.0" x2="944" y2="16.0"/><text class="tk" x="50" y="20.0" text-anchor="end">1K</text><text class="tk" x="56.0" y="288" text-anchor="middle">2024-11</text><text class="tk" x="133.2" y="288" text-anchor="middle">2025-01</text><text class="tk" x="364.9" y="288" text-anchor="middle">2025-07</text><text class="tk" x="596.5" y="288" text-anchor="middle">2026-01</text><text class="tk" x="828.2" y="288" text-anchor="middle">2026-07</text><path d="M56.0 264.0 L94.6 264.0 L133.2 264.0 L171.8 264.0 L210.4 264.0 L249.0 264.0 L287.7 264.0 L326.3 264.0 L364.9 264.0 L403.5 264.0 L442.1 264.0 L480.7 264.0 L519.3 264.0 L557.9 264.0 L596.5 264.0 L635.1 264.0 L673.7 224.1 L712.3 168.3 L751.0 16.0 L789.6 112.1 L828.2 235.8 L866.8 250.4 L905.4 251.9 L944.0 250.8" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"/><circle class="pt" cx="56.0" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2024-11: 0</title></circle><circle class="pt" cx="94.6" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2024-12: 0</title></circle><circle class="pt" cx="133.2" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-01: 0</title></circle><circle class="pt" cx="171.8" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-02: 0</title></circle><circle class="pt" cx="210.4" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-03: 0</title></circle><circle class="pt" cx="249.0" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-04: 0</title></circle><circle class="pt" cx="287.7" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-05: 0</title></circle><circle class="pt" cx="326.3" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-06: 0</title></circle><circle class="pt" cx="364.9" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-07: 0</title></circle><circle class="pt" cx="403.5" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-08: 0</title></circle><circle class="pt" cx="442.1" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-09: 0</title></circle><circle class="pt" cx="480.7" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-10: 0</title></circle><circle class="pt" cx="519.3" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-11: 0</title></circle><circle class="pt" cx="557.9" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2025-12: 0</title></circle><circle class="pt" cx="596.5" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-01: 0</title></circle><circle class="pt" cx="635.1" cy="264.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-02: 0</title></circle><circle class="pt" cx="673.7" cy="224.1" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-03: 211</title></circle><circle class="pt" cx="712.3" cy="168.3" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-04: 506</title></circle><circle class="pt" cx="751.0" cy="16.0" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-05: 1K</title></circle><circle class="pt" cx="789.6" cy="112.1" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-06: 803</title></circle><circle class="pt" cx="828.2" cy="235.8" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-07: 149</title></circle><circle class="pt" cx="866.8" cy="250.4" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-08: 72</title></circle><circle class="pt" cx="905.4" cy="251.9" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-09: 64</title></circle><circle class="pt" cx="944.0" cy="250.8" r="3.5" stroke="#2a78d6"><title>Coursiv, 2026-10: 70</title></circle><text x="950.0" y="254.8" font-size="12" fill="#2a78d6" text-anchor="end" dy="12">Coursiv</text><path d="M56.0 264.0 L94.6 264.0 L133.2 264.0 L171.8 264.0 L210.4 264.0 L249.0 264.0 L287.7 264.0 L326.3 264.0 L364.9 264.0 L403.5 249.4 L442.1 252.6 L480.7 253.6 L519.3 254.2 L557.9 254.7 L596.5 251.5 L635.1 242.6 L673.7 247.2 L712.3 249.8 L751.0 247.5 L789.6 259.5 L828.2 257.9 L866.8 258.5 L905.4 259.5 L944.0 259.1" fill="none" stroke="#d9641e" stroke-width="2" stroke-linejoin="round"/><circle class="pt" cx="56.0" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2024-11: 0</title></circle><circle class="pt" cx="94.6" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2024-12: 0</title></circle><circle class="pt" cx="133.2" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-01: 0</title></circle><circle class="pt" cx="171.8" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-02: 0</title></circle><circle class="pt" cx="210.4" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-03: 0</title></circle><circle class="pt" cx="249.0" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-04: 0</title></circle><circle class="pt" cx="287.7" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-05: 0</title></circle><circle class="pt" cx="326.3" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-06: 0</title></circle><circle class="pt" cx="364.9" cy="264.0" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-07: 0</title></circle><circle class="pt" cx="403.5" cy="249.4" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-08: 77</title></circle><circle class="pt" cx="442.1" cy="252.6" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-09: 60</title></circle><circle class="pt" cx="480.7" cy="253.6" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-10: 55</title></circle><circle class="pt" cx="519.3" cy="254.2" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-11: 52</title></circle><circle class="pt" cx="557.9" cy="254.7" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2025-12: 49</title></circle><circle class="pt" cx="596.5" cy="251.5" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-01: 66</title></circle><circle class="pt" cx="635.1" cy="242.6" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-02: 113</title></circle><circle class="pt" cx="673.7" cy="247.2" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-03: 89</title></circle><circle class="pt" cx="712.3" cy="249.8" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-04: 75</title></circle><circle class="pt" cx="751.0" cy="247.5" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-05: 87</title></circle><circle class="pt" cx="789.6" cy="259.5" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-06: 24</title></circle><circle class="pt" cx="828.2" cy="257.9" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-07: 32</title></circle><circle class="pt" cx="866.8" cy="258.5" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-08: 29</title></circle><circle class="pt" cx="905.4" cy="259.5" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-09: 24</title></circle><circle class="pt" cx="944.0" cy="259.1" r="3.5" stroke="#d9641e"><title>Cosmo (CodeSignal), 2026-10: 26</title></circle><text x="950.0" y="263.1" font-size="12" fill="#d9641e" text-anchor="end" dy="-10">Cosmo (CodeSignal)</text><path d="M56.0 264.0 L94.6 264.0 L133.2 264.0 L171.8 264.0 L210.4 264.0 L249.0 264.0 L287.7 264.0 L326.3 264.0 L364.9 264.0 L403.5 264.0 L442.1 264.0 L480.7 264.0 L519.3 264.0 L557.9 264.0 L596.5 264.0 L635.1 264.0 L673.7 264.0 L712.3 264.0 L751.0 264.0 L789.6 264.0 L828.2 264.0 L866.8 249.2 L905.4 215.8 L944.0 214.1" fill="none" stroke="#2f7a4f" stroke-width="2" stroke-linejoin="round"/><circle class="pt" cx="56.0" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2024-11: 0</title></circle><circle class="pt" cx="94.6" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2024-12: 0</title></circle><circle class="pt" cx="133.2" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-01: 0</title></circle><circle class="pt" cx="171.8" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-02: 0</title></circle><circle class="pt" cx="210.4" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-03: 0</title></circle><circle class="pt" cx="249.0" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-04: 0</title></circle><circle class="pt" cx="287.7" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-05: 0</title></circle><circle class="pt" cx="326.3" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-06: 0</title></circle><circle class="pt" cx="364.9" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-07: 0</title></circle><circle class="pt" cx="403.5" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-08: 0</title></circle><circle class="pt" cx="442.1" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-09: 0</title></circle><circle class="pt" cx="480.7" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-10: 0</title></circle><circle class="pt" cx="519.3" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-11: 0</title></circle><circle class="pt" cx="557.9" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2025-12: 0</title></circle><circle class="pt" cx="596.5" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-01: 0</title></circle><circle class="pt" cx="635.1" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-02: 0</title></circle><circle class="pt" cx="673.7" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-03: 0</title></circle><circle class="pt" cx="712.3" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-04: 0</title></circle><circle class="pt" cx="751.0" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-05: 0</title></circle><circle class="pt" cx="789.6" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-06: 0</title></circle><circle class="pt" cx="828.2" cy="264.0" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-07: 0</title></circle><circle class="pt" cx="866.8" cy="249.2" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-08: 78</title></circle><circle class="pt" cx="905.4" cy="215.8" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-09: 255</title></circle><circle class="pt" cx="944.0" cy="214.1" r="3.5" stroke="#2f7a4f"><title>Skilario, 2026-10: 264</title></circle><text x="950.0" y="218.1" font-size="12" fill="#2f7a4f" text-anchor="end" dy="12">Skilario</text><path d="M56.0 264.0 L94.6 264.0 L133.2 264.0 L171.8 264.0 L210.4 264.0 L249.0 263.6 L287.7 263.1 L326.3 262.7 L364.9 263.6 L403.5 263.2 L442.1 263.2 L480.7 262.5 L519.3 261.4 L557.9 262.5 L596.5 260.2 L635.1 260.4 L673.7 261.2 L712.3 262.3 L751.0 262.3 L789.6 263.4 L828.2 262.5 L866.8 263.4 L905.4 263.4 L944.0 263.2" fill="none" stroke="#7a4fb0" stroke-width="2" stroke-linejoin="round"/><circle class="pt" cx="56.0" cy="264.0" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2024-11: 0</title></circle><circle class="pt" cx="94.6" cy="264.0" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2024-12: 0</title></circle><circle class="pt" cx="133.2" cy="264.0" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-01: 0</title></circle><circle class="pt" cx="171.8" cy="264.0" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-02: 0</title></circle><circle class="pt" cx="210.4" cy="264.0" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-03: 0</title></circle><circle class="pt" cx="249.0" cy="263.6" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-04: 2</title></circle><circle class="pt" cx="287.7" cy="263.1" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-05: 5</title></circle><circle class="pt" cx="326.3" cy="262.7" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-06: 7</title></circle><circle class="pt" cx="364.9" cy="263.6" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-07: 2</title></circle><circle class="pt" cx="403.5" cy="263.2" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-08: 4</title></circle><circle class="pt" cx="442.1" cy="263.2" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-09: 4</title></circle><circle class="pt" cx="480.7" cy="262.5" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-10: 8</title></circle><circle class="pt" cx="519.3" cy="261.4" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-11: 14</title></circle><circle class="pt" cx="557.9" cy="262.5" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2025-12: 8</title></circle><circle class="pt" cx="596.5" cy="260.2" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-01: 20</title></circle><circle class="pt" cx="635.1" cy="260.4" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-02: 19</title></circle><circle class="pt" cx="673.7" cy="261.2" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-03: 15</title></circle><circle class="pt" cx="712.3" cy="262.3" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-04: 9</title></circle><circle class="pt" cx="751.0" cy="262.3" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-05: 9</title></circle><circle class="pt" cx="789.6" cy="263.4" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-06: 3</title></circle><circle class="pt" cx="828.2" cy="262.5" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-07: 8</title></circle><circle class="pt" cx="866.8" cy="263.4" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-08: 3</title></circle><circle class="pt" cx="905.4" cy="263.4" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-09: 3</title></circle><circle class="pt" cx="944.0" cy="263.2" r="3.5" stroke="#7a4fb0"><title>Learn AI: AI Tools Mastery, 2026-10: 4</title></circle><text x="950.0" y="267.2" font-size="12" fill="#7a4fb0" text-anchor="end" dy="-10">Learn AI: AI Tools Mastery</text></svg><div class="lg"><span><i style="background:#2a78d6"></i>Coursiv</span><span><i style="background:#d9641e"></i>Cosmo (CodeSignal)</span><span><i style="background:#2f7a4f"></i>Skilario</span><span><i style="background:#7a4fb0"></i>Learn AI: AI Tools Mastery</span></div><p class=none>Everything else named above has between zero and six ratings all time. DeepLearning.AI, Andrew Ng's brand, launched an app in July and has 54.</p></div>
+  <div class="line"><h3>For scale: the platforms</h3><p class="sub">Coursera and Khan Academy on the same measure. Flat, and two orders of magnitude above the AI-specific apps.</p><svg viewBox="0 0 960 300" role="img" aria-label="For scale: the platforms"><line class="ax" x1="56" y1="264.0" x2="944" y2="264.0"/><text class="tk" x="50" y="268.0" text-anchor="end">0</text><line class="ax" x1="56" y1="202.0" x2="944" y2="202.0"/><text class="tk" x="50" y="206.0" text-anchor="end">553</text><line class="ax" x1="56" y1="140.0" x2="944" y2="140.0"/><text class="tk" x="50" y="144.0" text-anchor="end">1K</text><line class="ax" x1="56" y1="78.0" x2="944" y2="78.0"/><text class="tk" x="50" y="82.0" text-anchor="end">2K</text><line class="ax" x1="56" y1="16.0" x2="944" y2="16.0"/><text class="tk" x="50" y="20.0" text-anchor="end">2K</text><text class="tk" x="56.0" y="288" text-anchor="middle">2024-11</text><text class="tk" x="133.2" y="288" text-anchor="middle">2025-01</text><text class="tk" x="364.9" y="288" text-anchor="middle">2025-07</text><text class="tk" x="596.5" y="288" text-anchor="middle">2026-01</text><text class="tk" x="828.2" y="288" text-anchor="middle">2026-07</text><path d="M56.0 126.5 L94.6 162.3 L133.2 17.7 L171.8 16.0 L210.4 34.6 L249.0 37.8 L287.7 39.9 L326.3 60.4 L364.9 51.1 L403.5 46.8 L442.1 71.0 L480.7 95.3 L519.3 136.2 L557.9 92.5 L596.5 79.2 L635.1 84.8 L673.7 94.5 L712.3 107.6 L751.0 58.9 L789.6 93.6 L828.2 87.3 L866.8 95.7 L905.4 107.2 L944.0 120.4" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"/><circle class="pt" cx="56.0" cy="126.5" r="3.5" stroke="#2a78d6"><title>Coursera, 2024-11: 1K</title></circle><circle class="pt" cx="94.6" cy="162.3" r="3.5" stroke="#2a78d6"><title>Coursera, 2024-12: 907</title></circle><circle class="pt" cx="133.2" cy="17.7" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-01: 2K</title></circle><circle class="pt" cx="171.8" cy="16.0" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-02: 2K</title></circle><circle class="pt" cx="210.4" cy="34.6" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-03: 2K</title></circle><circle class="pt" cx="249.0" cy="37.8" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-04: 2K</title></circle><circle class="pt" cx="287.7" cy="39.9" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-05: 2K</title></circle><circle class="pt" cx="326.3" cy="60.4" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-06: 2K</title></circle><circle class="pt" cx="364.9" cy="51.1" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-07: 2K</title></circle><circle class="pt" cx="403.5" cy="46.8" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-08: 2K</title></circle><circle class="pt" cx="442.1" cy="71.0" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-09: 2K</title></circle><circle class="pt" cx="480.7" cy="95.3" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-10: 2K</title></circle><circle class="pt" cx="519.3" cy="136.2" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-11: 1K</title></circle><circle class="pt" cx="557.9" cy="92.5" r="3.5" stroke="#2a78d6"><title>Coursera, 2025-12: 2K</title></circle><circle class="pt" cx="596.5" cy="79.2" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-01: 2K</title></circle><circle class="pt" cx="635.1" cy="84.8" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-02: 2K</title></circle><circle class="pt" cx="673.7" cy="94.5" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-03: 2K</title></circle><circle class="pt" cx="712.3" cy="107.6" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-04: 1K</title></circle><circle class="pt" cx="751.0" cy="58.9" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-05: 2K</title></circle><circle class="pt" cx="789.6" cy="93.6" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-06: 2K</title></circle><circle class="pt" cx="828.2" cy="87.3" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-07: 2K</title></circle><circle class="pt" cx="866.8" cy="95.7" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-08: 2K</title></circle><circle class="pt" cx="905.4" cy="107.2" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-09: 1K</title></circle><circle class="pt" cx="944.0" cy="120.4" r="3.5" stroke="#2a78d6"><title>Coursera, 2026-10: 1K</title></circle><text x="950.0" y="124.4" font-size="12" fill="#2a78d6" text-anchor="end" dy="12">Coursera</text><path d="M56.0 137.5 L94.6 132.2 L133.2 94.1 L171.8 111.1 L210.4 98.5 L249.0 107.2 L287.7 118.4 L326.3 93.9 L364.9 78.9 L403.5 86.9 L442.1 126.9 L480.7 120.5 L519.3 142.9 L557.9 154.5 L596.5 125.1 L635.1 150.2 L673.7 118.4 L712.3 146.7 L751.0 132.3 L789.6 125.5 L828.2 108.3 L866.8 126.9 L905.4 106.5 L944.0 154.8" fill="none" stroke="#d9641e" stroke-width="2" stroke-linejoin="round"/><circle class="pt" cx="56.0" cy="137.5" r="3.5" stroke="#d9641e"><title>Khan Academy, 2024-11: 1K</title></circle><circle class="pt" cx="94.6" cy="132.2" r="3.5" stroke="#d9641e"><title>Khan Academy, 2024-12: 1K</title></circle><circle class="pt" cx="133.2" cy="94.1" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-01: 2K</title></circle><circle class="pt" cx="171.8" cy="111.1" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-02: 1K</title></circle><circle class="pt" cx="210.4" cy="98.5" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-03: 1K</title></circle><circle class="pt" cx="249.0" cy="107.2" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-04: 1K</title></circle><circle class="pt" cx="287.7" cy="118.4" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-05: 1K</title></circle><circle class="pt" cx="326.3" cy="93.9" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-06: 2K</title></circle><circle class="pt" cx="364.9" cy="78.9" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-07: 2K</title></circle><circle class="pt" cx="403.5" cy="86.9" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-08: 2K</title></circle><circle class="pt" cx="442.1" cy="126.9" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-09: 1K</title></circle><circle class="pt" cx="480.7" cy="120.5" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-10: 1K</title></circle><circle class="pt" cx="519.3" cy="142.9" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-11: 1K</title></circle><circle class="pt" cx="557.9" cy="154.5" r="3.5" stroke="#d9641e"><title>Khan Academy, 2025-12: 977</title></circle><circle class="pt" cx="596.5" cy="125.1" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-01: 1K</title></circle><circle class="pt" cx="635.1" cy="150.2" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-02: 1K</title></circle><circle class="pt" cx="673.7" cy="118.4" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-03: 1K</title></circle><circle class="pt" cx="712.3" cy="146.7" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-04: 1K</title></circle><circle class="pt" cx="751.0" cy="132.3" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-05: 1K</title></circle><circle class="pt" cx="789.6" cy="125.5" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-06: 1K</title></circle><circle class="pt" cx="828.2" cy="108.3" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-07: 1K</title></circle><circle class="pt" cx="866.8" cy="126.9" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-08: 1K</title></circle><circle class="pt" cx="905.4" cy="106.5" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-09: 1K</title></circle><circle class="pt" cx="944.0" cy="154.8" r="3.5" stroke="#d9641e"><title>Khan Academy, 2026-10: 974</title></circle><text x="950.0" y="158.8" font-size="12" fill="#d9641e" text-anchor="end" dy="-10">Khan Academy</text><path d="M56.0 258.7 L94.6 259.3 L133.2 255.6 L171.8 255.8 L210.4 257.6 L249.0 254.9 L287.7 257.8 L326.3 259.1 L364.9 258.4 L403.5 258.3 L442.1 259.2 L480.7 257.4 L519.3 259.0 L557.9 257.5 L596.5 259.1 L635.1 258.6 L673.7 258.5 L712.3 260.0 L751.0 261.1 L789.6 259.5 L828.2 261.8 L866.8 261.4 L905.4 260.9 L944.0 261.1" fill="none" stroke="#2f7a4f" stroke-width="2" stroke-linejoin="round"/><circle class="pt" cx="56.0" cy="258.7" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2024-11: 47</title></circle><circle class="pt" cx="94.6" cy="259.3" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2024-12: 42</title></circle><circle class="pt" cx="133.2" cy="255.6" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-01: 75</title></circle><circle class="pt" cx="171.8" cy="255.8" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-02: 73</title></circle><circle class="pt" cx="210.4" cy="257.6" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-03: 57</title></circle><circle class="pt" cx="249.0" cy="254.9" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-04: 81</title></circle><circle class="pt" cx="287.7" cy="257.8" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-05: 55</title></circle><circle class="pt" cx="326.3" cy="259.1" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-06: 44</title></circle><circle class="pt" cx="364.9" cy="258.4" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-07: 50</title></circle><circle class="pt" cx="403.5" cy="258.3" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-08: 51</title></circle><circle class="pt" cx="442.1" cy="259.2" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-09: 43</title></circle><circle class="pt" cx="480.7" cy="257.4" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-10: 59</title></circle><circle class="pt" cx="519.3" cy="259.0" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-11: 45</title></circle><circle class="pt" cx="557.9" cy="257.5" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2025-12: 58</title></circle><circle class="pt" cx="596.5" cy="259.1" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-01: 44</title></circle><circle class="pt" cx="635.1" cy="258.6" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-02: 48</title></circle><circle class="pt" cx="673.7" cy="258.5" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-03: 49</title></circle><circle class="pt" cx="712.3" cy="260.0" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-04: 36</title></circle><circle class="pt" cx="751.0" cy="261.1" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-05: 26</title></circle><circle class="pt" cx="789.6" cy="259.5" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-06: 40</title></circle><circle class="pt" cx="828.2" cy="261.8" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-07: 20</title></circle><circle class="pt" cx="866.8" cy="261.4" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-08: 23</title></circle><circle class="pt" cx="905.4" cy="260.9" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-09: 28</title></circle><circle class="pt" cx="944.0" cy="261.1" r="3.5" stroke="#2f7a4f"><title>DataCamp, 2026-10: 26</title></circle><text x="950.0" y="265.1" font-size="12" fill="#2f7a4f" text-anchor="end" dy="12">DataCamp</text></svg><div class="lg"><span><i style="background:#2a78d6"></i>Coursera</span><span><i style="background:#d9641e"></i>Khan Academy</span><span><i style="background:#2f7a4f"></i>DataCamp</span></div></div>
+</section>
+<section>
+  <h2>What this says for Nora, idea 6</h2>
+  <div class="read">
+    <div class="hot"><b>Open field, wrong shelf</b>There is no incumbent to displace, which supports the edge score. But the App Store is also telling you that the buyer Nora is for, a senior person who wants to learn by doing, does not go to the App Store for it. They buy a cohort course, a newsletter, a workshop, or they watch a video, which is where Maxinomics already is.</div>
+    <div><b>What that means for the build</b>Nora as a Maxinomics product (a paid series, exercises delivered by email and in a browser, a Buzz channel to do them in) fits the data. Nora as an iOS app with in-app purchase would be the seventy-fifth entry in a category where the seventy-fourth has six ratings.</div>
+    <div><b>Market score</b>Stays at 3. The market is real and the audience is in it, but it is off-store, so none of it shows up in the data here. Pricing comps are Maven cohorts ($500 to $2,000) and Section's AI courses, not $9.99 a month.</div>
+  </div>
+  <div class="read"><div><b>Scope</b>US, iPhone, App Store only. Android, web sign-ups and web billing are not here, and most of these companies sell on the web, so revenue understates them.</div><div><b>Estimates</b>Appfigures models downloads from ranks and ratings. Apps below its threshold show as "not modeled," which means small, not zero.</div><div><b>Method</b>Keyword Inspector searches in a signed-in session on Nov 11, top 15 results per keyword with 30-day US estimates for the top 10, plus the ratings report for every app named here, Nov 2024 to Nov 2026. No credits, no tracking slots. Raw data in <code>~/Projects/appfigures-ideas</code>.</div></div>
+</section>
+<div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
+</div>
+</body>
+</html>
