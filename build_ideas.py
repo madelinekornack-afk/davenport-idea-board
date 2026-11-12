@@ -1,4 +1,5 @@
 import json, csv, re
+from bands import bands_html
 K='/Users/madelinekornack/Projects/appfigures-ideas'
 prefix=open('build_buzz.py').read().split("repo=json.load")[0]
 TABS=[('./','Board'),('clark.html','Clark'),('audit.html','Audit'),('formcheck.html','Form check'),('buzz.html','Buzz'),('calories.html','Calorie apps'),('bloodwork.html','Bloodwork'),('glp1.html','GLP-1'),('learnai.html','Learn AI')]
@@ -28,7 +29,7 @@ def page(fn, title, eyebrow, h1, lede, body_html, foot):
     g={}
     exec(prefix.replace("<title>Buzz</title>",f"<title>{title}</title>"), g)
     head=g['head'].replace('</style>','</style>'+CSS2,1)
-    html=head+f'<div class="wrap">\n{nav(fn)}\n<header>\n  <div class="eyebrow">{eyebrow}</div>\n  <h1>{h1}</h1>\n  <p class="lede">{lede}</p>\n</header>\n{body_html}\n<div class="foot">{foot} <a href="./">Back to the board.</a></div>\n</div>\n</body>\n</html>\n'
+    html=head+f'<div class="wrap">\n{nav(fn)}\n<header>\n  <div class="eyebrow">{eyebrow}</div>\n  <h1>{h1}</h1>\n  <p class="lede">{lede}</p>\n</header>\n{body_html}\n{bands_html(fn)}\n<div class="foot">{foot} <a href="./">Back to the board.</a></div>\n</div>\n</body>\n</html>\n'
     open(fn,'w').write(html); print('wrote',fn,len(html))
 lc=None
 CSS2='''<style>

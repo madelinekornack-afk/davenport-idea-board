@@ -1,4 +1,5 @@
 import json, re
+from bands import bands_html
 D='/Users/madelinekornack/Projects/appfigures-calorie'
 exec(open('build_buzz.py').read().split("repo=json.load")[0].replace("<title>Buzz</title>","<title>Calorie apps</title>").replace('<a class="on" href="buzz.html">Buzz</a>','<a href="buzz.html">Buzz</a><a class="on" href="calories.html">Calorie apps</a>'))
 NAMES={'6013158':'MyFitnessPal','337323818982':'Cal AI'}
@@ -112,6 +113,7 @@ body=f'''<div class="wrap">
   </div>
 </section>
 
+{bands_html('calories.html')}
 <div class="foot">Built Oct 26, refreshed Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>
 </body>

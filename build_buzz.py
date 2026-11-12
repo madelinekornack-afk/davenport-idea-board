@@ -1,4 +1,5 @@
 import json, re, os
+from bands import bands_html
 B='/Users/madelinekornack/Projects/appfigures-clark/buzz'
 clark=open('clark.html').read()
 head=clark.split('<div class="wrap">')[0].replace('<title>Clark</title>','<title>Buzz</title>')
@@ -166,6 +167,7 @@ body=f'''<div class="wrap">
 </section>
 
 {replace_html}
+{bands_html('buzz.html')}
 <div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>
 </body>

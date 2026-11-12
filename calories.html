@@ -130,6 +130,13 @@ table.cmp td:not(:first-child) { font-family: var(--mono); font-size: 13px; font
 table.cmp td.w { font-weight: 700; }
 table.cmp td small { color: var(--muted); font-size: 11px; margin-left: 4px; }
 table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; }
+</style><style>
+table.cmp { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); }
+table.cmp th, table.cmp td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+table.cmp td:nth-child(n+3) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; font-weight: 700; }
+.tablewrap2 { overflow-x: auto; }
 </style>
 <style>
 .line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
@@ -199,7 +206,7 @@ a { color: var(--accent); }
 </head>
 <body>
 <div class="wrap">
-<nav class="tabs"><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a class="on" href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a href="learnai.html">Learn AI</a></nav>
+<nav class="tabs"><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a class="on" href="calories.html">Calorie apps</a><a href="calories.html">Calorie apps</a></nav>
 <header>
   <div class="eyebrow">Idea 3 on the board · Health copilot · Appfigures competitor tracking, pulled Oct 26 and refreshed Nov 11</div>
   <h1>Calorie apps: MyFitnessPal vs Cal AI</h1>
@@ -253,6 +260,16 @@ a { color: var(--accent); }
   </div>
 </section>
 
+
+<section>
+  <h2>Revenue potential by penetration: 1%, 10%, 50%</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">Health copilot (idea 3), measured against the calorie apps. Annual revenue at each penetration band, against the pools that can be sized and against the audience. Gross revenue, not profit, and the 50% band is there for scale, not as a plan.</p>
+  <div class="tablewrap2"><table class="cmp"><thead><tr><th>Pool</th><th>1%</th><th>10%</th><th>50%</th></tr></thead><tbody><tr><td>MyFitnessPal + Cal AI, worldwide iOS net revenue, last 12 months, measured</td><td>$1.8M</td><td>$18M</td><td>$89M</td></tr><tr><td>MyFitnessPal + Cal AI, US iPhone only, measured</td><td>$1.3M</td><td>$13M</td><td>$64M</td></tr><tr><td>Nutrition apps category, $4.8B (from the Oct 24 market map on the card; analyst figure, scope varies)</td><td>$48M</td><td>$480M</td><td>$2.4B</td></tr><tr><td><b>Maxinomics audience, 850K subscribers</b>, buying at $60 a year; Cal AI sells at about $30 to $60, MyFitnessPal Premium at $80</td><td><b>$510K</b><br><small>8K buyers</small></td><td><b>$5.1M</b><br><small>85K buyers</small></td><td><b>$26M</b><br><small>425K buyers</small></td></tr></tbody></table></div>
+  <div class="read">
+    <div class="hot"><b>Read</b>Cal AI took 28% of the measured two-app pool in two years from a standing start, so 10% is not a fantasy band in this category; it is roughly what a newcomer with a real hook and paid acquisition has done. The audience framing is strong: the people who watch Maxinomics are the people who track things, and 1% of them at $60 is a half-million-dollar business on its own.</div>
+    <div><b>How to read the bands</b>Creator-sold products convert 1% to 3% of an engaged audience, so the 1% row is the realistic case, 10% is a multi-year ceiling, and 50% is the size of the whole audience spending, which no product reaches. Category pools are third-party estimates whose definitions vary; the measured rows are Appfigures iOS net revenue and understate anything sold on the web.</div>
+  </div>
+</section>
 <div class="foot">Built Oct 26, refreshed Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>
 </body>

@@ -129,6 +129,13 @@ table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em
 table.cmp td:nth-child(2), table.cmp td:nth-child(3), table.cmp td:nth-child(4), table.cmp td:nth-child(5) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 table.cmp td.w { font-weight: 700; }
 .tablewrap2 { overflow-x: auto; }
+</style><style>
+table.cmp { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); }
+table.cmp th, table.cmp td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+table.cmp td:nth-child(n+3) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; font-weight: 700; }
+.tablewrap2 { overflow-x: auto; }
 </style>
 <style>
 .line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
@@ -234,6 +241,16 @@ a { color: var(--accent); }
     <div><b>Where the audience helps</b>GLP-1 users skew to the income band Maxinomics has, and the peptide spike says the Bryan Johnson crowd is in there too. That is a distribution edge for a Rythm-style partner (idea 8) as much as for a tracker.</div>
   </div>
   <div class="read"><div><b>Scope</b>US, iPhone, App Store only. Android, web sign-ups and web billing are not here, and most of these companies sell on the web, so revenue understates them.</div><div><b>Estimates</b>Appfigures models downloads from ranks and ratings. Apps below its threshold show as "not modeled," which means small, not zero.</div><div><b>Method</b>Keyword Inspector searches in a signed-in session on Nov 11, top 15 results per keyword with 30-day US estimates for the top 10, plus the ratings report for every app named here, Nov 2024 to Nov 2026. No credits, no tracking slots. Raw data in <code>~/Projects/appfigures-ideas</code>.</div></div>
+</section>
+
+<section>
+  <h2>Revenue potential by penetration: 1%, 10%, 50%</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">GLP-1 / peptide tracker (idea 7). Annual revenue at each penetration band, against the pools that can be sized and against the audience. Gross revenue, not profit, and the 50% band is there for scale, not as a plan.</p>
+  <div class="tablewrap2"><table class="cmp"><thead><tr><th>Pool</th><th>1%</th><th>10%</th><th>50%</th></tr></thead><tbody><tr><td>MeAgain + Shotsy, US iPhone net revenue, annualized from the 30-day estimate, measured</td><td>$68K</td><td>$680K</td><td>$3.4M</td></tr><tr><td>Whole tracker category incl. peptides and the long tail, US iPhone, estimated</td><td>$80K</td><td>$800K</td><td>$4.0M</td></tr><tr><td>Same, worldwide, applying the 1.4x worldwide-to-US ratio seen on the calorie apps</td><td>$110K</td><td>$1.1M</td><td>$5.5M</td></tr><tr><td><b>Maxinomics audience, 850K subscribers</b>, buying at $50 a year; MeAgain and Shotsy earn about $7 to $14 per download</td><td><b>$425K</b><br><small>8K buyers</small></td><td><b>$4.2M</b><br><small>85K buyers</small></td><td><b>$21M</b><br><small>425K buyers</small></td></tr></tbody></table></div>
+  <div class="read">
+    <div class="hot"><b>Read</b>This is the smallest pool on the board. Fifty percent of the entire US iPhone tracker category is a $4M business, and the leader already has it. The only band that pays here is the audience one, and only if the product is the food-plus-labs layer the card describes rather than another log: 1% of the audience at $50 is more than Shotsy makes today.</div>
+    <div><b>How to read the bands</b>Creator-sold products convert 1% to 3% of an engaged audience, so the 1% row is the realistic case, 10% is a multi-year ceiling, and 50% is the size of the whole audience spending, which no product reaches. Category pools are third-party estimates whose definitions vary; the measured rows are Appfigures iOS net revenue and understate anything sold on the web.</div>
+  </div>
 </section>
 <div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>

@@ -129,6 +129,13 @@ table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em
 table.cmp td:nth-child(2), table.cmp td:nth-child(3), table.cmp td:nth-child(4), table.cmp td:nth-child(5) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 table.cmp td.w { font-weight: 700; }
 .tablewrap2 { overflow-x: auto; }
+</style><style>
+table.cmp { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); }
+table.cmp th, table.cmp td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+table.cmp td:nth-child(n+3) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; font-weight: 700; }
+.tablewrap2 { overflow-x: auto; }
 </style>
 <style>
 .line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
@@ -227,6 +234,16 @@ a { color: var(--accent); }
     <div><b>Market score</b>Stays at 3. The market is real and the audience is in it, but it is off-store, so none of it shows up in the data here. Pricing comps are Maven cohorts ($500 to $2,000) and Section's AI courses, not $9.99 a month.</div>
   </div>
   <div class="read"><div><b>Scope</b>US, iPhone, App Store only. Android, web sign-ups and web billing are not here, and most of these companies sell on the web, so revenue understates them.</div><div><b>Estimates</b>Appfigures models downloads from ranks and ratings. Apps below its threshold show as "not modeled," which means small, not zero.</div><div><b>Method</b>Keyword Inspector searches in a signed-in session on Nov 11, top 15 results per keyword with 30-day US estimates for the top 10, plus the ratings report for every app named here, Nov 2024 to Nov 2026. No credits, no tracking slots. Raw data in <code>~/Projects/appfigures-ideas</code>.</div></div>
+</section>
+
+<section>
+  <h2>Revenue potential by penetration: 1%, 10%, 50%</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">Nora, learn AI by doing (idea 6). Annual revenue at each penetration band, against the pools that can be sized and against the audience. Gross revenue, not profit, and the 50% band is there for scale, not as a plan.</p>
+  <div class="tablewrap2"><table class="cmp"><thead><tr><th>Pool</th><th>1%</th><th>10%</th><th>50%</th></tr></thead><tbody><tr><td>Learn-AI apps on the App Store: no measurable pool. Not one of 74 apps clears the download model</td><td colspan="3" style="color:var(--muted)">no pool to size</td></tr><tr><td>Coursera, all subjects, US iPhone net revenue, annualized, measured, for scale</td><td>$47K</td><td>$470K</td><td>$2.4M</td></tr><tr><td>Executive and professional AI training is sold off-store (Maven cohorts $500 to $2,000, Section, corporate L&D); no reliable public size</td><td colspan="3" style="color:var(--muted)">no pool to size</td></tr><tr><td><b>Maxinomics audience, 850K subscribers</b>, buying at $300 one-time; creator courses sell at $200 to $500, cohort courses at $500 to $2,000</td><td><b>$2.5M</b><br><small>8K buyers</small></td><td><b>$26M</b><br><small>85K buyers</small></td><td><b>$128M</b><br><small>425K buyers</small></td></tr></tbody></table></div>
+  <div class="read">
+    <div class="hot"><b>Read</b>There is no App Store pool to take a share of, which is why the audience framing is the whole model here. At creator-course conversion rates (1% to 3% of an engaged audience buy), Nora is a $2.5M to $7.5M product if it is sold to the Maxinomics audience directly, and the 10% band is the ceiling a well-run cohort business reaches over several years, not a launch number.</div>
+    <div><b>How to read the bands</b>Creator-sold products convert 1% to 3% of an engaged audience, so the 1% row is the realistic case, 10% is a multi-year ceiling, and 50% is the size of the whole audience spending, which no product reaches. Category pools are third-party estimates whose definitions vary; the measured rows are Appfigures iOS net revenue and understate anything sold on the web.</div>
+  </div>
 </section>
 <div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>

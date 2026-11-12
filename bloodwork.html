@@ -129,6 +129,13 @@ table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em
 table.cmp td:nth-child(2), table.cmp td:nth-child(3), table.cmp td:nth-child(4), table.cmp td:nth-child(5) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 table.cmp td.w { font-weight: 700; }
 .tablewrap2 { overflow-x: auto; }
+</style><style>
+table.cmp { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); }
+table.cmp th, table.cmp td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+table.cmp td:nth-child(n+3) { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.cmp td.neg { color: #b4452e; } table.cmp td.pos { color: #2f7a4f; font-weight: 700; }
+.tablewrap2 { overflow-x: auto; }
 </style>
 <style>
 .line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
@@ -237,6 +244,16 @@ a { color: var(--accent); }
     <div><b>What the data cannot say</b>Revenue. All of these bill on the web, so the App Store shows installs and nothing else. Function has disclosed numbers publicly; the others have not.</div>
   </div>
   <div class="read"><div><b>Scope</b>US, iPhone, App Store only. Android, web sign-ups and web billing are not here, and most of these companies sell on the web, so revenue understates them.</div><div><b>Estimates</b>Appfigures models downloads from ranks and ratings. Apps below its threshold show as "not modeled," which means small, not zero.</div><div><b>Method</b>Keyword Inspector searches in a signed-in session on Nov 11, top 15 results per keyword with 30-day US estimates for the top 10, plus the ratings report for every app named here, Nov 2024 to Nov 2026. No credits, no tracking slots. Raw data in <code>~/Projects/appfigures-ideas</code>.</div></div>
+</section>
+
+<section>
+  <h2>Revenue potential by penetration: 1%, 10%, 50%</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">Buy into something like Rythm (idea 8). Annual revenue at each penetration band, against the pools that can be sized and against the audience. Gross revenue, not profit, and the 50% band is there for scale, not as a plan.</p>
+  <div class="tablewrap2"><table class="cmp"><thead><tr><th>Pool</th><th>1%</th><th>10%</th><th>50%</th></tr></thead><tbody><tr><td>Function Health, about $100M to $130M a year (Sacra run-rate Feb 2025; third-party)</td><td>$1.1M</td><td>$12M</td><td>$58M</td></tr><tr><td>US direct-to-consumer lab testing, about $2B (Meticulous Research 2025 base, derived from its 2032 projection)</td><td>$20M</td><td>$200M</td><td>$1.0B</td></tr><tr><td>Global direct-to-consumer lab testing, $3.8B (Towards Healthcare, 2025)</td><td>$38M</td><td>$378M</td><td>$1.9B</td></tr><tr><td><b>Maxinomics audience, 850K subscribers</b>, buying at $79 a month, Rythm's price; Function is $365 to $499 a year</td><td><b>$8.1M</b><br><small>8K buyers</small></td><td><b>$81M</b><br><small>85K buyers</small></td><td><b>$403M</b><br><small>425K buyers</small></td></tr></tbody></table></div>
+  <div class="read">
+    <div class="hot"><b>Read</b>Read these as revenue generated for the partner, not for the group; what the group gets is the equity or affiliate share it negotiates. That is the point: 1% of the audience on a $79-a-month panel is an $8M-a-year customer base, which is about 7% of Function's whole business and more than any single marketing channel a company that size has. That is the number to put in front of Rythm or Superpower.</div>
+    <div><b>How to read the bands</b>Creator-sold products convert 1% to 3% of an engaged audience, so the 1% row is the realistic case, 10% is a multi-year ceiling, and 50% is the size of the whole audience spending, which no product reaches. Category pools are third-party estimates whose definitions vary; the measured rows are Appfigures iOS net revenue and understate anything sold on the web.</div>
+  </div>
 </section>
 <div class="foot">Built Nov 11, 2026 for the Davenport session. <a href="./">Back to the board.</a></div>
 </div>
