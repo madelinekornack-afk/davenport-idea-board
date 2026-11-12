@@ -1,7 +1,7 @@
 import json, re
 from bands import bands_html
 D='/Users/madelinekornack/Projects/appfigures-calorie'
-exec(open('build_buzz.py').read().split("repo=json.load")[0].replace("<title>Buzz</title>","<title>Calorie apps</title>").replace('<a class="on" href="buzz.html">Buzz</a>','<a href="buzz.html">Buzz</a><a class="on" href="calories.html">Calorie apps</a>'))
+exec(open('build_buzz.py').read().split("repo=json.load")[0].replace("<title>Buzz</title>","<title>Calorie apps</title>").replace('<a class="on" href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a>','<a href="buzz.html">Buzz</a><a class="on" href="calories.html">Calorie apps</a>'))
 NAMES={'6013158':'MyFitnessPal','337323818982':'Cal AI'}
 us=json.load(open(f'{D}/raw_monthly_us_v2.json')); ww=json.load(open(f'{D}/raw_monthly_ww_v2.json')); rat=json.load(open(f'{D}/raw_ratings_v2.json'))
 def ser(d,pid,key):

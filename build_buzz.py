@@ -3,7 +3,7 @@ from bands import bands_html
 B='/Users/madelinekornack/Projects/appfigures-clark/buzz'
 clark=open('clark.html').read()
 head=clark.split('<div class="wrap">')[0].replace('<title>Clark</title>','<title>Buzz</title>')
-NAV='<nav class="tabs"><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a class="on" href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a></nav>'
+NAV='<nav class="tabs"><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a class="on" href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a href="learnai.html">Learn AI</a></nav>'
 extra='''
 <style>
 .line { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px 10px; margin-top: 14px; }
