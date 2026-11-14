@@ -17,7 +17,8 @@ head=head.replace('</style>','''</style>
 table.plan { min-width: 0; }
 table.plan td { font-size: 14px; }
 table.plan td:first-child { font-weight: 600; }
-table.plan td.who, table.plan td.when { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; color: var(--muted); }
+table.plan td.who, table.plan td.when { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+table.plan td.when { white-space: nowrap; }
 .q { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 12px 14px; font-size: 14px; }
 .q b { display: block; font-weight: 600; margin-bottom: 2px; }
 .links a { margin-right: 14px; }
@@ -54,16 +55,17 @@ box(760,40,260,54,'Orca statement reconciliation','first; Jason at WSPM is the g
 box(760,108,260,54,'The executive record','$1,000 a month; 100 customers is $1.2M','box'),
 box(760,176,260,54,'Tax season, pre-assembled','the pain that started it; a December question','box'),
 box(760,244,260,54,'Your own agent','Claude Code, Cowork, a terminal','box'),
+box(760,312,260,54,'The Mac app, on its own','email and money in one window; Nov 12','box'),
 arrow(250,63,300,63),arrow(250,123,300,123),arrow(250,183,300,183,True),arrow(250,243,300,243),arrow(250,303,300,303,True),
-arrow(720,110,760,67),arrow(720,160,760,135),arrow(720,210,760,203,True),arrow(720,260,760,271),
-'<text class="m" x="20" y="445" text-anchor="start">Dashed: not built yet. Solid: running for Phil today, multi-tenant in progress.</text>',
+arrow(720,110,760,67),arrow(720,160,760,135),arrow(720,210,760,203,True),arrow(720,260,760,271),arrow(720,300,760,339,True),
+'<text class="m" x="20" y="445" text-anchor="start">Dashed: not built or not decided yet. Solid: running for Phil today, multi-tenant in progress.</text>',
 '</svg>']
 DIAGRAM=''.join(d)
 
 body=f'''<div class="wrap">
 {NAV}
 <header>
-  <div class="eyebrow">The project the group ended up on · Nov 11 Davenport session, transcribed · ideas 1, 2 and 7 on the board</div>
+  <div class="eyebrow">The project the group ended up on · Nov 11 Davenport session, transcribed, plus Buzz and the group text through Nov 12 · ideas 1, 2 and 7 on the board</div>
   <h1>The engine</h1>
   <p class="lede">Clark and Tally together: one place where your email, your money and your files are cleaned, classified and linked the moment they arrive, so anything asked later is instant. It is not sold on its own. Products sit on top of it, and the first one is for Orca.</p>
   <p class="quote"><b>Phil, Nov 11:</b> "That is what every single business is. It is trying to make someone's high entropy environment that's a pain in the ass to work in into lower entropy. And then you sell that order to the customer."</p>
@@ -95,6 +97,16 @@ body=f'''<div class="wrap">
 </section>
 
 <section>
+  <h2>Since the session: Nov 12</h2>
+  <div class="read">
+    <div><b>Phil: the Mac app</b>Email and transactions are now one native Mac app. The email side hands transaction emails to Tally as they arrive, and Tally pins each to its transaction: order confirmed, subscription notice, return. Every purchase keeps its own paperwork. "The GUI part will be useful even by itself and I'm pretty excited to have it ready for me personally, so that's usually a good sign." Steve: "sort of sounds like that alone could almost be a product?" Phil: "very well might be." It is drawn as a fourth product above, dashed, until the group decides.</div>
+    <div><b>Steve, the morning after</b>"Confident in the direction and wanna dig in asap." His reason for raising PropFlow on the night: they and many others take shortcuts for a flashy product and lean on Claude with a thin harness, which is likely the root cause of their problems. Orca gives their product a better foundation; "so would the Max pipeline." And: "while you don't own the source data with the Max pipeline, you do own the way it's stored and indexed, which is prob the next best thing."</div>
+    <div class="hot"><b>Steve's build-or-buy challenge</b>Managed memory services sell this layer with nothing to run; he found mem0. He runs Orca on Supabase and writes no CRUD endpoints. So is starting with infrastructure and figuring out the product the right order? Usually the product comes first and build-versus-buy falls out of it. His proposed test: pick one AI feature for Orca, build it on a managed service, build it again on Clark when it is ready, and compare. Carried to December below.</div>
+    <div><b>Phil: urgency</b>"With the urgency of onboarding you guys, I'm moving much harder to get it fully up for multiple users." Builds for multi-tenant were already running on the night.</div>
+  </div>
+</section>
+
+<section>
   <h2>The products, in the order you agreed</h2>
   <div class="steps">
     <div class="step"><b>Statement reconciliation for property managers, on Orca <span class="when">first</span></b>The scenario Phil walked through: an owner's bill is $10,000 above a normal month and the manager has to explain why. Today that is a scramble across vendor threads, invoices and tenant tickets. With work orders in Orca and email and payments in the engine, the explanation assembles itself: the furnace was serviced four times before it was fixed, here are the four invoices, here is the thread. Same machine for 50-owner month ends. Jason at WSPM is the guinea pig; Kyle at Green Street already queries Orca from Claude Code. ProFlow, the "AI property manager" Jason pays $1,200 a month, turned out to be a voice harness that had to build on Orca's webhooks to do anything about maintenance. This is board idea 2 and the <a href="audit.html">Audit</a> tab.</div>
@@ -105,12 +117,22 @@ body=f'''<div class="wrap">
 
 <section>
   <h2>Who else is building it</h2>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">What came up in the room, plus the competitor map Fable built in Buzz the same night from Steve's handoff, with each claim checked against press coverage rather than filings.</p>
+  <div class="tablewrap"><table class="plan">
+    <thead><tr><th>Group</th><th>Who</th><th>What the sources support</th></tr></thead>
+    <tbody>
+      <tr><td>Platforms</td><td class="who">Microsoft Work IQ; OpenAI company knowledge</td><td>Work IQ sits on Microsoft Graph (people, documents, activity, relationships); agent APIs GA June 2026, a read-only memory profile for agents over MCP due December 2026. OpenAI's company knowledge retrieves at question time with citations, the design the engine replaces.</td></tr>
+      <tr><td>Enterprise context</td><td class="who">Glean; Jedify</td><td>Glean maps people, content and activity, with 100-seat minimums. Jedify raised $24M in June 2026 to arm agents with business context.</td></tr>
+      <tr><td>Learned memory</td><td class="who">Engram</td><td>Trains a model on an organization's information, so the knowledge lives in weights, not a store. $98M at launch, Microsoft, Notion and Harvey as partners. The opposite design: no evidence row to cite.</td></tr>
+      <tr><td>Personal assistants</td><td class="who">Instinct</td><td>$250M at $2.5B in August 2026, then $1B at $10B in September. One profile says still pre-revenue. One teardown says it keeps markdown in git. Steve: "basically what's on our chalkboard" was Supermemory, not this.</td></tr>
+      <tr><td>Relationship CRMs</td><td class="who">Affinity</td><td>Builds people and company records from email and calendar as its core product. The handoff missed this group.</td></tr>
+      <tr><td>Finance</td><td class="who">Digits; Ramp; Brex</td><td>Digits attaches emailed receipts to transactions and learns vendors, and says month one needs heavy review. Ramp matches above 90 percent and fails on same vendor, same amount, adjacent days. The receipt half of Tally exists for small businesses.</td></tr>
+      <tr><td>Developer memory</td><td class="who">Supermemory; Hyperspell; mem0</td><td>Seed-stage, sold to developers, billed by the token. mem0 is the one Steve raised on Nov 12 as the buy option.</td></tr>
+    </tbody>
+  </table></div>
   <div class="read">
-    <div class="hot"><b>Supermemory</b>Steve found it on the night: "That's basically what's on our chalkboard." Sold to developers, billed by the token. Same architecture, different buyer.</div>
-    <div><b>Glean</b>Enterprise search over a company's tools. The corporate version of the idea, sold to IT.</div>
-    <div><b>Instinct</b>Venture-backed personal context. Nobody in the room has used it. Steve's point stands that he does not want a second app; he wants Claude to be the app, with better data under it.</div>
-    <div><b>Microsoft and Google</b>Have the data, not the economics. Indexing every free account is too expensive, which is why Gmail search is what it is.</div>
-    <div><b>The platform risk, still open</b>Steve's standing worry is that Anthropic ships the feature. The answer on the night was the architecture: write-time processing on one isolated stack per customer is not what a chat app ships, and the first customers are property managers who will never sign up for Instinct.</div>
+    <div class="hot"><b>The gap, as Fable put it</b>Every component exists as a product, but each incumbent owns one source and wants to be the hub. Nobody joins bank transactions, email and product data into one link table with a reason and a confidence on every row, for a company too small for Glean and not on Microsoft. The defensible piece is not the entity table (Affinity builds that from a mailbox, Microsoft Graph ships with 365). It is the link between money and mail with evidence on each row, for a business on Google Workspace plus a bank feed, which neither Microsoft's December release nor Digits reaches today.</div>
+    <div><b>The platform risk, still open</b>Steve's standing worry is that Anthropic ships the feature. The answer on the night was the architecture: write-time processing on one isolated stack per customer is not what a chat app ships, and the first customers are property managers who will never sign up for Instinct. Two moves to watch: Microsoft's agent memory profile in December, and Digits' email intake for companies that move their books there.</div>
     <div><b>A second opinion, from Claude itself</b>Steve asked Fable whether the design was sound. It said the warehouse is "buildable with standard parts" and that no product gives it ready made, that it mostly helps questions about clients, operations and money rather than code, and it pulled four recent failures from its own lessons file that an index would have prevented: a misidentified site visitor, a wrong client price, a missed Green Street purchase, a question already answered in an unread email.</div>
   </div>
 </section>
@@ -134,6 +156,7 @@ body=f'''<div class="wrap">
 <section>
   <h2>Carried to December</h2>
   <div class="caps">
+    <div class="q"><b>Build or buy (Steve, Nov 12)</b>One Orca AI feature built on a managed memory service, then again on Clark, side by side. Fable's framing of the same question: count a week of questions the agent gets wrong because of identity or link errors first. If the count is small, the store does not earn its upkeep.</div>
     <div class="q"><b>Margin per customer</b>$350 a month to run Phil's stack against a $1,000 price, before optimization. Digital Ocean or a leaner template could change the number.</div>
     <div class="q"><b>Accounting depth</b>Tally types the economics, not the ledger. Mercury spent six months and an acquisition on categorization against 300-ledger charts of accounts. Owner statements may need the ledger.</div>
     <div class="q"><b>How finished before Jason</b>Steve's call. A guinea pig who hits a rough edge is still a customer who hit a rough edge.</div>
@@ -142,7 +165,7 @@ body=f'''<div class="wrap">
   </div>
 </section>
 
-<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
+<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript, updated Nov 14 from Buzz #product-ideas and the group text through Nov 12. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
 </div>
 </body>
 </html>
