@@ -72,7 +72,7 @@ DIAGRAM=''.join(d)
 body=f'''<div class="wrap">
 {NAV}
 <header>
-  <div class="eyebrow">The project, on one page · decided at the Nov 11 Davenport session, updated from Buzz and the group text through Nov 15 · ideas 1, 2 and 7 on the board</div>
+  <div class="eyebrow">The project, on one page · decided at the Nov 11 Davenport session, updated from Buzz and the group text through Nov 17 · ideas 1, 2 and 7 on the board</div>
   <h1>The engine</h1>
   <p class="lede">Clark and Tally together: one place where your email, your money and your files are cleaned, classified and linked the moment they arrive, so anything asked later is instant. It is not sold on its own. Products sit on top of it, and the first one is for Orca. This page is the whole project: what it is, what already runs, what has to be built and by whom, what it costs and earns, who else is in the field, and what is still undecided.</p>
   <p class="quote"><b>Phil, Nov 11:</b> "That is what every single business is. It is trying to make someone's high entropy environment that's a pain in the ass to work in into lower entropy. And then you sell that order to the customer."</p>
@@ -123,7 +123,7 @@ body=f'''<div class="wrap">
 </section>
 
 <section>
-  <h2>Since the session: Nov 12 to 15</h2>
+  <h2>Since the session: Nov 12 to 17</h2>
   <div class="read">
     <div><b>Phil: the Mac app</b>Email and transactions are now one native Mac app. The email side hands transaction emails to Tally as they arrive, and Tally pins each to its transaction: order confirmed, subscription notice, return. Every purchase keeps its own paperwork. "The GUI part will be useful even by itself and I'm pretty excited to have it ready for me personally, so that's usually a good sign." Steve: "sort of sounds like that alone could almost be a product?" Phil: "very well might be." It is drawn as a fourth product above, dashed, until the group decides.</div>
     <div><b>Steve, the morning after</b>"Confident in the direction and wanna dig in asap." His reason for raising PropFlow on the night: they and many others take shortcuts for a flashy product and lean on Claude with a thin harness, which is likely the root cause of their problems. Orca gives their product a better foundation; "so would the Max pipeline." And: "while you don't own the source data with the Max pipeline, you do own the way it's stored and indexed, which is prob the next best thing."</div>
@@ -131,6 +131,7 @@ body=f'''<div class="wrap">
     <div><b>Phil: urgency</b>"With the urgency of onboarding you guys, I'm moving much harder to get it fully up for multiple users." Builds for multi-tenant were already running on the night. By Nov 14 the foundation builds had moved from Buzz to terminal agents (the Buzz build system is "extremely token heavy"), the foundation database was switched from Supabase to AWS RDS so the whole engine stays on AWS, and the second foundation build was built but not yet shipped.</div>
     <div><b>Steve, Nov 14: property managers run five systems</b>"As I'm working through Orca stuff, I'm realizing property management companies are so so scattered with their systems": leasing, maintenance (Orca), owner communications, tenant communications, accounting, each with its own complexities. "I think Clark would be really useful in PM. Probably the case with any service based business." Maddy's reply: Fannie Mae is the same picture (ServiceNow, SolarWinds, a CMDB, the same data in several places), and her own job is mostly combining data from disparate systems before any metric gets made.</div>
     <div class="hot"><b>Steve, Nov 15: wants in</b>"I'm realizing how much I just have come to accept the limitations of my AI setup cause it's still pretty good. But it's actually probably trash compared to if I used what we've talked about. Forgets things, places importance on prospects I no longer care about etc. It saves a lot of this in memory files but it's not enough. I wanna give the max pipeline a shot." That is the first customer pull on the engine from outside Phil, three days after the build-or-buy challenge.</div>
+    <div class="hot"><b>Nov 17: "it has to be done"</b>Steve, by text: "It's becoming clear to me that Clark would be extremely valuable in the PM world. And also probably in every world. But I'm guessing domain specific Clark would make it even better." He forwarded a transcript passage, apparently his own words on a call, no source named: the latency and cost of normalizing data from many systems into one place "creates a lot of challenges," whereas with everything in one place and the relationships mapped "you can actually do really interesting things with agents," and much of what he is doing is positioning for 2027 and 2028, when the tools and harnesses mature. Phil, two hours later: "The more I think about it, which is a lot, the more I think it has to be done. And the more I'm skeptical that one of the other AI companies will do it." That is both founders restating the thesis unprompted, six days after the session. Phil's onboarding, multi-user and Mac app channels have no posts since Nov 11; the foundation channel none since Nov 14.</div>
   </div>
 </section>
 
@@ -222,7 +223,7 @@ body=f'''<div class="wrap">
   </div>
 </section>
 
-<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript, updated Nov 16 from Buzz and the group text through Nov 15. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
+<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript, updated Nov 18 from Buzz and the group text through Nov 17. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
 </div>
 </body>
 </html>
