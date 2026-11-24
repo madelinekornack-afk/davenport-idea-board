@@ -72,7 +72,7 @@ DIAGRAM=''.join(d)
 body=f'''<div class="wrap">
 {NAV}
 <header>
-  <div class="eyebrow">The project, on one page · decided at the Nov 11 Davenport session, updated from Buzz and the group text through Nov 17 · ideas 1, 2 and 7 on the board</div>
+  <div class="eyebrow">The project, on one page · decided at the Nov 11 Davenport session, updated from Buzz and the group text through Nov 17, competitor map refreshed Nov 23 · ideas 1, 2 and 7 on the board</div>
   <h1>The engine</h1>
   <p class="lede">Clark and Tally together: one place where your email, your money and your files are cleaned, classified and linked the moment they arrive, so anything asked later is instant. It is not sold on its own. Products sit on top of it, and the first one is for Orca. This page is the whole project: what it is, what already runs, what has to be built and by whom, what it costs and earns, who else is in the field, and what is still undecided.</p>
   <p class="quote"><b>Phil, Nov 11:</b> "That is what every single business is. It is trying to make someone's high entropy environment that's a pain in the ass to work in into lower entropy. And then you sell that order to the customer."</p>
@@ -170,17 +170,20 @@ body=f'''<div class="wrap">
 
 <section>
   <h2>Who else is building it</h2>
-  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">What came up in the room, plus the competitor map Fable built in Buzz the same night from Steve's handoff, with each claim checked against press coverage rather than filings.</p>
+  <p class="lede" style="color:var(--muted);max-width:72ch;margin-top:0">What came up in the room, plus the competitor map Fable built in Buzz the same night from Steve's handoff, with each claim checked against press coverage rather than filings. Rows marked Nov 23 come from a fresh search; the sources are linked.</p>
   <div class="tablewrap"><table class="plan">
     <thead><tr><th>Group</th><th>Who</th><th>What the sources support</th></tr></thead>
     <tbody>
       <tr><td>Platforms</td><td class="who">Microsoft Work IQ; OpenAI company knowledge</td><td>Work IQ sits on Microsoft Graph (people, documents, activity, relationships); agent APIs GA June 2026, a read-only memory profile for agents over MCP due December 2026. OpenAI's company knowledge retrieves at question time with citations, the design the engine replaces.</td></tr>
+      <tr><td>Platforms, the money half <span class="when">Nov 23</span></td><td class="who">ChatGPT Personal Finance; Claude Money</td><td>OpenAI launched <a href="https://www.sayfeai.com/blog/chatgpt-personal-finance-bank-accounts-business-owners-2026">Personal Finance</a> in May 2026: Pro-only, US-only, read-only Plaid linking to 12,000 institutions, and bought the team behind the finance app Hiro. Anthropic's <a href="https://bleepingcomputer.com/news/artificial-intelligence/anthropic-wants-claude-to-analyze-your-bank-account-and-financial-data">Claude Money</a> was in testing in September; a <a href="https://www.memorylake.ai/en/blogs/claude-personal-finance-memory">Nov 6 write-up</a> quotes the help docs: a chat that used linked accounts is not saved to memory. Both read at question time. Neither cleans a transaction, matches it to an email, or keeps the result. The labs are choosing not to be the record.</td></tr>
       <tr><td>Enterprise context</td><td class="who">Glean; Jedify</td><td>Glean maps people, content and activity, with 100-seat minimums. Jedify raised $24M in June 2026 to arm agents with business context.</td></tr>
       <tr><td>Learned memory</td><td class="who">Engram</td><td>Trains a model on an organization's information, so the knowledge lives in weights, not a store. $98M at launch, Microsoft, Notion and Harvey as partners. The opposite design: no evidence row to cite.</td></tr>
       <tr><td>Personal assistants</td><td class="who">Instinct</td><td>$250M at $2.5B in August 2026, then $1B at $10B in September. One profile says still pre-revenue. One teardown says it keeps markdown in git. Steve: "basically what's on our chalkboard" was Supermemory, not this.</td></tr>
       <tr><td>Relationship CRMs</td><td class="who">Affinity</td><td>Builds people and company records from email and calendar as its core product. The handoff missed this group.</td></tr>
       <tr><td>Finance</td><td class="who">Digits; Ramp; Brex</td><td>Digits attaches emailed receipts to transactions and learns vendors, and says month one needs heavy review. Ramp matches above 90 percent and fails on same vendor, same amount, adjacent days. The receipt half of Tally exists for small businesses.</td></tr>
-      <tr><td>Developer memory</td><td class="who">Supermemory; Hyperspell; mem0</td><td>Seed-stage, sold to developers, billed by the token. mem0 is the one Steve raised on Nov 12 as the buy option.</td></tr>
+      <tr><td>Developer memory</td><td class="who">Supermemory; Hyperspell; mem0</td><td>Seed-stage, sold to developers, billed by the token. mem0 is the one Steve raised on Nov 12 as the buy option; it raised <a href="https://techcrunch.com/2025/10/28/mem0-raises-24m-from-yc-peak-xv-and-basis-set-to-build-the-memory-layer-for-ai-apps">$24M</a> in October 2025 and has an AWS Agent SDK partnership. <a href="https://supermemory.ai/about.md">Supermemory</a> retired its consumer app in 2026; "the engine is the product."</td></tr>
+      <tr><td>Personal data warehouses, open source <span class="when">Nov 23</span></td><td class="who">GBrain; LifeOS; OpenWiki Brains; Rowboat; Zep Graphiti</td><td>The crowd closest to the chalkboard, all developer-first. Garry Tan's <a href="https://docsearch.algolia.com/mcp/docs/repo/garrytan/gbrain">GBrain</a> is a Postgres-native brain built from meetings, email, calendar and calls. <a href="https://github.com/nbramia/LifeOS">LifeOS</a> pulls Gmail, Calendar, Obsidian, iMessage and Slack into one store with an MCP server. LangChain's <a href="https://www.langchain.com/blog/introducing-openwiki-brains-general-purpose-wiki-memory-for-agents">OpenWiki Brains</a> (July 2026) keeps a self-updating wiki from connected sources. Rowboat builds a knowledge graph from meetings, emails and notes. <a href="https://neo4j.com/blog/developer/graphiti-knowledge-graph-memory/">Graphiti</a> is the temporal-graph library under several of them. None has a bank feed, none cleans transactions at write time, none ships one stack per customer.</td></tr>
+      <tr><td>Property management, the Orca side <span class="when">Nov 23</span></td><td class="who">Proper AI; Sofia AI; Buildium; Rentvine</td><td><a href="https://yespress.io/proper-ai.md">Proper AI</a> pairs models with accountants for reconciliation and owner statements on top of Buildium and AppFolio. <a href="https://www.newswire.com/news/hire-sofia-introduces-sofia-ai-an-ai-powered-accounting-platform-for-rental">Sofia AI</a> launched April 2026 for rental accounting. <a href="https://www.buildium.com/blog/how-to-use-property-management-accounting-ai/">Buildium</a>'s own AI matches bank transactions and surfaces exceptions, with a human on final sign-off. One analysis puts accuracy at 80 to 90 percent. Every one of them stops at the bank. Nobody joins the maintenance record, the vendor email and the owner statement, which is the half only Orca holds.</td></tr>
     </tbody>
   </table></div>
   <div class="read">
@@ -223,7 +226,7 @@ body=f'''<div class="wrap">
   </div>
 </section>
 
-<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript, updated Nov 18 from Buzz and the group text through Nov 17. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
+<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript, updated Nov 18 from Buzz and the group text through Nov 17; competitor map refreshed Nov 23. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
 </div>
 </body>
 </html>
