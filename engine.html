@@ -201,7 +201,7 @@ a { color: var(--accent); }
 <div class="wrap">
 <nav class="tabs"><a class=on href="engine.html">The engine</a><a href="./">Board</a><a href="clark.html">Clark</a><a href="audit.html">Audit</a><a href="formcheck.html">Form check</a><a href="buzz.html">Buzz</a><a href="calories.html">Calorie apps</a><a href="bloodwork.html">Bloodwork</a><a href="glp1.html">GLP-1</a><a href="learnai.html">Learn AI</a></nav>
 <header>
-  <div class="eyebrow">The project, on one page · decided at the Nov 11 Davenport session, updated from Buzz and the group text through Nov 23 · ideas 1, 2 and 7 on the board</div>
+  <div class="eyebrow">The project, on one page · decided at the Nov 11 Davenport session, updated from Buzz and the group text through Nov 25 · ideas 1, 2 and 7 on the board</div>
   <h1>The engine</h1>
   <p class="lede">Clark and Tally together: one place where your email, your money and your files are cleaned, classified and linked the moment they arrive, so anything asked later is instant. It is not sold on its own. Products sit on top of it, and the first one is for Orca. This page is the whole project: what it is, what already runs, what has to be built and by whom, what it costs and earns, who else is in the field, and what is still undecided.</p>
   <p class="quote"><b>Phil, Nov 11:</b> "That is what every single business is. It is trying to make someone's high entropy environment that's a pain in the ass to work in into lower entropy. And then you sell that order to the customer."</p>
@@ -252,7 +252,7 @@ a { color: var(--accent); }
 </section>
 
 <section>
-  <h2>Since the session: Nov 12 to 23</h2>
+  <h2>Since the session: Nov 12 to 25</h2>
   <div class="read">
     <div><b>Phil: the Mac app</b>Email and transactions are now one native Mac app. The email side hands transaction emails to Tally as they arrive, and Tally pins each to its transaction: order confirmed, subscription notice, return. Every purchase keeps its own paperwork. "The GUI part will be useful even by itself and I'm pretty excited to have it ready for me personally, so that's usually a good sign." Steve: "sort of sounds like that alone could almost be a product?" Phil: "very well might be." It is drawn as a fourth product above, dashed, until the group decides.</div>
     <div><b>Steve, the morning after</b>"Confident in the direction and wanna dig in asap." His reason for raising PropFlow on the night: they and many others take shortcuts for a flashy product and lean on Claude with a thin harness, which is likely the root cause of their problems. Orca gives their product a better foundation; "so would the Max pipeline." And: "while you don't own the source data with the Max pipeline, you do own the way it's stored and indexed, which is prob the next best thing."</div>
@@ -264,6 +264,8 @@ a { color: var(--accent); }
     <div class="hot"><b>Nov 20 to 23: the Mac app is Tiny Banker</b>Phil's build channels name it: Tiny Banker, "an email client amongst other things," with transactions in the same window. In four days he opened work on an iOS app (scaffolding done Nov 20, its own repo, shared code with the Mac app), a cloud build pipeline so releases do not depend on his machine ("assume Tiny Banker will be moved to production soon"; the cutover check went green Nov 23), a spam folder, rich-text compose and an offline outbox, signatures pulled from each account's sent mail, brand logos as avatars on mail and connected accounts, an image proxy that strips trackers, and a browser extension that fills login codes straight from the inbox. On the Tally side, a new classifier buckets spend as subscription or metered (Netflix versus an AWS bill), with web-search evidence planned when confidence is low. An email-categories channel is open and empty.</div>
     <div><b>Nov 20 to 23: the other layers</b>Files: the foundation daemon extracts PDFs, Office files and scanned images, and embeddings work by hand, but nothing runs live yet and search is keyword-only; the next build, facts and events, is being specified from Phil's own 2025 tax run, which went through the accountant skill with the federal payment made Nov 23 and the state return next. That is the tax layer working for one user. Web onboarding: brief, spec and plan were reviewed and "ready to build" on Nov 19, waiting on a Tally production deploy.</div>
     <div><b>Maddy, Nov 21, by text</b>"I had to do a bunch of QR code returns for different places and had to search my email like Nordstrom Return and it gave me like all the Nordstrom promo emails and it was hard for me. Let's fix." The first user-reported search case for Tiny Banker.</div>
+    <div class="hot"><b>Steve, Nov 25, by text: the illegible charge</b>A screenshot of a bank line, "PURCHASE 11/25 VYQJYYQFBCL0UUQ +XXXXX166841 UT," with "No idea wtf this is for" and then: "It's almost like vendors benefit from not having legible descriptions there." He is half right. The card networks cap the merchant field at 22 characters, the payment processor often spends the first few on its own prefix, the rest gets truncated, and the bank prints the raw field. A random token plus a masked phone number plus a state code is what a payment facilitator's placeholder looks like, and a web search on the token finds nothing. Some vendors do profit from that, trial and subscription merchants most of all. This is exactly Tally's first stage: name the merchant from the descriptor with a confidence score, go to the web when the score is low, and since Nov 12 pin the receipt email to the charge, which is the one source that always says who it was. Steve sent the case the week after he said he wants to try the pipeline.</div>
+    <div><b>Nov 24 to 25, builds</b>The foundation's next build, facts and events, was approved on Nov 25 with the tax-run requirements folded in. The spend classifier build moved under an agent manager the same morning. Web onboarding and the iOS app have no new posts since Nov 23.</div>
   </div>
 </section>
 
@@ -358,7 +360,7 @@ a { color: var(--accent); }
   </div>
 </section>
 
-<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript, updated Nov 23 from Buzz and the group text through Nov 23. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
+<div class="foot">Written Nov 12, 2026 from the Nov 11 Davenport session transcript, updated Nov 25 from Buzz and the group text through Nov 25. Speaker A is Steve, B is Phil, C is Maddy. <span class="links"><a href="./">Board</a> <a href="clark.html">Clark</a> <a href="audit.html">Audit</a></span></div>
 </div>
 </body>
 </html>
